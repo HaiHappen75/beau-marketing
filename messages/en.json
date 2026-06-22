@@ -1,0 +1,102 @@
+{
+  "Nav": {
+    "brands": "Brands",
+    "studio": "Studio",
+    "about": "About",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "cta": "Get in touch"
+  },
+  "Hero": {
+    "eyebrow": "Brand house & software studio",
+    "titleLead": "We build",
+    "rotating": ["brands.", "apps.", "experiences.", "products."],
+    "titleTail": "that last.",
+    "subtitle": "Beau-Marketing develops, runs and markets its own digital brands — and builds software for select partners.",
+    "ctaPrimary": "Our brands",
+    "ctaSecondary": "Studio work",
+    "scroll": "Explore"
+  },
+  "WhatWeDo": {
+    "eyebrow": "What we do",
+    "title": "Two paths, one signature.",
+    "brandHouse": {
+      "label": "Brand house",
+      "title": "Our own brands, from idea to market.",
+      "body": "We treat products as brands: strategy, design, engineering and marketing under one roof — across e-commerce, SaaS and native apps.",
+      "points": ["Product & brand strategy", "Design & engineering", "Growth & marketing"]
+    },
+    "studio": {
+      "label": "Studio",
+      "title": "Contract development for select partners.",
+      "body": "The same care that goes into our own brands, brought to third-party projects — iOS, Android, macOS and web.",
+      "points": ["Native apps (iOS, Android, macOS)", "Web & SaaS platforms", "From MVP to scale"]
+    }
+  },
+  "Brands": {
+    "eyebrow": "Brand house",
+    "title": "Our brands",
+    "subtitle": "Five independent products — one shared standard for design and craft.",
+    "viewAll": "All brands",
+    "explore": "Explore",
+    "platforms": "Platforms",
+    "visit": "Visit",
+    "links": "Links",
+    "backToOverview": "Back to overview",
+    "otherBrands": "More brands",
+    "detailEyebrow": "Brand",
+    "indexTitle": "All brands",
+    "indexSubtitle": "The Beau-Marketing brand house at a glance."
+  },
+  "Studio": {
+    "eyebrow": "Studio",
+    "title": "Software we'd build for ourselves.",
+    "subtitle": "We take on select contract work in software and app development.",
+    "services": [
+      { "title": "Native apps", "body": "iOS, Android and macOS — fast and close to the platform." },
+      { "title": "Web & SaaS", "body": "Scalable platforms, portals and dashboards." },
+      { "title": "Product & design", "body": "From idea through prototype to finished product." }
+    ],
+    "cta": "Discuss a project"
+  },
+  "About": {
+    "eyebrow": "About",
+    "title": "A team with a long design history.",
+    "body": "Beau-Marketing is both a brand house and a software studio. We develop, run and market our own brands — and share that craft with partners who value design."
+  },
+  "Contact": {
+    "eyebrow": "Contact",
+    "title": "Let's build something.",
+    "subtitle": "Your own idea or a contract project — drop us a line.",
+    "emailCta": "Write an email",
+    "or": "or",
+    "labelEmail": "Email",
+    "labelPhone": "Phone",
+    "labelAddress": "Address"
+  },
+  "Footer": {
+    "tagline": "Brand house & software studio.",
+    "explore": "Explore",
+    "legal": "Legal",
+    "impressum": "Imprint",
+    "datenschutz": "Privacy",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "Common": {
+    "learnMore": "Learn more",
+    "backHome": "Back to home",
+    "notFound": "Page not found"
+  },
+  "Meta": {
+    "homeTitle": "Beau-Marketing — Brand house & software studio",
+    "homeDescription": "We develop, run and market our own digital brands — and build software for select partners. e-commerce, SaaS and native apps."
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "de": "Deutsch",
+    "en": "English",
+    "da": "Dansk"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "Nav": {
+    "brands": "Marken",
+    "studio": "Studio",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "cta": "Kontakt aufnehmen"
+  },
+  "Hero": {
+    "eyebrow": "Markenhaus & Software-Studio",
+    "titleLead": "Wir bauen",
+    "rotating": ["Marken.", "Apps.", "Erlebnisse.", "Produkte."],
+    "titleTail": "die bleiben.",
+    "subtitle": "Beau-Marketing entwickelt, führt und vermarktet eigene digitale Marken – und baut Software für ausgewählte Partner.",
+    "ctaPrimary": "Unsere Marken",
+    "ctaSecondary": "Auftragsentwicklung",
+    "scroll": "Entdecken"
+  },
+  "WhatWeDo": {
+    "eyebrow": "Was wir tun",
+    "title": "Zwei Wege, eine Handschrift.",
+    "brandHouse": {
+      "label": "Markenhaus",
+      "title": "Eigene Marken, von der Idee bis zum Markt.",
+      "body": "Wir denken Produkte als Marken: Strategie, Design, Entwicklung und Vermarktung aus einer Hand – über e-Commerce, SaaS und native Apps hinweg.",
+      "points": ["Produkt- & Markenstrategie", "Design & Entwicklung", "Wachstum & Vermarktung"]
+    },
+    "studio": {
+      "label": "Studio",
+      "title": "Auftragsentwicklung für ausgewählte Partner.",
+      "body": "Dieselbe Sorgfalt, die in unsere eigenen Marken fließt, bringen wir in Projekte Dritter – iOS, Android, macOS und Web.",
+      "points": ["Native Apps (iOS, Android, macOS)", "Web- & SaaS-Plattformen", "Von MVP bis Skalierung"]
+    }
+  },
+  "Brands": {
+    "eyebrow": "Markenhaus",
+    "title": "Unsere Marken",
+    "subtitle": "Fünf eigenständige Produkte – ein gemeinsamer Anspruch an Gestaltung und Handwerk.",
+    "viewAll": "Alle Marken",
+    "explore": "Entdecken",
+    "platforms": "Plattformen",
+    "visit": "Besuchen",
+    "links": "Links",
+    "backToOverview": "Zurück zur Übersicht",
+    "otherBrands": "Weitere Marken",
+    "detailEyebrow": "Marke",
+    "indexTitle": "Alle Marken",
+    "indexSubtitle": "Das Markenhaus von Beau-Marketing im Überblick."
+  },
+  "Studio": {
+    "eyebrow": "Studio",
+    "title": "Software, die wir auch für uns selbst bauen würden.",
+    "subtitle": "Wir übernehmen ausgewählte Auftragsarbeiten in Software- und App-Entwicklung.",
+    "services": [
+      { "title": "Native Apps", "body": "iOS, Android und macOS – performant und nah an der Plattform." },
+      { "title": "Web & SaaS", "body": "Skalierbare Plattformen, Portale und Dashboards." },
+      { "title": "Produkt & Design", "body": "Von der Idee über den Prototyp bis zum fertigen Produkt." }
+    ],
+    "cta": "Projekt besprechen"
+  },
+  "About": {
+    "eyebrow": "Über uns",
+    "title": "Ein Team mit langer Designhistorie.",
+    "body": "Beau-Marketing ist Markenhaus und Software-Studio zugleich. Wir entwickeln, führen und vermarkten eigene Marken – und teilen dieses Handwerk mit Partnern, die Wert auf Gestaltung legen."
+  },
+  "Contact": {
+    "eyebrow": "Kontakt",
+    "title": "Lass uns etwas bauen.",
+    "subtitle": "Ob eigene Idee oder Auftragsprojekt – schreib uns.",
+    "emailCta": "E-Mail schreiben",
+    "or": "oder",
+    "labelEmail": "E-Mail",
+    "labelPhone": "Telefon",
+    "labelAddress": "Adresse"
+  },
+  "Footer": {
+    "tagline": "Markenhaus & Software-Studio.",
+    "explore": "Entdecken",
+    "legal": "Rechtliches",
+    "impressum": "Impressum",
+    "datenschutz": "Datenschutz",
+    "contact": "Kontakt",
+    "rights": "Alle Rechte vorbehalten."
+  },
+  "Common": {
+    "learnMore": "Mehr erfahren",
+    "backHome": "Zur Startseite",
+    "notFound": "Seite nicht gefunden"
+  },
+  "Meta": {
+    "homeTitle": "Beau-Marketing — Markenhaus & Software-Studio",
+    "homeDescription": "Wir entwickeln, führen und vermarkten eigene digitale Marken – und bauen Software für ausgewählte Partner. e-Commerce, SaaS und native Apps."
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache",
+    "de": "Deutsch",
+    "en": "English",
+    "da": "Dansk"
+  }
+}

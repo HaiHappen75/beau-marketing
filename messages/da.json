@@ -1,0 +1,102 @@
+{
+  "Nav": {
+    "brands": "Brands",
+    "studio": "Studio",
+    "about": "Om os",
+    "contact": "Kontakt",
+    "openMenu": "Åbn menu",
+    "closeMenu": "Luk menu",
+    "cta": "Kontakt os"
+  },
+  "Hero": {
+    "eyebrow": "Brandhus & softwarestudie",
+    "titleLead": "Vi bygger",
+    "rotating": ["brands.", "apps.", "oplevelser.", "produkter."],
+    "titleTail": "der holder.",
+    "subtitle": "Beau-Marketing udvikler, driver og markedsfører egne digitale brands — og bygger software for udvalgte partnere.",
+    "ctaPrimary": "Vores brands",
+    "ctaSecondary": "Studiearbejde",
+    "scroll": "Udforsk"
+  },
+  "WhatWeDo": {
+    "eyebrow": "Det vi gør",
+    "title": "To veje, én signatur.",
+    "brandHouse": {
+      "label": "Brandhus",
+      "title": "Egne brands, fra idé til marked.",
+      "body": "Vi tænker produkter som brands: strategi, design, udvikling og markedsføring under ét tag — på tværs af e-handel, SaaS og native apps.",
+      "points": ["Produkt- & brandstrategi", "Design & udvikling", "Vækst & markedsføring"]
+    },
+    "studio": {
+      "label": "Studio",
+      "title": "Udvikling på opgave for udvalgte partnere.",
+      "body": "Den samme omhu, som vi lægger i vores egne brands, bringer vi ind i tredjepartsprojekter — iOS, Android, macOS og web.",
+      "points": ["Native apps (iOS, Android, macOS)", "Web- & SaaS-platforme", "Fra MVP til skalering"]
+    }
+  },
+  "Brands": {
+    "eyebrow": "Brandhus",
+    "title": "Vores brands",
+    "subtitle": "Fem selvstændige produkter — én fælles standard for design og håndværk.",
+    "viewAll": "Alle brands",
+    "explore": "Udforsk",
+    "platforms": "Platforme",
+    "visit": "Besøg",
+    "links": "Links",
+    "backToOverview": "Tilbage til oversigten",
+    "otherBrands": "Flere brands",
+    "detailEyebrow": "Brand",
+    "indexTitle": "Alle brands",
+    "indexSubtitle": "Beau-Marketings brandhus i overblik."
+  },
+  "Studio": {
+    "eyebrow": "Studio",
+    "title": "Software, vi ville bygge til os selv.",
+    "subtitle": "Vi påtager os udvalgte opgaver inden for software- og appudvikling.",
+    "services": [
+      { "title": "Native apps", "body": "iOS, Android og macOS — hurtige og tæt på platformen." },
+      { "title": "Web & SaaS", "body": "Skalerbare platforme, portaler og dashboards." },
+      { "title": "Produkt & design", "body": "Fra idé over prototype til færdigt produkt." }
+    ],
+    "cta": "Tal om et projekt"
+  },
+  "About": {
+    "eyebrow": "Om os",
+    "title": "Et team med en lang designhistorie.",
+    "body": "Beau-Marketing er både et brandhus og et softwarestudie. Vi udvikler, driver og markedsfører egne brands — og deler det håndværk med partnere, der værdsætter design."
+  },
+  "Contact": {
+    "eyebrow": "Kontakt",
+    "title": "Lad os bygge noget.",
+    "subtitle": "Egen idé eller et opgaveprojekt — skriv til os.",
+    "emailCta": "Skriv en e-mail",
+    "or": "eller",
+    "labelEmail": "E-mail",
+    "labelPhone": "Telefon",
+    "labelAddress": "Adresse"
+  },
+  "Footer": {
+    "tagline": "Brandhus & softwarestudie.",
+    "explore": "Udforsk",
+    "legal": "Juridisk",
+    "impressum": "Kolofon",
+    "datenschutz": "Privatliv",
+    "contact": "Kontakt",
+    "rights": "Alle rettigheder forbeholdes."
+  },
+  "Common": {
+    "learnMore": "Læs mere",
+    "backHome": "Til forsiden",
+    "notFound": "Siden blev ikke fundet"
+  },
+  "Meta": {
+    "homeTitle": "Beau-Marketing — Brandhus & softwarestudie",
+    "homeDescription": "Vi udvikler, driver og markedsfører egne digitale brands — og bygger software for udvalgte partnere. e-handel, SaaS og native apps."
+  },
+  "LocaleSwitcher": {
+    "label": "Sprog",
+    "de": "Deutsch",
+    "en": "English",
+    "da": "Dansk"
+  }
+}
