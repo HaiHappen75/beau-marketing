@@ -32,14 +32,19 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_OPTIONS="--no-deprecation --max-old-space-size=1024"
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
+# su-exec lets the entrypoint chown the volume as root, then drop to the app user.
+RUN apk add --no-cache su-exec
 RUN addgroup -S nodejs -g 1001 && adduser -S nextjs -u 1001
 
 # Standalone server + assets only (small image, low RSS).
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-USER nextjs
 EXPOSE 3000
+# Starts as root → entrypoint makes /app/media writable, then drops to `nextjs`.
 # NODE_ENV=production + prodMigrations → pending DB migrations run automatically on init.
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["node", "server.js"]
