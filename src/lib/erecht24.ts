@@ -46,9 +46,14 @@ const SNAPSHOTS: Record<WebsiteLegalType, LegalSource & { fetchedAt: string }> =
 // would hang on an API outage until the fetch gives up on its own.
 const LIVE_TIMEOUT_MS = 5000
 
-/** Danish is not offered by eRecht24 — those pages get the German text. */
+/**
+ * eRecht24 offers German and English, no Danish. Danish visitors therefore get
+ * the English text — far more likely to be understood than German — while the
+ * authoritative German version stays at /de and remains x-default. If English
+ * is ever unmaintained, `pick()` falls back to German rather than blank.
+ */
 export function legalLangFor(locale: Locale): LegalLang {
-  return locale === 'en' ? 'en' : 'de'
+  return locale === 'de' ? 'de' : 'en'
 }
 
 /** Picks the wanted language, falling back to German when it is not maintained. */

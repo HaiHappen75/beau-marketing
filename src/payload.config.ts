@@ -75,6 +75,10 @@ export default buildConfig({
   }),
   secret: process.env.PAYLOAD_SECRET || '',
   sharp,
+  // Payload phones home with anonymous usage stats by default. No visitor data
+  // is involved, but this site deliberately sends nothing anywhere it doesn't
+  // have to — there is no analytics, no consent tool and no third-party cookie.
+  telemetry: false,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
