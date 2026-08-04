@@ -44,10 +44,14 @@ echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.d/99-swappiness.conf
 
 ---
 
-## 3. 🧑 Postgres in Coolify anlegen
+## 3. 🧑 Projekt + Postgres in Coolify anlegen
 
-1. Projekt anlegen (z. B. „beau-marketing") → **+ New** → **Database** → **PostgreSQL 16**.
-2. Namen vergeben, Credentials generieren lassen, **Start**.
+Coolify-Struktur: **Projekt → Environment → Ressourcen**. Erst das Projekt, dann darin DB + App.
+
+1. **+ New** → **Project** → benennen (z. B. „beau-marketing"). Es entsteht automatisch das
+   Environment **„production"**. **DB und App kommen ins selbe Projekt/Environment** (gemeinsames
+   internes Docker-Netz → App erreicht Postgres über den internen Hostnamen, kein öffentlicher Port).
+2. Im Environment: **+ New** → **Database** → **PostgreSQL 16** → Credentials generieren, **Start**.
 3. Den **internen Connection-String** notieren — Form:
    `postgres://<user>:<pass>@<service-name>:5432/<db>`
    (Service-Name = interner Hostname im selben Docker-Netz; **kein** öffentlicher Port nötig.)
@@ -73,6 +77,17 @@ echo 'vm.swappiness=10' | sudo tee -a /etc/sysctl.d/99-swappiness.conf
 | `PAYLOAD_SECRET` | langer Zufallswert: `openssl rand -base64 32` | Runtime |
 | `NEXT_PUBLIC_SERVER_URL` | `https://beau-marketing.de` | **Build + Runtime** |
 | `NODE_OPTIONS` | `--max-old-space-size=1024` | Runtime |
+| `SMTP_HOST` | `mail.beau-marketing.de` (Mittwald) | Runtime |
+| `SMTP_PORT` | `587` (STARTTLS; `465` = implizites TLS) | Runtime |
+| `SMTP_USER` | Postfach-Login aus dem Mittwald mStudio | Runtime |
+| `SMTP_PASSWORD` | Postfach-Passwort | Runtime |
+| `SMTP_FROM_ADDRESS` | `noreply@beau-marketing.de` | Runtime |
+| `SMTP_FROM_NAME` | `Beau-Marketing` | Runtime |
+
+> 📧 **SMTP ist optional, aber ohne geht „Passwort vergessen" nicht.** Ist `SMTP_HOST` leer,
+> fällt Payload auf den `consoleEmailAdapter` zurück, der die Mail nur ins Log schreibt —
+> der Reset-Token muss dann von Hand aus `users.reset_password_token` gelesen werden.
+> Die Absenderadresse muss zu einem echten Mittwald-Postfach gehören, sonst greift SPF/DKIM nicht.
 
 > ⚠️ `NEXT_PUBLIC_SERVER_URL` muss als **Build-Variable** markiert sein — der Wert wird beim
 > Build in den Client-Bundle „eingebacken" (Media-/OG-/Canonical-URLs). In Coolify beim
