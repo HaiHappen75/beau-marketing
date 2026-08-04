@@ -95,11 +95,15 @@ export interface Config {
     'site-settings': SiteSetting;
     impressum: Impressum;
     datenschutz: Datenschutz;
+    widerruf: Widerruf;
+    agb: Agb;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
     impressum: ImpressumSelect<false> | ImpressumSelect<true>;
     datenschutz: DatenschutzSelect<false> | DatenschutzSelect<true>;
+    widerruf: WiderrufSelect<false> | WiderrufSelect<true>;
+    agb: AgbSelect<false> | AgbSelect<true>;
   };
   locale: 'de' | 'en' | 'da';
   widgets: {
@@ -670,6 +674,68 @@ export interface Datenschutz {
   createdAt?: string | null;
 }
 /**
+ * Wird unter /widerrufsbelehrung ausgespielt und im Footer verlinkt. Bleibt der Inhalt leer, versteckt sich der Footer-Link von selbst.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "widerruf".
+ */
+export interface Widerruf {
+  id: number;
+  title?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Stand der letzten Änderung.
+   */
+  lastUpdated?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Wird unter /agb ausgespielt und im Footer verlinkt. Bleibt der Inhalt leer, versteckt sich der Footer-Link von selbst.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agb".
+ */
+export interface Agb {
+  id: number;
+  title?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Stand der letzten Änderung.
+   */
+  lastUpdated?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
@@ -718,6 +784,30 @@ export interface ImpressumSelect<T extends boolean = true> {
  * via the `definition` "datenschutz_select".
  */
 export interface DatenschutzSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  lastUpdated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "widerruf_select".
+ */
+export interface WiderrufSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  lastUpdated?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agb_select".
+ */
+export interface AgbSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   lastUpdated?: T;

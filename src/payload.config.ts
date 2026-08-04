@@ -13,9 +13,11 @@ import { Brands } from './collections/Brands'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
 import { migrations } from './migrations'
+import { AGB } from './globals/AGB'
 import { Datenschutz } from './globals/Datenschutz'
 import { Impressum } from './globals/Impressum'
 import { SiteSettings } from './globals/SiteSettings'
+import { Widerruf } from './globals/Widerruf'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -56,7 +58,7 @@ export default buildConfig({
   },
   collections: [Brands, Media, Users],
   email,
-  globals: [SiteSettings, Impressum, Datenschutz],
+  globals: [SiteSettings, Impressum, Datenschutz, Widerruf, AGB],
   localization: {
     locales: [
       { label: 'Deutsch', code: 'de' },

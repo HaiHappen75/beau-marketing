@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
 import { getWebsiteLegalText } from '@/lib/erecht24'
 import { getPayloadClient } from '@/lib/getPayload'
+import { getAGB, getWiderruf, hasContent } from '@/lib/queries/getLegalDocs'
 import { SITE_URL } from '@/lib/seo'
 
 // Generated on request (reads brands from Payload) — keeps the build free of any DB access.
@@ -21,7 +22,16 @@ const LEGAL_PATHS = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({ collection: 'brands', limit: 100, depth: 0 })
-  const paths = [...STATIC_PATHS, ...docs.map((b) => `/marken/${b.slug}`)]
+
+  // Widerruf and AGB are optional Payload globals — while empty the page 404s,
+  // so it must not be announced. Localized with fallback, hence all locales.
+  const [widerruf, agb] = await Promise.all([getWiderruf('de'), getAGB('de')])
+  const optionalPaths = [
+    ...(hasContent(widerruf) ? ['/widerrufsbelehrung'] : []),
+    ...(hasContent(agb) ? ['/agb'] : []),
+  ]
+
+  const paths = [...STATIC_PATHS, ...optionalPaths, ...docs.map((b) => `/marken/${b.slug}`)]
 
   const entries: MetadataRoute.Sitemap = []
   for (const path of paths) {

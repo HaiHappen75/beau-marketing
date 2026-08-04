@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import { Container } from '@/components/ui/Container'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/locale'
+import { getAGB, getWiderruf, hasContent } from '@/lib/queries/getLegalDocs'
 import type { SiteSetting } from '@/payload-types'
 
 function FooterCol({ title, children }: { title: string; children: ReactNode }) {
@@ -30,6 +31,10 @@ export async function Footer({ settings, locale }: { settings: SiteSetting; loca
   const tn = await getTranslations({ locale, namespace: 'Nav' })
   const year = new Date().getFullYear()
   const email = settings?.contact?.email
+
+  // Widerruf and AGB are optional: as long as nobody has filled the global, the
+  // page 404s — so it must not be linked either.
+  const [widerruf, agb] = await Promise.all([getWiderruf(locale), getAGB(locale)])
 
   return (
     <footer className="stage grain relative overflow-hidden text-paper">
@@ -69,6 +74,10 @@ export async function Footer({ settings, locale }: { settings: SiteSetting; loca
         <FooterCol title={t('legal')}>
           <FooterLink href="/impressum">{t('impressum')}</FooterLink>
           <FooterLink href="/datenschutz">{t('datenschutz')}</FooterLink>
+          {hasContent(widerruf) && (
+            <FooterLink href="/widerrufsbelehrung">{widerruf.title || t('widerruf')}</FooterLink>
+          )}
+          {hasContent(agb) && <FooterLink href="/agb">{agb.title || t('agb')}</FooterLink>}
         </FooterCol>
 
         <FooterCol title={t('contact')}>
