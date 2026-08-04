@@ -83,6 +83,16 @@ Coolify-Struktur: **Projekt → Environment → Ressourcen**. Erst das Projekt, 
 | `SMTP_PASSWORD` | Postfach-Passwort | Runtime |
 | `SMTP_FROM_ADDRESS` | `noreply@beau-marketing.de` | Runtime |
 | `SMTP_FROM_NAME` | `Beau-Marketing` | Runtime |
+| `ERECHT24_API_KEY` | API-Key aus dem eRecht24 Project Manager | **Build + Runtime** |
+| `ERECHT24_PUSH_SECRET` | Secret aus der Push-Client-Registrierung | Runtime |
+
+> ⚖️ **Rechtstexte:** Impressum und Datenschutzerklärung kommen aus dem eRecht24 Project Manager,
+> nicht mehr aus Payload. `ERECHT24_API_KEY` muss auch als **Build-Variable** gesetzt sein — der Build
+> frischt die Snapshots unter `content/legal/` auf. Fehlt der Key, wird der committete Snapshot
+> gebündelt und der Build läuft trotzdem durch. Keiner der beiden Werte wird selbst erzeugt: der
+> API-Key stammt aus dem Project Manager, das Push-Secret vergibt eRecht24 bei der Registrierung des
+> Push-Clients (`npx erecht24-register https://beau-marketing.de/api/erecht24/push`) und zeigt es
+> **genau einmal** an.
 
 > 📧 **SMTP ist optional, aber ohne geht „Passwort vergessen" nicht.** Ist `SMTP_HOST` leer,
 > fällt Payload auf den `consoleEmailAdapter` zurück, der die Mail nur ins Log schreibt —

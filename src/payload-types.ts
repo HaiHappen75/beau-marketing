@@ -608,6 +608,8 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
+ * Wird nicht mehr ausgespielt. Der Text kommt automatisch aus dem eRecht24 Project Manager — Änderungen bitte dort vornehmen. Dieser Eintrag bleibt nur als Archiv bestehen.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "impressum".
  */
@@ -637,6 +639,8 @@ export interface Impressum {
   createdAt?: string | null;
 }
 /**
+ * Wird nicht mehr ausgespielt. Der Text kommt automatisch aus dem eRecht24 Project Manager — Änderungen bitte dort vornehmen. Dieser Eintrag bleibt nur als Archiv bestehen.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "datenschutz".
  */

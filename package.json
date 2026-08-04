@@ -12,7 +12,8 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next build",
+    "build": "node scripts/fetch-erecht24-snapshot.mjs && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next build",
+    "snapshot:erecht24": "node scripts/fetch-erecht24-snapshot.mjs",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -22,6 +23,7 @@
     "db:down": "docker compose down"
   },
   "dependencies": {
+    "@dagsite/erecht24-next": "^0.1.0",
     "@payloadcms/db-postgres": "3.85.1",
     "@payloadcms/email-nodemailer": "3.85.1",
     "@payloadcms/next": "3.85.1",
@@ -31,12 +33,14 @@
     "@payloadcms/ui": "3.85.1",
     "cross-env": "^10.1.0",
     "graphql": "^16.8.1",
+    "html-react-parser": "^6.1.5",
     "motion": "^12.40.0",
     "next": "16.2.9",
     "next-intl": "^4.13.0",
     "payload": "3.85.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "sanitize-html": "^2.17.6",
     "sharp": "0.34.2"
   },
   "devDependencies": {
@@ -44,6 +48,7 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "@types/sanitize-html": "^2.16.1",
     "tailwindcss": "^4.3.1",
     "typescript": "^6.0.3"
   },

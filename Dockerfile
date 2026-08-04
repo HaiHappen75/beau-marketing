@@ -22,6 +22,11 @@ ENV NODE_OPTIONS="--no-deprecation --max-old-space-size=4096"
 # NEXT_PUBLIC_* is inlined at build time → must be present here, not just at runtime.
 ARG NEXT_PUBLIC_SERVER_URL
 ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
+# The build refreshes the eRecht24 snapshots (content/legal/*.json), so the key
+# must exist at build time too. Without it the script skips and the committed
+# snapshot is bundled — the build never fails over this.
+ARG ERECHT24_API_KEY
+ENV ERECHT24_API_KEY=$ERECHT24_API_KEY
 RUN pnpm build
 
 # ---------- runner ----------
