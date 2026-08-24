@@ -4,7 +4,11 @@
 # ---------- base ----------
 FROM node:22-alpine AS base
 RUN apk add --no-cache libc6-compat
-RUN npm install -g pnpm@10
+# pnpm exakt pinnen (gleiche Version wie packageManager in package.json).
+# COREPACK_DEFAULT_TO_LATEST=0 verhindert, dass corepack je auf pnpm 11 hochzieht.
+ENV COREPACK_DEFAULT_TO_LATEST=0
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable pnpm && corepack prepare pnpm@10.28.2 --activate
 WORKDIR /app
 
 # ---------- deps ----------

@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.28.2",
   "engines": {
     "node": ">=20.9.0",
     "pnpm": "^9 || ^10"
