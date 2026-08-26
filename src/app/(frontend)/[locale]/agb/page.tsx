@@ -3,11 +3,13 @@ import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { PageMasthead } from '@/components/marketing/PageMasthead'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { RichText } from '@/components/richtext/RichText'
 import { Container } from '@/components/ui/Container'
+import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { getAGB, hasContent } from '@/lib/queries/getLegalDocs'
-import { pageMetadata } from '@/lib/seo'
+import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
 // Maintained in Payload, not pulled from eRecht24 — their API only serves
 // imprint and privacy policy. Empty global = no page, so an unfilled draft
@@ -31,6 +33,15 @@ export default async function AGBPage(props: { params: Promise<{ locale: string 
 
   return (
     <>
+      <JsonLd
+        graph={[
+          webPageNode({
+            canonical: canonicalUrl(locale, '/agb'),
+            name: data.title || t('agb'),
+            lang: locale as Locale,
+          }),
+        ]}
+      />
       <PageMasthead eyebrow={t('legal')} title={data.title || t('agb')} />
       <section className="bg-paper py-16 sm:py-24">
         <Container className="max-w-3xl">

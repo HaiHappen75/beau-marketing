@@ -3,10 +3,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { ContactCta } from '@/components/marketing/ContactCta'
 import { PageMasthead } from '@/components/marketing/PageMasthead'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { Reveal } from '@/components/motion/Reveal'
 import { Container } from '@/components/ui/Container'
+import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
-import { pageMetadata } from '@/lib/seo'
+import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
 type Service = { title: string; body: string }
 
@@ -26,6 +28,16 @@ export default async function StudioPage(props: { params: Promise<{ locale: stri
 
   return (
     <>
+      <JsonLd
+        graph={[
+          webPageNode({
+            canonical: canonicalUrl(locale, '/studio'),
+            name: t('eyebrow'),
+            description: t('subtitle'),
+            lang: locale as Locale,
+          }),
+        ]}
+      />
       <PageMasthead eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
       <section className="bg-paper py-16 sm:py-24">
         <Container>
