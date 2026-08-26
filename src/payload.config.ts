@@ -47,8 +47,22 @@ const email = process.env.SMTP_HOST
     })
   : undefined
 
+// Public base URL. Payload builds absolute links from it — without one, password
+// reset mails carry only '/admin/reset/<token>' with no host (verified on DJV, 25.08.).
+// The fallback is deliberately NODE_ENV-dependent instead of a fixed localhost:
+// the Dockerfile declares NEXT_PUBLIC_SERVER_URL only in the builder stage, so unless
+// Coolify also injects it as a RUNTIME variable the server boots without it — and a
+// localhost link in production is worse than no serverURL at all.
+const serverURL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  (process.env.NODE_ENV === 'production' ? 'https://beau-marketing.de' : 'http://localhost:3000')
+
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',
+  serverURL,
+  cors: [serverURL],
+  // Payload appends serverURL to the csrf list on its own — listed explicitly anyway
+  // so both lists sit together. cors is not set automatically.
+  csrf: [serverURL],
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
