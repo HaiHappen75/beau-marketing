@@ -6,7 +6,9 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { routing } from '@/i18n/routing'
+import { siteGraph } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { SITE_URL } from '@/lib/seo'
 import { getBrands } from '@/lib/queries/getBrands'
@@ -64,6 +66,10 @@ export default async function LocaleLayout(props: {
   return (
     <html lang={locale} className={`${display.variable} ${body.variable}`}>
       <body>
+        {/* Sitewide graph: Organization + Brands + WebSite. Every public page carries
+            it, so the per-page WebPage node's isPartOf/publisher references resolve.
+            Route group (payload) has its own layout — /admin and /api get nothing. */}
+        <JsonLd graph={siteGraph(brands)} />
         <NextIntlClientProvider>
           <a
             href="#main"

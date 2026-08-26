@@ -7,16 +7,18 @@ import { ArrowRight } from '@/components/icons'
 import { BrandCard } from '@/components/marketing/BrandCard'
 import { BrandVisual } from '@/components/marketing/BrandVisual'
 import { PageMasthead } from '@/components/marketing/PageMasthead'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { RichText } from '@/components/richtext/RichText'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { PlatformBadge } from '@/components/ui/PlatformBadge'
 import { Link } from '@/i18n/navigation'
 import { CATEGORY_LABEL } from '@/lib/categories'
+import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { getBrandBySlug } from '@/lib/queries/getBrandBySlug'
 import { getBrands } from '@/lib/queries/getBrands'
-import { pageMetadata } from '@/lib/seo'
+import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
 type Params = { params: Promise<{ locale: string; slug: string }> }
 
@@ -45,6 +47,16 @@ export default async function BrandDetailPage({ params }: Params) {
 
   return (
     <div style={{ '--brand-accent': brand.accentColor } as CSSProperties}>
+      <JsonLd
+        graph={[
+          webPageNode({
+            canonical: canonicalUrl(locale, `/marken/${slug}`),
+            name: brand.name,
+            description: brand.tagline ?? undefined,
+            lang: locale as Locale,
+          }),
+        ]}
+      />
       <PageMasthead
         eyebrow={`${t('detailEyebrow')} · ${CATEGORY_LABEL[brand.category] ?? brand.category}`}
         title={brand.name}

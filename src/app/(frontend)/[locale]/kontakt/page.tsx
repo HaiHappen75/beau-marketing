@@ -2,11 +2,13 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { PageMasthead } from '@/components/marketing/PageMasthead'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
+import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { getSiteSettings } from '@/lib/queries/getSiteSettings'
-import { pageMetadata } from '@/lib/seo'
+import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>
@@ -28,6 +30,16 @@ export default async function KontaktPage(props: { params: Promise<{ locale: str
 
   return (
     <>
+      <JsonLd
+        graph={[
+          webPageNode({
+            canonical: canonicalUrl(locale, '/kontakt'),
+            name: t('eyebrow'),
+            description: t('subtitle'),
+            lang: locale as Locale,
+          }),
+        ]}
+      />
       <PageMasthead eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
       <section className="bg-paper py-16 sm:py-24">
         <Container className="grid gap-12 md:grid-cols-2">

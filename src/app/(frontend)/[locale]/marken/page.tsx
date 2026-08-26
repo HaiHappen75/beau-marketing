@@ -3,10 +3,12 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { BrandCard } from '@/components/marketing/BrandCard'
 import { PageMasthead } from '@/components/marketing/PageMasthead'
+import { JsonLd } from '@/components/seo/JsonLd'
 import { Container } from '@/components/ui/Container'
+import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { getBrands } from '@/lib/queries/getBrands'
-import { pageMetadata } from '@/lib/seo'
+import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
 export async function generateMetadata(props: {
   params: Promise<{ locale: string }>
@@ -24,6 +26,16 @@ export default async function BrandsIndexPage(props: { params: Promise<{ locale:
 
   return (
     <>
+      <JsonLd
+        graph={[
+          webPageNode({
+            canonical: canonicalUrl(locale, '/marken'),
+            name: t('indexTitle'),
+            description: t('indexSubtitle'),
+            lang: locale as Locale,
+          }),
+        ]}
+      />
       <PageMasthead eyebrow={t('eyebrow')} title={t('indexTitle')} subtitle={t('indexSubtitle')} />
       <section className="bg-paper py-16 sm:py-24">
         <Container>

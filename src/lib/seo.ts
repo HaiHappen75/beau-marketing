@@ -1,7 +1,22 @@
 import type { Metadata } from 'next'
 import { routing } from '@/i18n/routing'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+// Public base URL for every absolute link the frontend emits — canonicals,
+// hreflang, sitemap, robots and the @id anchors of the JSON-LD graph.
+// Same NODE_ENV-dependent fallback as the Payload serverURL (src/payload.config.ts):
+// the Dockerfile declares NEXT_PUBLIC_SERVER_URL only in the builder stage, so unless
+// Coolify also injects it at RUNTIME the server boots without it. A plain localhost
+// default would then leak into every canonical and every JSON-LD @id in production.
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+  (process.env.NODE_ENV === 'production' ? 'https://beau-marketing.de' : 'http://localhost:3000')
+
+/**
+ * Self-canonical of a page. One source for <link rel="canonical"> and the JSON-LD
+ * `@id`/`url` — the two must never drift apart, or the graph anchors point at URLs
+ * that do not exist.
+ */
+export const canonicalUrl = (locale: string, path: string) => `${SITE_URL}/${locale}${path}`
 
 /** hreflang alternates map for a locale-agnostic path (e.g. '' or '/marken/fjella'). */
 export function buildLanguageAlternates(path: string): Record<string, string> {
@@ -34,7 +49,7 @@ export function legalAlternates(args: {
     languages[lang] = `${SITE_URL}/${lang}${path}`
   }
   languages['x-default'] = `${SITE_URL}/${routing.defaultLocale}${path}`
-  return { canonical: `${SITE_URL}/${servedLang}${path}`, languages }
+  return { canonical: canonicalUrl(servedLang, path), languages }
 }
 
 export function pageMetadata(args: {
@@ -50,7 +65,7 @@ export function pageMetadata(args: {
 }): Metadata {
   const { locale, path, title, description, images, absoluteTitle } = args
   const alternates = args.alternates ?? {
-    canonical: `${SITE_URL}/${locale}${path}`,
+    canonical: canonicalUrl(locale, path),
     languages: buildLanguageAlternates(path),
   }
   const canonical = String(alternates.canonical)
