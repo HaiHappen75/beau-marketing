@@ -2,6 +2,7 @@ import { HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig, TextareaFieldValidation } from 'payload'
 
 import { editorialAccess, loggedInField } from '../access'
+import { slugRedirectHook } from '../hooks/slugRedirect'
 import { faqField } from '../fields/faq'
 import { slugField } from '../fields/slug'
 
@@ -28,6 +29,7 @@ export const Posts: CollectionConfig = {
   },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 50 },
+  hooks: { afterChange: [slugRedirectHook('/ratgeber')] },
   defaultSort: '-publishedAt',
   fields: [
     { name: 'title', label: 'Titel', type: 'text', localized: true, required: true },
@@ -85,6 +87,12 @@ export const Posts: CollectionConfig = {
     },
     { name: 'author', label: 'Autor', type: 'relationship', relationTo: 'authors', required: true },
     {
+      name: 'ctaPackage',
+      label: 'Paket in der CTA-Box',
+      type: 'text',
+      admin: { description: 'Optional, z. B. „Pflichtangaben-Update“. Leer = die Leistung mit ihrem Einstiegspreis.' },
+    },
+    {
       type: 'row',
       fields: [
         {
@@ -122,9 +130,10 @@ export const Posts: CollectionConfig = {
         },
         {
           name: 'reviewedAt',
-          label: 'Fachlich geprüft am',
+          // RDG: visible label "Auf Aktualität geprüft am" — no appearance of a legal check.
+          label: 'Auf Aktualität geprüft am',
           type: 'date',
-          admin: { width: '34%', description: 'Bei Rechts- und Faktenthemen.' },
+          admin: { width: '34%', description: 'Bei Rechts- und Faktenthemen: Stand der Prüfung auf Aktualität.' },
         },
       ],
     },

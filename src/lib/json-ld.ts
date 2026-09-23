@@ -133,3 +133,69 @@ export function webPageNode(input: {
     inLanguage: BCP47[lang],
   }
 }
+
+// ── Guide articles ───────────────────────────────────────────────────────────
+
+export const personId = (slug: string) => `${SITE_URL}/#person-${slug}`
+
+/** Author of guide articles (E-E-A-T). Only fields the visible author box backs. */
+export function personNode(p: { slug: string; name: string; jobTitle?: string | null; url?: string | null; sameAs?: string[] }): JsonLdNode {
+  return {
+    '@type': 'Person',
+    '@id': personId(p.slug),
+    name: p.name,
+    ...(p.jobTitle ? { jobTitle: p.jobTitle } : {}),
+    ...(p.url ? { url: p.url } : {}),
+    ...(p.sameAs && p.sameAs.length > 0 ? { sameAs: p.sameAs } : {}),
+    worksFor: ref(ORGANIZATION_ID),
+  }
+}
+
+export function blogPostingNode(a: {
+  canonical: string
+  headline: string
+  description?: string | null
+  image?: string | null
+  datePublished: string
+  dateModified: string
+  authorSlug: string
+  lang: Locale
+}): JsonLdNode {
+  return {
+    '@type': 'BlogPosting',
+    '@id': `${a.canonical}#article`,
+    headline: a.headline,
+    ...(a.description ? { description: a.description } : {}),
+    ...(a.image ? { image: a.image } : {}),
+    datePublished: a.datePublished,
+    dateModified: a.dateModified,
+    author: ref(personId(a.authorSlug)),
+    publisher: ref(ORGANIZATION_ID),
+    mainEntityOfPage: ref(webPageId(a.canonical)),
+    isPartOf: ref(WEBSITE_ID),
+    inLanguage: BCP47[a.lang],
+  }
+}
+
+/** Breadcrumb trail; the last item is the page itself. */
+export function breadcrumbNode(canonical: string, items: { name: string; url: string }[]): JsonLdNode {
+  return {
+    '@type': 'BreadcrumbList',
+    '@id': `${canonical}#breadcrumb`,
+    itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, item: it.url })),
+  }
+}
+
+/** FAQPage — only for a filled FAQ that is visible on the page. */
+export function faqPageNode(canonical: string, items: { question: string; answer: string }[]): JsonLdNode | null {
+  if (items.length === 0) return null
+  return {
+    '@type': 'FAQPage',
+    '@id': `${canonical}#faq`,
+    mainEntity: items.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+}

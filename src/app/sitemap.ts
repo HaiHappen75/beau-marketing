@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
 import { getWebsiteLegalText } from '@/lib/erecht24'
 import { getPayloadClient } from '@/lib/getPayload'
+import { CATEGORY_MIN_POSTS } from '@/lib/queries/content'
 import { getAGB, getWiderruf, hasContent } from '@/lib/queries/getLegalDocs'
 import { SITE_URL } from '@/lib/seo'
 
@@ -23,6 +24,21 @@ const LEGAL_PATHS = [
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayloadClient()
   const published = { _status: { equals: 'published' } } as const
+  // Guide: only live articles (published, date reached, not noindex); the hub
+  // only with at least one of them; categories only once they are not thin.
+  const now = new Date().toISOString()
+  const [{ docs: posts }, { docs: categories }] = await Promise.all([
+    payload.find({
+      collection: 'posts',
+      where: { and: [published, { publishedAt: { less_than_equal: now } }, { noindex: { not_equals: true } }] },
+      limit: 1000,
+      depth: 0,
+    }),
+    payload.find({ collection: 'categories', where: { noindex: { not_equals: true } }, limit: 100, depth: 0 }),
+  ])
+  const indexableCategories = categories.filter(
+    (c) => posts.filter((p) => p.category === c.id).length >= CATEGORY_MIN_POSTS,
+  )
   const [{ docs: services }, { docs: cases }] = await Promise.all([
     payload.find({ collection: 'services', where: published, limit: 100, depth: 0 }),
     payload.find({
@@ -47,6 +63,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...optionalPaths,
     ...services.map((s) => `/agentur/${s.slug}`),
     ...cases.map((c) => `/referenzen/${c.slug}`),
+    ...(posts.length > 0 ? ['/ratgeber'] : []),
+    ...indexableCategories.map((c) => `/ratgeber/kategorie/${c.slug}`),
   ]
 
   const entries: MetadataRoute.Sitemap = []
@@ -59,6 +77,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${SITE_URL}/${locale}${path}`,
         alternates: { languages },
       })
+    }
+  }
+
+  // Articles with lastmod = last content update (blog standard).
+  for (const post of posts) {
+    const path = `/ratgeber/${post.slug}`
+    const languages = Object.fromEntries(routing.locales.map((l) => [l, `${SITE_URL}/${l}${path}`]))
+    const lastModified = post.contentUpdatedAt ?? post.publishedAt
+    for (const locale of routing.locales) {
+      entries.push({ url: `${SITE_URL}/${locale}${path}`, lastModified, alternates: { languages } })
     }
   }
 

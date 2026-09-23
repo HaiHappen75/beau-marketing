@@ -62,8 +62,11 @@ export function pageMetadata(args: {
   absoluteTitle?: boolean
   /** Replaces the default self-canonical + all-locale hreflang (see legalAlternates). */
   alternates?: NonNullable<Metadata['alternates']>
+  /** Articles: og:type=article with published/modified time, large image preview. */
+  article?: { publishedTime?: string; modifiedTime?: string; authors?: string[] }
+  noindex?: boolean
 }): Metadata {
-  const { locale, path, title, description, images, absoluteTitle } = args
+  const { locale, path, title, description, images, absoluteTitle, article, noindex } = args
   const alternates = args.alternates ?? {
     canonical: canonicalUrl(locale, path),
     languages: buildLanguageAlternates(path),
@@ -80,8 +83,21 @@ export function pageMetadata(args: {
       url: canonical,
       siteName: 'Beau Marketing',
       locale,
-      type: 'website',
+      ...(article
+        ? {
+            type: 'article' as const,
+            publishedTime: article.publishedTime,
+            modifiedTime: article.modifiedTime,
+            authors: article.authors,
+          }
+        : { type: 'website' as const }),
       ...(images ? { images } : {}),
     },
+    ...(images ? { twitter: { card: 'summary_large_image', title, description, images } } : {}),
+    robots: noindex
+      ? { index: false, follow: true }
+      : article
+        ? { index: true, follow: true, 'max-image-preview': 'large' }
+        : undefined,
   }
 }

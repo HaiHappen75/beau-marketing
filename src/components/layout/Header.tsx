@@ -4,9 +4,12 @@ import type { Locale } from '@/lib/locale'
 import { telHref } from '@/lib/phone'
 import { PACKAGE_DEFS, packagePrice } from '@/lib/packages'
 import { serviceTeaserPrice } from '@/lib/price'
+import { hasPublishedPosts } from '@/lib/queries/content'
 import { getNavigation, getPublishedServices, getSettings } from '@/lib/queries/getLayoutData'
 
 import { HeaderNav, type HeaderPackage, type HeaderService } from './HeaderNav'
+
+export const GUIDE_PATH = '/ratgeber'
 
 /**
  * Site header (design: Header.dc.html). Server part collects the data: nav links
@@ -15,10 +18,11 @@ import { HeaderNav, type HeaderPackage, type HeaderService } from './HeaderNav'
  */
 export async function Header({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'Layout' })
-  const [navigation, services, settings] = await Promise.all([
+  const [navigation, services, settings, guideLive] = await Promise.all([
     getNavigation(locale),
     getPublishedServices(locale),
     getSettings(locale),
+    hasPublishedPosts(),
   ])
 
   const headerServices: HeaderService[] = services
@@ -42,7 +46,10 @@ export async function Header({ locale }: { locale: Locale }) {
     price: packagePrice(services, def.slugs, locale),
   })).filter((p): p is HeaderPackage => p.price !== null)
 
-  const links = (navigation.header ?? []).map((n) => ({ label: n.label, href: n.href }))
+  // The guide appears in the menu only once an article is live (decision Stephan).
+  const links = (navigation.header ?? [])
+    .filter((n) => guideLive || n.href !== GUIDE_PATH)
+    .map((n) => ({ label: n.label, href: n.href }))
   const phone = settings.company?.phone ?? null
 
   return (

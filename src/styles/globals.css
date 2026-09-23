@@ -289,3 +289,26 @@
     transition: none;
   }
 }
+
+/* Guide article prose (design: Ratgeber Artikel) — max 68ch, H2 32 px. */
+.article-prose {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+.article-prose h2 {
+  font-size: clamp(26px, 2.6vw, 32px);
+  line-height: 1.2;
+  margin-top: 3rem;
+}
+
+.article-prose h3 {
+  font-size: 1.375rem;
+  margin-top: 2rem;
+}
+
+.article-prose > p,
+.article-prose > ul,
+.article-prose > ol {
+  margin-top: 1rem;
+}
