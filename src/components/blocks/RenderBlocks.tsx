@@ -1,9 +1,11 @@
 import { Faq } from '@/components/site/Faq'
 
 import { BrandsBlock } from './BrandsBlock'
+import { CaseGridBlock } from './CaseGridBlock'
 import { CasesBlock } from './CasesBlock'
 import { ContactFormBlock } from './ContactFormBlock'
 import { CtaBlock } from './CtaBlock'
+import { DarkTextBlock } from './DarkTextBlock'
 import { EngagementBlock } from './EngagementBlock'
 import { HeroBlock } from './HeroBlock'
 import { PackagesBlock } from './PackagesBlock'
@@ -11,6 +13,7 @@ import { PostTeaserBlock } from './PostTeaserBlock'
 import { PriceTableBlock } from './PriceTableBlock'
 import { ServiceTilesBlock } from './ServiceTilesBlock'
 import { TextImageBlock } from './TextImageBlock'
+import { TimelineBlock } from './TimelineBlock'
 import { TrustBlock } from './TrustBlock'
 import type { BlockContext, LayoutBlock } from './types'
 
@@ -53,6 +56,12 @@ export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | u
             return <TextImageBlock key={key} block={block} />
           case 'contactForm':
             return <ContactFormBlock key={key} block={block} ctx={ctx} />
+          case 'timeline':
+            return <TimelineBlock key={key} block={block} />
+          case 'darkText':
+            return <DarkTextBlock key={key} block={block} />
+          case 'caseGrid':
+            return <CaseGridBlock key={key} block={block} ctx={ctx} />
           default:
             return null
         }

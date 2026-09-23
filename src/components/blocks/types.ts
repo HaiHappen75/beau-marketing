@@ -10,6 +10,6 @@ export type BlockContext = {
   services: Service[]
   settings: SiteSetting
   trust: Trust
-  /** ?leistung=<slug> on the contact page. */
+  /** ?leistung=<slug>: preselection on the contact page, filter on the references page. */
   preselectService?: string | null
 }

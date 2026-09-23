@@ -238,7 +238,30 @@
       "perHour": "{rate} € / time"
     },
     "perHour": "/ time",
-    "onRequest": "efter aftale"
+    "onRequest": "efter aftale",
+    "references": "Referencer",
+    "case": {
+      "kicker": "Reference",
+      "client": "Kunde",
+      "industry": "Branche",
+      "place": "Sted",
+      "services": "Ydelser",
+      "challenge": "Udgangspunkt",
+      "solution": "Løsning",
+      "result": "Resultat",
+      "screenshot": "Skærmbillede",
+      "moreScreenshots": "Flere skærmbilleder",
+      "story": "Udgangspunkt, løsning, resultat",
+      "quote": "Citat",
+      "visit": "Til {name}s side",
+      "nav": "Link og flere referencer",
+      "ctaHeading": "Lad os tale om dit projekt."
+    },
+    "filter": {
+      "label": "Filtrér referencer efter ydelse",
+      "all": "Alle",
+      "empty": "Der er endnu ingen offentliggjort reference for denne ydelse."
+    }
   },
   "ContactForm": {
     "_machineTranslated": "Maskinoversat – gennemlæses i pakke 5",

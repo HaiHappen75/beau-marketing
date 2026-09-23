@@ -32,7 +32,12 @@ export const isEmpty = (v: unknown): boolean =>
 export const display = (v: unknown): string => {
   if (v === null || v === undefined) return '—'
   if (isRichText(v)) return paragraphsOf(v).filter(Boolean).join(' / ')
-  if (Array.isArray(v)) return JSON.stringify(v)
+  if (Array.isArray(v)) {
+    // Lists of single-text rows (items, chips, labels): readable, without row ids.
+    const texts = v.map((r) => (r && typeof r === 'object' ? ((r as Obj).item ?? (r as Obj).label ?? (r as Obj).name) : r))
+    if (texts.every((t) => typeof t === 'string')) return texts.join(' / ')
+    return JSON.stringify(v)
+  }
   if (typeof v === 'object') return JSON.stringify(v)
   return String(v)
 }

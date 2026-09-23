@@ -31,6 +31,13 @@ export const Cases: CollectionConfig = {
     },
     { name: 'url', label: 'Website', type: 'text', admin: { description: 'Ohne https:// möglich.' } },
     {
+      name: 'summary',
+      label: 'Einleitung',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Ein Satz unter der Überschrift der Detailseite. Nur Belegtes.' },
+    },
+    {
       name: 'services',
       label: 'Leistungen (Relation)',
       type: 'relationship',

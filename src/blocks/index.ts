@@ -200,6 +200,56 @@ export const ContactFormBlock: Block = {
   fields: [heading, intro],
 }
 
+export const TimelineBlock: Block = {
+  slug: 'timeline',
+  labels: { singular: 'Zeitleiste', plural: 'Zeitleisten' },
+  fields: [
+    kicker,
+    heading,
+    intro,
+    {
+      name: 'items',
+      label: 'Stationen',
+      type: 'array',
+      labels: { singular: 'Station', plural: 'Stationen' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'label', label: 'Zeit', type: 'text', localized: true, required: true, admin: { width: '30%' } },
+            { name: 'title', label: 'Titel', type: 'text', localized: true, required: true, admin: { width: '70%' } },
+          ],
+        },
+        { name: 'text', label: 'Text', type: 'textarea', localized: true },
+      ],
+    },
+  ],
+}
+
+export const DarkTextBlock: Block = {
+  slug: 'darkText',
+  labels: { singular: 'Dunkler Textblock', plural: 'Dunkle Textblöcke' },
+  fields: [
+    kicker,
+    heading,
+    { name: 'text', label: 'Text', type: 'textarea', localized: true },
+    {
+      name: 'images',
+      label: 'Bilder',
+      type: 'upload',
+      relationTo: 'media',
+      hasMany: true,
+      admin: { description: 'Optional. Ohne Bilder entfällt die Galerie.' },
+    },
+  ],
+}
+
+export const CaseGridBlock: Block = {
+  slug: 'caseGrid',
+  labels: { singular: 'Referenzen mit Filter', plural: 'Referenzen mit Filter' },
+  fields: [kicker, heading],
+}
+
 export const pageBlocks: Block[] = [
   HeroBlock,
   ServiceTilesBlock,
@@ -214,4 +264,7 @@ export const pageBlocks: Block[] = [
   TextImageBlock,
   PriceTableBlock,
   ContactFormBlock,
+  TimelineBlock,
+  DarkTextBlock,
+  CaseGridBlock,
 ]

@@ -86,3 +86,71 @@ test('Kontakt: ausgefülltes Honeypot-Feld → Scheinbestätigung, keine Mail', 
   await page.waitForTimeout(1500)
   expect(await mailsFor(request, marker)).toHaveLength(0)
 })
+
+// ── Paket 3: Referenzen, Marken, Über uns ─────────────────────────────────────
+
+test('Referenzen: Filter nach Leistung ändert die Liste', async ({ page }) => {
+  await page.goto('/de/referenzen')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Echte Betriebe, echte Projekte.')
+  const cards = page.locator('article h3')
+  const all = await cards.count()
+  const filter = page.getByRole('navigation', { name: 'Referenzen nach Leistung filtern' })
+
+  await filter.getByRole('link', { name: 'Druck & Werbemittel' }).click()
+  await expect(page).toHaveURL(/leistung=druck-werbemittel/)
+  await expect(cards).toHaveCount(1)
+  await expect(cards.first()).toHaveText('Windhausen Immobilien')
+  await expect(filter.getByRole('link', { name: 'Druck & Werbemittel' })).toHaveAttribute('aria-current', 'page')
+
+  await filter.getByRole('link', { name: 'Websites' }).click()
+  await expect(page.getByRole('heading', { name: 'Wirtshaus Frankenburg' })).toBeVisible()
+  expect(await cards.count()).toBeLessThan(all)
+  await expect(page.getByRole('heading', { name: 'Keramikwerkstatt Hinrichsen' })).toHaveCount(0)
+})
+
+test('Case Hinrichsen: nur Belegtes – kein Shopify, kein Zitat, Link zur Website', async ({ page }) => {
+  await page.goto('/de/referenzen/keramikwerkstatt-hinrichsen')
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Keramikwerkstatt Hinrichsen')
+  const main = page.locator('main')
+  await expect(main).toContainText('Shopware')
+  await expect(main).not.toContainText('Shopify')
+  await expect(main).not.toContainText('Online seit')
+  await expect(page.getByRole('heading', { name: 'Ausgangslage' })).toHaveCount(0) // not documented → omitted
+  await expect(page.locator('blockquote')).toHaveCount(0)
+  await expect(page.getByRole('link', { name: /Zur Seite von Keramikwerkstatt Hinrichsen/ })).toHaveAttribute(
+    'href',
+    'https://keramikwerkstatt-hinrichsen.de',
+  )
+})
+
+test('Referenz ohne Detailseite liefert 404', async ({ request }) => {
+  const res = await request.get('/de/referenzen/solids-technologies')
+  expect(res.status()).toBe(404)
+})
+
+test('Markenhaus: ThingR ausgeblendet, Status und Links', async ({ page }) => {
+  await page.goto('/de/marken')
+  const brands = page.locator('#marken')
+  await expect(brands).not.toContainText('ThingR')
+  await expect(page.locator('#tappi')).toContainText('live')
+  await expect(page.locator('#anwurf')).toContainText('in Entwicklung')
+  await expect(page.locator('#anwurf a')).toHaveCount(0) // no link while in development
+  await expect(page.locator('#fjella')).toContainText('Schön. Schlicht. Echt Fjella')
+})
+
+test('Über uns: Werkstatt laut Vorgabe, Region-Anker, keine erfundenen Sätze', async ({ page }) => {
+  await page.goto('/de/ueber-uns')
+  const main = page.locator('main')
+  await expect(main).toContainText('Holz, Leder und Filament')
+  await expect(main).toContainText('Damit entstehen Deko, Gravuren und Prototypen.')
+  await expect(main).not.toContainText('Acryl')
+  await expect(main).not.toContainText('Aus Gefallen')
+  await expect(page.locator('#region')).toContainText('TSV Nordmark Satrup')
+})
+
+test('Druck & Werbemittel: keine Werkstatt-Leistungen', async ({ page }) => {
+  await page.goto('/de/agentur/druck-werbemittel')
+  const main = page.locator('main')
+  await expect(main).toContainText('Partnerdruckereien')
+  for (const word of ['Lasergravur', 'Schilder', 'Textil', 'eigenen Werkstatt']) await expect(main).not.toContainText(word)
+})
