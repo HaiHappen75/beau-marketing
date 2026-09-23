@@ -799,6 +799,10 @@ export interface Post {
   service: number | Service;
   author: number | Author;
   /**
+   * Optional, z. B. „Pflichtangaben-Update“. Leer = die Leistung mit ihrem Einstiegspreis.
+   */
+  ctaPackage?: string | null;
+  /**
    * Mindestens 1200 px breit.
    */
   heroImage: number | Media;
@@ -815,7 +819,7 @@ export interface Post {
    */
   contentUpdatedAt?: string | null;
   /**
-   * Bei Rechts- und Faktenthemen.
+   * Bei Rechts- und Faktenthemen: Stand der Prüfung auf Aktualität.
    */
   reviewedAt?: string | null;
   faq?:
@@ -890,6 +894,10 @@ export interface Author {
   role?: string | null;
   bio?: string | null;
   photo?: (number | null) | Media;
+  /**
+   * Pfad ohne Sprachpräfix, z. B. /ueber-uns. Leer = kein Link.
+   */
+  aboutPath?: string | null;
   /**
    * LinkedIn usw. – landen als sameAs im Person-Schema.
    */
@@ -1708,6 +1716,7 @@ export interface PostsSelect<T extends boolean = true> {
   category?: T;
   service?: T;
   author?: T;
+  ctaPackage?: T;
   heroImage?: T;
   socialImage?: T;
   publishedAt?: T;
@@ -1769,6 +1778,7 @@ export interface AuthorsSelect<T extends boolean = true> {
   role?: T;
   bio?: T;
   photo?: T;
+  aboutPath?: T;
   sameAs?:
     | T
     | {

@@ -148,3 +148,8 @@ export const LEGACY_SERVICE_TEXTS: Record<string, { field: string; values: (stri
 export const LEGACY_BLOCK_HEADINGS: Record<string, Record<string, string[]>> = {
   start: { caseTeaser: ['Echte Betriebe, echte Seiten.'] },
 }
+
+/** Case chips replaced later (Hüpfburgen OWL: online booking is not released). */
+export const LEGACY_CASE_CHIPS: Record<string, Record<string, string>> = {
+  'huepfburgen-owl': { Buchungssystem: 'Verleih-Dashboard' },
+}

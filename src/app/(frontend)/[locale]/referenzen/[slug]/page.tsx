@@ -12,14 +12,14 @@ import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { cmsMetadata } from '@/lib/pageMeta'
 import { getCaseDetail, getPublishedCases } from '@/lib/queries/content'
-import { isRichText, paragraphsOf } from '@/seed/richtext'
+import { hasText } from '@/lib/lexical'
 import { canonicalUrl } from '@/lib/seo'
 
 // Case detail (design: Referenz Detail.dc.html). Truthful by construction: every
 // section renders only when the CMS holds content for it — no invented stories,
 // no quote without text AND name, no "online since" the CMS does not know.
 
-const filled = (v: unknown) => isRichText(v) && paragraphsOf(v).some((p) => p !== '')
+const filled = hasText
 
 const externalUrl = (url: string) => (/^https?:\/\//.test(url) ? url : `https://${url}`)
 

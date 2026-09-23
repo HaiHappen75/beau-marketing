@@ -278,7 +278,8 @@ export const CASES: CaseSeed[] = [
     industry: 'Hüpfburgenverleih',
     place: 'Detmold',
     url: 'https://huepfburg-owl.de',
-    chips: ['Website', 'Buchungssystem', 'Betreuung'],
+    // Online booking for customers is not released → no "Buchungssystem" chip.
+    chips: ['Website', 'Verleih-Dashboard', 'Betreuung'],
     services: ['websites', 'apps-software', 'betreuung-pflege'],
     hasDetailPage: true,
     featuredOnHome: true,
@@ -420,7 +421,7 @@ export const CATEGORIES = [
   { slug: 'apps-software', title: 'Apps & Software' },
 ]
 
-export const AUTHORS = [{ slug: 'stephan-beau', name: 'Stephan Beau', role: 'Geschäftsführer' }]
+export const AUTHORS = [{ slug: 'stephan-beau', name: 'Stephan Beau', role: 'Geschäftsführer', aboutPath: '/ueber-uns' }]
 
 /** Header labels per locale (design header: de/da/en). */
 export const NAV_HEADER = [
