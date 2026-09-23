@@ -82,14 +82,16 @@ Coolify-Struktur: **Projekt → Environment → Ressourcen**. Erst das Projekt, 
 | `SMTP_USER` | Postfach-Login aus dem Mittwald mStudio | Runtime |
 | `SMTP_PASSWORD` | Postfach-Passwort | Runtime |
 | `SMTP_FROM_ADDRESS` | `noreply@beau-marketing.de` | Runtime |
-| `SMTP_FROM_NAME` | `Beau-Marketing` | Runtime |
-| `ERECHT24_API_KEY` | API-Key aus dem eRecht24 Project Manager | **Build + Runtime** |
+| `SMTP_FROM_NAME` | `Beau Marketing` | Runtime |
+| `ERECHT24_API_KEY` | API-Key aus dem eRecht24 Project Manager | Runtime (Häkchen „Build Variable“ aus) |
 | `ERECHT24_PUSH_SECRET` | Secret aus der Push-Client-Registrierung | Runtime |
 
 > ⚖️ **Rechtstexte:** Impressum und Datenschutzerklärung kommen aus dem eRecht24 Project Manager,
-> nicht mehr aus Payload. `ERECHT24_API_KEY` muss auch als **Build-Variable** gesetzt sein — der Build
-> frischt die Snapshots unter `content/legal/` auf. Fehlt der Key, wird der committete Snapshot
-> gebündelt und der Build läuft trotzdem durch. Keiner der beiden Werte wird selbst erzeugt: der
+> nicht mehr aus Payload. `ERECHT24_API_KEY` ist eine reine **Runtime-Variable** — die Seiten holen
+> die Texte pro Request live (Data-Cache 24 h, Push-Webhook). Der Docker-Build sieht den Key nicht
+> und bündelt den committeten Snapshot unter `content/legal/` als Rückfallebene; aufgefrischt wird
+> der Snapshot lokal (`pnpm snapshot:erecht24`) und per Commit. Änderung am Key wirkt erst nach
+> einem **Redeploy**, nicht nach einem Restart. Keiner der beiden Werte wird selbst erzeugt: der
 > API-Key stammt aus dem Project Manager, das Push-Secret vergibt eRecht24 bei der Registrierung des
 > Push-Clients (`npx erecht24-register https://beau-marketing.de/api/erecht24/push`) und zeigt es
 > **genau einmal** an.

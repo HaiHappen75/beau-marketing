@@ -4,6 +4,14 @@ import type { CollectionConfig } from 'payload'
 export const Users: CollectionConfig = {
   slug: 'users',
   auth: {
+    // Set deliberately instead of relying on defaults: admin-only login, the admin
+    // UI refreshes the token on its own while open — 2 h idle means logout.
+    tokenExpiration: 7200,
+    cookies: {
+      // Hard `true` would lock the cookie out of Safari on http://localhost.
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Lax',
+    },
     // Payload's built-in reset mail is English and unbranded — this one matches the admin.
     forgotPassword: {
       generateEmailSubject: () => 'Passwort zurücksetzen — Beau-Marketing',
