@@ -23,7 +23,8 @@
     "db:up": "docker compose up -d postgres",
     "db:down": "docker compose down",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@dagsite/erecht24-next": "^0.1.0",
@@ -48,6 +49,7 @@
     "sharp": "0.34.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.1",
     "@types/node": "^24.0.0",
     "@types/react": "^19.2.0",

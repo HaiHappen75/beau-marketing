@@ -28,6 +28,13 @@ export const Trust: GlobalConfig = {
           ],
         },
         { name: 'image', label: 'Datei', type: 'upload', relationTo: 'media', required: true },
+        {
+          name: 'caption',
+          label: 'Text neben dem Siegel',
+          type: 'text',
+          localized: true,
+          admin: { description: 'Optional, z. B. „Impressum & Datenschutz immer aktuell“.' },
+        },
       ],
     },
     {

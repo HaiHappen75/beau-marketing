@@ -93,3 +93,11 @@ export const LEGACY_BRAND_DESCRIPTIONS: Record<string, Record<SeedLocale, string
     da: 'Anwurf er fiskeappen til Nord- og Østersøen – med spots, tidevand og alt, hvad lystfiskere har brug for på stedet.',
   },
 }
+
+/**
+ * Package items of the first redesign seed (Paket 1) that were reworded.
+ * RDG: we implement mandatory information, we do not sell legal checks.
+ */
+export const LEGACY_PACKAGE_ITEMS: Record<string, string> = {
+  'CCD-II-Check der Zahlarten': 'Zahlarten nach CCD II einrichten',
+}

@@ -15,7 +15,7 @@ import {
   TRUST_MEDIA,
   TRUST_SERVER_NOTE,
 } from './data'
-import { display, emptyPlan, ensureMedia, fillGlobal, fillRowLabels, mergePlans, upsertDoc } from './fill'
+import { display, emptyPlan, ensureMedia, fillGlobal, fillRowLabels, fillRowsByKey, mergePlans, upsertDoc } from './fill'
 import type { Plan } from './fill'
 import {
   isLegacyUrl,
@@ -23,10 +23,12 @@ import {
   LEGACY_BRAND_NAMES,
   LEGACY_BRAND_ORDER,
   LEGACY_BRAND_TAGLINES,
+  LEGACY_PACKAGE_ITEMS,
   LEGACY_PLACEHOLDER_PARAGRAPH,
   LEGACY_SITE_NAME,
 } from './legacy'
 import { isRichText, nodeText } from './richtext'
+import { PAGES, SERVICE_CONTENT, type BlockSeed } from './content'
 import type { SeedLocale, SeedSummary } from './types'
 
 // Idempotent master-data seed: `pnpm seed` locally, admin button (POST /api/seed)
@@ -92,8 +94,24 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
   }
 
   // ── Services ──────────────────────────────────────────────────────────────────
+  // Services other services point to ("Danach"-Karte) are handled first.
   const serviceIds: Record<string, number> = {}
-  for (const s of SERVICES) {
+  const referenced = new Set(Object.values(SERVICE_CONTENT).map((c) => c.aftercare?.service).filter(Boolean))
+  const serviceOrder = [...SERVICES].sort((a, b) => Number(referenced.has(b.slug)) - Number(referenced.has(a.slug)))
+  for (const s of serviceOrder) {
+    const content = SERVICE_CONTENT[s.slug]
+    const packages = s.packages.map((p) => ({
+      name: p.name,
+      kicker: content?.packages[p.name]?.kicker,
+      display: content?.packages[p.name]?.display ?? 'card',
+      description: content?.packages[p.name]?.description,
+      price: p.price,
+      priceIsFrom: p.priceIsFrom,
+      unit: p.unit,
+      term: p.term,
+      includes: p.includes.map((item) => ({ item })),
+    }))
+    const aftercareId = content?.aftercare ? serviceIds[content.aftercare.service] : undefined
     const doc = await upsertDoc(
       payload,
       'services',
@@ -107,16 +125,54 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
             slug: s.slug,
             shortDescription: s.shortDescription,
             order: s.order,
-            packages: s.packages.map((p) => ({
-              name: p.name,
-              price: p.price,
-              priceIsFrom: p.priceIsFrom,
-              unit: p.unit,
-              term: p.term,
-              includes: p.includes.map((item) => ({ item })),
-            })),
+            packages,
+            ...(content
+              ? {
+                  shortLabel: content.shortLabel,
+                  teaser: content.teaser,
+                  headline: content.headline,
+                  promise: content.promise,
+                  deliverables: {
+                    heading: content.deliverables.heading,
+                    text: content.deliverables.text,
+                    items: content.deliverables.items.map((item) => ({ item })),
+                  },
+                  aftercare: aftercareId ? { service: aftercareId, packageName: content.aftercare!.packageName } : undefined,
+                  steps: content.steps,
+                  faq: content.faq,
+                  inHouse: content.inHouse
+                    ? { ...content.inHouse, items: content.inHouse.items.map((item) => ({ item })) }
+                    : undefined,
+                  cta: { heading: content.cta.heading },
+                }
+              : {}),
           },
         },
+        // Existing packages: fill new sub-fields per package (matched by name)
+        // and reword legacy items — prices and everything else stay untouched.
+        custom: (current, locale) =>
+          locale !== 'de'
+            ? emptyPlan()
+            : fillRowsByKey(
+                current.packages,
+                packages.map(({ name, kicker, description, display }) => ({ name, kicker, description, display })),
+                'packages',
+                'name',
+                locale,
+                () => false,
+                (row, _want, plan, path) => {
+                  const items = Array.isArray(row.includes) ? (row.includes as Obj[]) : []
+                  let changed = false
+                  const next = items.map((it) => {
+                    const replacement = LEGACY_PACKAGE_ITEMS[String(it.item)]
+                    if (!replacement) return it
+                    changed = true
+                    plan.legacy.push({ field: `${path}.includes`, from: String(it.item), to: replacement })
+                    return { ...it, item: replacement }
+                  })
+                  return changed ? { ...row, includes: next } : row
+                },
+              ),
       },
       summary,
     )
@@ -262,7 +318,12 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         de: {
           badges: [
             { name: TRUST_MEDIA.sh.name, href: TRUST_MEDIA.sh.href, image: media.sh },
-            { name: TRUST_MEDIA.erecht24.name, href: TRUST_MEDIA.erecht24.href, image: media.erecht24 },
+            {
+              name: TRUST_MEDIA.erecht24.name,
+              href: TRUST_MEDIA.erecht24.href,
+              image: media.erecht24,
+              caption: TRUST_MEDIA.erecht24.caption,
+            },
           ],
           serverNote: TRUST_SERVER_NOTE.de,
           googleReviews: { show: false },
@@ -270,9 +331,46 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         en: { serverNote: TRUST_SERVER_NOTE.en },
         da: { serverNote: TRUST_SERVER_NOTE.da },
       },
+      // Badge captions (Paket 2) for badges that already exist.
+      custom: (current, locale) =>
+        locale !== 'de'
+          ? emptyPlan()
+          : fillRowsByKey(
+              current.badges,
+              [{ name: TRUST_MEDIA.erecht24.name, caption: TRUST_MEDIA.erecht24.caption }],
+              'badges',
+              'name',
+              locale,
+            ),
     },
     summary,
   )
+
+  // ── Pages (start, agentur, kontakt) ──────────────────────────────────────────
+  const toBlock = (b: BlockSeed) => {
+    if (b.blockType !== 'hero' || !b.checks) return b
+    return {
+      ...b,
+      checks: b.checks
+        .map((c) => (c.kind === 'service' ? { kind: 'service', service: serviceIds[c.service] } : c))
+        .filter((c) => c.kind === 'text' || (c as { service?: number }).service),
+    }
+  }
+  for (const page of PAGES) {
+    await upsertDoc(
+      payload,
+      'pages',
+      {
+        key: page.slug,
+        where: { slug: { equals: page.slug } },
+        status: 'published',
+        data: {
+          de: { title: page.title, slug: page.slug, meta: page.meta, layout: page.layout.map(toBlock) },
+        },
+      },
+      summary,
+    )
+  }
 
   return summary
 }
