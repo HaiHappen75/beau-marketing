@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Check } from '@/components/brand/Check'
@@ -8,12 +8,14 @@ import { DeviceFrame, MediaImage, asMedia } from '@/components/site/MediaImage'
 import { ButtonLink, Wrap } from '@/components/site/primitives'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
-import { webPageNode } from '@/lib/json-ld'
+import { breadcrumbNode, webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { cmsMetadata } from '@/lib/pageMeta'
 import { getCaseDetail, getPublishedCases } from '@/lib/queries/content'
 import { hasText } from '@/lib/lexical'
-import { canonicalUrl } from '@/lib/seo'
+import { SITE_URL, canonicalUrl, localeAlternates } from '@/lib/seo'
+import { findRedirect } from '@/lib/redirects'
+import { translatedLocales } from '@/lib/translations'
 
 // Case detail (design: Referenz Detail.dc.html). Truthful by construction: every
 // section renders only when the CMS holds content for it — no invented stories,
@@ -33,6 +35,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     meta: c.meta,
     fallbackTitle: c.client,
     fallbackDescription: c.summary,
+    available: await translatedLocales('cases', c.id),
   })
 }
 
@@ -41,7 +44,12 @@ export default async function CasePage(props: { params: Promise<{ locale: string
   setRequestLocale(locale)
   const loc = locale as Locale
   const c = await getCaseDetail(slug, loc)
-  if (!c) notFound()
+  if (!c) {
+    const target = await findRedirect(`/${locale}/referenzen/${slug}`)
+    if (target) permanentRedirect(target)
+    notFound()
+  }
+  const { servedLang } = localeAlternates(`/referenzen/${slug}`, await translatedLocales('cases', c.id), locale)
   const [t, tl, all] = await Promise.all([
     getTranslations({ locale, namespace: 'Site' }),
     getTranslations({ locale, namespace: 'Layout' }),
@@ -73,13 +81,19 @@ export default async function CasePage(props: { params: Promise<{ locale: string
       <JsonLd
         graph={[
           webPageNode({
-            canonical: canonicalUrl(locale, `/referenzen/${slug}`),
+            canonical: canonicalUrl(servedLang, `/referenzen/${slug}`),
             name: c.meta?.title || c.client,
             description: c.meta?.description ?? c.summary ?? undefined,
-            lang: loc,
+            lang: servedLang as Locale,
           }),
+          breadcrumbNode(canonicalUrl(servedLang, `/referenzen/${slug}`), [
+            { name: t('home'), url: `${SITE_URL}/${servedLang}` },
+            { name: t('references'), url: canonicalUrl(servedLang, '/referenzen') },
+            { name: c.client, url: canonicalUrl(servedLang, `/referenzen/${slug}`) },
+          ]),
         ]}
       />
+      <div lang={servedLang !== locale ? servedLang : undefined}>
 
       {/* Case header */}
       <section aria-labelledby="case-h" className="bg-white pt-7 pb-[clamp(48px,6vw,80px)]">
@@ -236,6 +250,7 @@ export default async function CasePage(props: { params: Promise<{ locale: string
           <ButtonLink href="/kontakt">{tl('cta')}</ButtonLink>
         </Wrap>
       </section>
+      </div>
     </>
   )
 }

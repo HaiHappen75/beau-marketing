@@ -1,6 +1,6 @@
 import { cache } from 'react'
 
-import type { Case, Category, Engagement, Page, Post, Service } from '@/payload-types'
+import type { Case, Category, Engagement, Location, Page, Post, Service } from '@/payload-types'
 import { getPayloadClient } from '@/lib/getPayload'
 import { toPayloadLocale, type Locale } from '@/lib/locale'
 
@@ -207,3 +207,15 @@ export const getCategories = cache(async (locale: Locale): Promise<Category[]> =
 /** Blog standard: category pages stay noindex,follow while thin (< 3 articles). */
 export const CATEGORY_MIN_POSTS = 3
 export const categoryIndexable = (c: Category, postCount: number) => !c.noindex && postCount >= CATEGORY_MIN_POSTS
+
+export const getLocationBySlug = cache(async (slug: string, locale: Locale): Promise<Location | null> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'locations',
+    where: { and: [{ slug: { equals: slug } }, published] },
+    depth: 2,
+    limit: 1,
+    ...opts(locale),
+  })
+  return docs[0] ?? null
+})

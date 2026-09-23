@@ -969,6 +969,12 @@ export interface Location {
   region?: string | null;
   service?: (number | null) | Service;
   /**
+   * *Betonung* in Sternchen wird kursiv. Leer = Titel.
+   */
+  headline?: string | null;
+  lead?: string | null;
+  introHeading?: string | null;
+  /**
    * Pflicht zum Veröffentlichen, mindestens 600 Zeichen, echter Ortsbezug.
    */
   intro?: string | null;
@@ -980,7 +986,21 @@ export interface Location {
     case?: (number | null) | Case;
     regionalNote?: string | null;
   };
+  highlights?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Nur echte Referenzen aus der Gegend; leer = Abschnitt entfällt.
+   */
+  cases?: (number | Case)[] | null;
   visitInfo?: string | null;
+  /**
+   * z. B. „gut 20 km“. Leer = keine Entfernungsangabe.
+   */
+  distance?: string | null;
   faq?:
     | {
         question: string;
@@ -1568,6 +1588,9 @@ export interface LocationsSelect<T extends boolean = true> {
   place?: T;
   region?: T;
   service?: T;
+  headline?: T;
+  lead?: T;
+  introHeading?: T;
   intro?: T;
   localReference?:
     | T
@@ -1576,7 +1599,15 @@ export interface LocationsSelect<T extends boolean = true> {
         case?: T;
         regionalNote?: T;
       };
+  highlights?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  cases?: T;
   visitInfo?: T;
+  distance?: T;
   faq?:
     | T
     | {

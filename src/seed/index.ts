@@ -28,12 +28,15 @@ import {
   LEGACY_CASE_CHIPS,
   LEGACY_PACKAGE_INCLUDES,
   LEGACY_PACKAGE_ITEMS,
+  LEGACY_PAGE_META,
   LEGACY_SERVICE_TEXTS,
   LEGACY_PLACEHOLDER_PARAGRAPH,
   LEGACY_SITE_NAME,
 } from './legacy'
 import { isRichText, nodeText, rt } from './richtext'
 import { PAGES, SERVICE_CONTENT, type BlockSeed } from './content'
+import { LOCATIONS } from './locations'
+import { fillTranslations } from './translations'
 import type { SeedLocale, SeedSummary } from './types'
 
 // Idempotent master-data seed: `pnpm seed` locally, admin button (POST /api/seed)
@@ -266,8 +269,9 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
   }
 
   // ── Cases ─────────────────────────────────────────────────────────────────────
+  const caseIds: Record<string, number> = {}
   for (const c of CASES) {
-    await upsertDoc(
+    const caseDoc = await upsertDoc(
       payload,
       'cases',
       {
@@ -308,6 +312,39 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
           })
           if (changed) plan.patch.chips = next
           return plan
+        },
+      },
+      summary,
+    )
+    if (caseDoc) caseIds[c.slug] = caseDoc.id as number
+  }
+
+  // ── Local landing pages ──────────────────────────────────────────────────────
+  for (const l of LOCATIONS) {
+    await upsertDoc(
+      payload,
+      'locations',
+      {
+        key: l.slug,
+        where: { slug: { equals: l.slug } },
+        status: l.status,
+        data: {
+          de: {
+            title: l.title,
+            slug: l.slug,
+            place: l.place,
+            region: l.region,
+            headline: l.headline,
+            lead: l.lead,
+            introHeading: l.introHeading,
+            intro: l.intro,
+            highlights: l.highlights?.map((item) => ({ item })),
+            localReference: l.regionalNote ? { type: 'regional', regionalNote: l.regionalNote } : undefined,
+            cases: l.cases?.map((slug) => caseIds[slug]).filter(Boolean),
+            visitInfo: l.visitInfo,
+            distance: l.distance,
+            faq: l.faq,
+          },
         },
       },
       summary,
@@ -417,6 +454,7 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         data: {
           de: { title: page.title, slug: page.slug, meta: page.meta, layout: page.layout.map(toBlock) },
         },
+        legacy: (field, value, locale) => locale === 'de' && (LEGACY_PAGE_META[page.slug]?.[field] ?? []).includes(value as string),
         // Reworded block headings of existing pages (matched by block type).
         custom: (current, locale) => {
           const legacyHeadings = LEGACY_BLOCK_HEADINGS[page.slug]
@@ -433,6 +471,9 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
     )
   }
 
+  // ── Translations (da complete, en core pages) — after everything they refer to ─
+  await fillTranslations(payload, summary)
+
   return summary
 }
 
@@ -443,6 +484,9 @@ export function formatSummary(summary: SeedSummary): string {
     lines.push(
       `${collection}: angelegt ${s.created.length} · ergänzt ${s.filled.length} · übersprungen ${s.skipped.length} · Altwert ersetzt ${s.legacyReplaced.length}`,
     )
+    for (const x of s.skipped.filter((k) => k.includes('deutscher Text geändert') || k.includes('Dokument fehlt'))) {
+      lines.push(`  ↳ nicht übersetzt: ${x}`)
+    }
     for (const l of s.legacyReplaced) {
       lines.push(`  ↳ Altwert ersetzt: ${l.doc} · ${l.field}${l.locale ? ` (${l.locale})` : ''}: „${l.from}“ → ${l.to === null ? '(geleert)' : `„${l.to}“`}`)
     }

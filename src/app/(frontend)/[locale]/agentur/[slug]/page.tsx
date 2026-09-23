@@ -11,14 +11,17 @@ import { PackageCard, PriceLine, type Pkg, type PriceLabels } from '@/components
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
 import { stripEmphasis, withEmphasis } from '@/lib/emphasis'
-import { webPageNode } from '@/lib/json-ld'
+import { breadcrumbNode, serviceNode, webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { cmsMetadata } from '@/lib/pageMeta'
 import { telHref } from '@/lib/phone'
 import { formatPackagePrice, serviceTeaserPrice } from '@/lib/price'
 import { getBlockContext } from '@/lib/queries/blockContext'
 import { getCasesByIds, getCasesForService, getPostsByIds, getServiceBySlug, idOf } from '@/lib/queries/content'
-import { canonicalUrl } from '@/lib/seo'
+import { SITE_URL, canonicalUrl, localeAlternates } from '@/lib/seo'
+import { findRedirect } from '@/lib/redirects'
+import { translatedLocales } from '@/lib/translations'
+import { permanentRedirect } from 'next/navigation'
 import type { Service } from '@/payload-types'
 
 // One template for all six service pages (design: Leistungsseite.dc.html).
@@ -34,6 +37,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
     meta: service.meta,
     fallbackTitle: service.title,
     fallbackDescription: service.promise ?? service.teaser,
+    available: await translatedLocales('services', service.id),
   })
 }
 
@@ -70,7 +74,12 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
   setRequestLocale(locale)
   const loc = locale as Locale
   const service = await getServiceBySlug(slug, loc)
-  if (!service) notFound()
+  if (!service) {
+    const target = await findRedirect(`/${locale}/agentur/${slug}`)
+    if (target) permanentRedirect(target)
+    notFound()
+  }
+  const { servedLang } = localeAlternates(`/agentur/${slug}`, await translatedLocales('services', service.id), locale)
 
   const [ctx, t, tf] = await Promise.all([
     getBlockContext(loc),
@@ -106,7 +115,7 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
   const phoneHref = telHref(c.phone)
   const requestHref = `/kontakt?leistung=${service.slug}`
   const rate = c.hourlyRate
-  const canonical = canonicalUrl(locale, `/agentur/${slug}`)
+  const canonical = canonicalUrl(servedLang, `/agentur/${slug}`)
 
   return (
     <>
@@ -116,10 +125,17 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
             canonical,
             name: service.meta?.title || service.title,
             description: service.meta?.description ?? service.promise ?? undefined,
-            lang: loc,
+            lang: servedLang as Locale,
           }),
+          serviceNode(service, canonical, ctx.settings),
+          breadcrumbNode(canonical, [
+            { name: t('home'), url: `${SITE_URL}/${servedLang}` },
+            { name: t('agency'), url: canonicalUrl(servedLang, '/agentur') },
+            { name: service.title, url: canonical },
+          ]),
         ]}
       />
+      <div lang={servedLang !== locale ? servedLang : undefined}>
 
       {/* Hero */}
       <section className="bg-white pt-7 pb-[clamp(56px,8vw,104px)]">
@@ -383,6 +399,7 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
           </ButtonLink>
         </Wrap>
       </section>
+      </div>
     </>
   )
 }

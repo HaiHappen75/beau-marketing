@@ -12,6 +12,7 @@ import { siteGraph } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { SITE_URL } from '@/lib/seo'
 import { getBrands } from '@/lib/queries/getBrands'
+import { getSettings } from '@/lib/queries/getLayoutData'
 import '@/styles/globals.css'
 
 // Nunito Sans (SIL OFL, src/app/fonts/OFL.txt), self-hosted — no request to
@@ -54,7 +55,7 @@ export default async function LocaleLayout(props: {
   if (!hasLocale(routing.locales, locale)) notFound()
   setRequestLocale(locale)
 
-  const brands = await getBrands(locale as Locale)
+  const [brands, settings] = await Promise.all([getBrands(locale as Locale), getSettings(locale as Locale)])
   const t = await getTranslations({ locale, namespace: 'Layout' })
 
   return (
@@ -63,7 +64,7 @@ export default async function LocaleLayout(props: {
         {/* Sitewide graph: Organization + Brands + WebSite. Every public page carries
             it, so the per-page WebPage node's isPartOf/publisher references resolve.
             Route group (payload) has its own layout — /admin and /api get nothing. */}
-        <JsonLd graph={siteGraph(brands)} />
+        <JsonLd graph={siteGraph(brands, settings)} />
         <NextIntlClientProvider>
           <a href="#main" className="btn sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100]">
             {t('skipToContent')}

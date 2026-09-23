@@ -153,3 +153,13 @@ export const LEGACY_BLOCK_HEADINGS: Record<string, Record<string, string[]>> = {
 export const LEGACY_CASE_CHIPS: Record<string, Record<string, string>> = {
   'huepfburgen-owl': { Buchungssystem: 'Verleih-Dashboard' },
 }
+
+/** Start page meta from Paket 2, replaced by the positioning title in Paket 5. */
+export const LEGACY_PAGE_META: Record<string, Record<string, string[]>> = {
+  start: {
+    'meta.title': ['Beau Marketing – Websites, Shops und Sichtbarkeit für Betriebe im Norden'],
+    'meta.description': [
+      'Wir bauen Websites und Shopify-Shops für Handwerk, Handel und Gastro in Schleswig-Holstein, Hamburg und Dänemark – und halten sie danach am Laufen.',
+    ],
+  },
+}

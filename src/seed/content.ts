@@ -298,9 +298,10 @@ export const PAGES: PageSeed[] = [
     slug: 'start',
     title: 'Startseite',
     meta: {
-      title: 'Beau Marketing – Websites, Shops und Sichtbarkeit für Betriebe im Norden',
+      // Proposal Paket 5 (same as Meta.homeTitle/homeDescription) — Stephan checks it against the Xovi keywords.
+      title: 'Webdesign & Shops in Schleswig-Holstein – Beau Marketing',
       description:
-        'Wir bauen Websites und Shopify-Shops für Handwerk, Handel und Gastro in Schleswig-Holstein, Hamburg und Dänemark – und halten sie danach am Laufen.',
+        'Websites, Shopify-Shops und lokale Sichtbarkeit für Betriebe in Schleswig-Holstein, Hamburg und Dänemark – feste Preise, Betreuung aus Satrup in Angeln.',
     },
     layout: [
       {
