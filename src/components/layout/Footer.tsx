@@ -1,110 +1,201 @@
-import type { ReactNode } from 'react'
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 
-import { Container } from '@/components/ui/Container'
+import { Check } from '@/components/brand/Check'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/locale'
-import { getAGB, getWiderruf, hasContent } from '@/lib/queries/getLegalDocs'
-import type { SiteSetting } from '@/payload-types'
+import { telHref } from '@/lib/phone'
+import { getNavigation, getPublishedServices, getSettings, getTrust } from '@/lib/queries/getLayoutData'
+import type { Media } from '@/payload-types'
 
-function FooterCol({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <div>
-      <h3 className="eyebrow mb-4 text-paper/45">{title}</h3>
-      <ul className="flex flex-col gap-2.5">{children}</ul>
-    </div>
-  )
+import { LanguageSwitcher } from './LanguageSwitcher'
+
+const asMedia = (v: unknown): Media | null =>
+  v && typeof v === 'object' && 'url' in v && (v as Media).url ? (v as Media) : null
+
+/**
+ * Badges: the original upload stays byte-identical in the media library; the
+ * footer shows the 400 px rendition Payload derives from it (same mark, scaled
+ * for display — the original is ~390 KB for a 58 px high slot).
+ */
+const badgeSource = (m: Media) => {
+  const t = m.sizes?.thumbnail
+  return t?.url && t.width && t.height
+    ? { src: t.url, width: t.width, height: t.height }
+    : { src: m.url as string, width: m.width ?? 200, height: m.height ?? 100 }
 }
 
-function FooterLink({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <li>
-      <Link href={href} className="link-sweep text-paper/70 transition-colors hover:text-paper">
-        {children}
-      </Link>
-    </li>
-  )
-}
+/**
+ * Site footer (design: Footer.dc.html). Every value comes from Payload; a field
+ * without a value removes its render spot — no placeholders, ever.
+ */
+export async function Footer({ locale }: { locale: Locale }) {
+  const t = await getTranslations({ locale, namespace: 'Layout' })
+  const [settings, services, navigation, trust] = await Promise.all([
+    getSettings(locale),
+    getPublishedServices(locale),
+    getNavigation(locale),
+    getTrust(locale),
+  ])
 
-export async function Footer({ settings, locale }: { settings: SiteSetting; locale: Locale }) {
-  const t = await getTranslations({ locale, namespace: 'Footer' })
-  const tn = await getTranslations({ locale, namespace: 'Nav' })
+  const c = settings.company ?? {}
+  const phoneHref = telHref(c.phone)
+  const linkedin = settings.profiles?.linkedin || null
+  const badges = (trust.badges ?? [])
+    .map((b) => ({ ...b, media: asMedia(b.image) }))
+    .filter((b) => b.media)
+  const shopify = asMedia(trust.shopifyBadge)
+  const reviews = trust.googleReviews
+  const showReviews = Boolean(reviews?.show && reviews.rating && reviews.count)
   const year = new Date().getFullYear()
-  const email = settings?.contact?.email
-
-  // Widerruf and AGB are optional: as long as nobody has filled the global, the
-  // page 404s — so it must not be linked either.
-  const [widerruf, agb] = await Promise.all([getWiderruf(locale), getAGB(locale)])
 
   return (
-    <footer className="stage grain relative overflow-hidden text-paper">
-      <Container className="relative grid gap-12 py-16 sm:py-20 md:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
-        <div>
-          <div className="font-display text-3xl font-extrabold tracking-tight">
-            beau<span className="text-accent">.</span>
+    <footer className="border-t border-line bg-white text-text">
+      <div className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,40px)] pt-16 pb-7">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))] gap-x-8 gap-y-10">
+          <div>
+            <Image
+              src="/brand/beau-marketing-logo.png"
+              width={1200}
+              height={358}
+              alt="beau marketing – success simplified"
+              className="h-[52px] w-auto"
+            />
+            <p className="mt-[18px] max-w-[26ch] text-base leading-relaxed text-muted">{t('footerAbout')}</p>
           </div>
-          <p className="mt-4 max-w-xs leading-relaxed text-paper/65">
-            {settings?.tagline ?? t('tagline')}
-          </p>
-          {settings?.social && settings.social.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-5">
-              {settings.social.map((s, i) =>
-                s.url ? (
-                  <a
-                    key={i}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="link-sweep text-sm text-paper/70 hover:text-paper"
-                  >
-                    {s.platform}
-                  </a>
-                ) : null,
-              )}
+
+          <div>
+            <h2 className="kicker mb-3 text-ink">{t('contact')}</h2>
+            {(c.legalName || c.street || c.city) && (
+              <address className="text-base leading-[1.7] not-italic">
+                {c.legalName && (
+                  <>
+                    {c.legalName}
+                    <br />
+                  </>
+                )}
+                {c.street && (
+                  <>
+                    {c.street}
+                    <br />
+                  </>
+                )}
+                {(c.postalCode || c.city) && [c.postalCode, c.city].filter(Boolean).join(' ')}
+              </address>
+            )}
+            {(phoneHref || c.email) && (
+              <p className="mt-2.5 text-base leading-[1.8]">
+                {phoneHref && c.phone && (
+                  <>
+                    <a href={phoneHref}>{c.phone}</a>
+                    <br />
+                  </>
+                )}
+                {c.email && <a href={`mailto:${c.email}`}>{c.email}</a>}
+              </p>
+            )}
+          </div>
+
+          {services.length > 0 && (
+            <div>
+              <h2 className="kicker mb-3 text-ink">{t('services')}</h2>
+              <ul className="grid gap-1.5 text-base">
+                {services.map((s) => (
+                  <li key={s.id}>
+                    <Link href={`/agentur/${s.slug}`} className="nav-link hover:underline">
+                      {s.title}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
+
+          <div>
+            <h2 className="kicker mb-3 text-ink">{t('legal')}</h2>
+            <ul className="grid gap-1.5 text-base">
+              {(navigation.footerLegal ?? []).map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="nav-link hover:underline">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+              {linkedin && (
+                <li className="mt-3">
+                  <a href={linkedin} target="_blank" rel="noopener noreferrer">
+                    LinkedIn
+                  </a>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
 
-        <FooterCol title={t('explore')}>
-          <FooterLink href="/marken">{tn('brands')}</FooterLink>
-          <FooterLink href="/studio">{tn('studio')}</FooterLink>
-          <FooterLink href="/ueber-uns">{tn('about')}</FooterLink>
-        </FooterCol>
+        {(badges.length > 0 || shopify || trust.serverNote || showReviews) && (
+          <div className="mt-12 flex flex-wrap items-center gap-x-9 gap-y-5 border-t border-line pt-7">
+            {badges.map((b) => {
+              const m = b.media as Media
+              const img = (
+                <Image
+                  {...badgeSource(m)}
+                  alt={m.alt ?? b.name}
+                  unoptimized // already a web rendition — no second re-encode by next/image
+                  className={m.height && m.width && m.height > m.width ? 'h-20 w-auto' : 'h-[58px] w-auto'}
+                />
+              )
+              return b.href ? (
+                <a
+                  key={b.id}
+                  href={b.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${b.name} – ${b.href.replace(/^https?:\/\//, '')}`}
+                  className="block leading-none"
+                >
+                  {img}
+                </a>
+              ) : (
+                <span key={b.id} className="block leading-none">
+                  {img}
+                </span>
+              )
+            })}
+            {shopify && (
+              <Image
+                {...badgeSource(shopify)}
+                alt={shopify.alt ?? 'Shopify Partner'}
+                unoptimized
+                className="h-[58px] w-auto"
+              />
+            )}
+            {showReviews && reviews && (
+              <p className="m-0 text-[15px]">
+                {settings.profiles?.googleReviewUrl ? (
+                  <a href={settings.profiles.googleReviewUrl} target="_blank" rel="noopener noreferrer">
+                    {t('reviews', { rating: reviews.rating as number, count: reviews.count as number })}
+                  </a>
+                ) : (
+                  t('reviews', { rating: reviews.rating as number, count: reviews.count as number })
+                )}
+              </p>
+            )}
+            {trust.serverNote && (
+              <p className="m-0 flex items-center gap-2.5 text-[15px]">
+                <Check size={18} checked />
+                {trust.serverNote}
+              </p>
+            )}
+          </div>
+        )}
 
-        <FooterCol title={t('legal')}>
-          <FooterLink href="/impressum">{t('impressum')}</FooterLink>
-          <FooterLink href="/datenschutz">{t('datenschutz')}</FooterLink>
-          {hasContent(widerruf) && (
-            <FooterLink href="/widerrufsbelehrung">{widerruf.title || t('widerruf')}</FooterLink>
-          )}
-          {hasContent(agb) && <FooterLink href="/agb">{agb.title || t('agb')}</FooterLink>}
-        </FooterCol>
-
-        <FooterCol title={t('contact')}>
-          {email && (
-            <li>
-              <a
-                href={`mailto:${email}`}
-                className="link-sweep text-paper/70 transition-colors hover:text-paper"
-              >
-                {email}
-              </a>
-            </li>
-          )}
-          {settings?.contact?.address && (
-            <li className="whitespace-pre-line text-sm leading-relaxed text-paper/55">
-              {settings.contact.address}
-            </li>
-          )}
-        </FooterCol>
-      </Container>
-
-      <Container className="relative flex flex-col items-start justify-between gap-3 border-t border-line-dark py-6 text-sm text-paper/55 sm:flex-row sm:items-center">
-        <span>
-          © {year} Beau-Marketing. {t('rights')}
-        </span>
-        <span className="text-paper/35">e-Commerce · SaaS · Apps</span>
-      </Container>
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 text-sm text-muted">
+          <p className="m-0">
+            © {year} {c.legalName ?? settings.siteName} · {t('claim')}
+          </p>
+          <LanguageSwitcher />
+        </div>
+      </div>
     </footer>
   )
 }

@@ -67,7 +67,15 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    pages: Page;
+    services: Service;
+    locations: Location;
+    cases: Case;
     brands: Brand;
+    engagements: Engagement;
+    posts: Post;
+    categories: Category;
+    authors: Author;
     media: Media;
     users: User;
     redirects: Redirect;
@@ -78,7 +86,15 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    pages: PagesSelect<false> | PagesSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    locations: LocationsSelect<false> | LocationsSelect<true>;
+    cases: CasesSelect<false> | CasesSelect<true>;
     brands: BrandsSelect<false> | BrandsSelect<true>;
+    engagements: EngagementsSelect<false> | EngagementsSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -93,17 +109,17 @@ export interface Config {
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('de' | 'en' | 'da') | ('de' | 'en' | 'da')[];
   globals: {
     'site-settings': SiteSetting;
-    impressum: Impressum;
-    datenschutz: Datenschutz;
-    widerruf: Widerruf;
+    navigation: Navigation;
+    trust: Trust;
     agb: Agb;
+    widerruf: Widerruf;
   };
   globalsSelect: {
     'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
-    impressum: ImpressumSelect<false> | ImpressumSelect<true>;
-    datenschutz: DatenschutzSelect<false> | DatenschutzSelect<true>;
-    widerruf: WiderrufSelect<false> | WiderrufSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    trust: TrustSelect<false> | TrustSelect<true>;
     agb: AgbSelect<false> | AgbSelect<true>;
+    widerruf: WiderrufSelect<false> | WiderrufSelect<true>;
   };
   locale: 'de' | 'en' | 'da';
   widgets: {
@@ -135,6 +151,676 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  layout?:
+    | (
+        | {
+            kicker?: string | null;
+            heading: string;
+            text?: string | null;
+            /**
+             * Leer = Kontur-Quadrat.
+             */
+            image?: (number | null) | Media;
+            primary?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            secondary?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            intro?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'serviceTiles';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            intro?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'packages';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            /**
+             * Leer = alle mit „Auf der Startseite“.
+             */
+            cases?: (number | Case)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'caseTeaser';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            intro?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'brandShowcase';
+          }
+        | {
+            heading?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'trustBar';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'engagementBand';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'postTeaser';
+          }
+        | {
+            heading?: string | null;
+            items?:
+              | {
+                  question: string;
+                  answer: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'faq';
+          }
+        | {
+            heading?: string | null;
+            text?: string | null;
+            button?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'cta';
+          }
+        | {
+            kicker?: string | null;
+            heading?: string | null;
+            body?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            image?: (number | null) | Media;
+            imagePosition?: ('right' | 'left') | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textImage';
+          }
+      )[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Pflicht. Beschreibt das Bild für Screenreader und Suchmaschinen.
+   */
+  alt?: string | null;
+  /**
+   * Pflicht – Schutz vor Bildrechte-Abmahnungen. Vorbelegt für eigene Fotos; bei fremden Bildern anpassen.
+   */
+  credit?: {
+    author?: string | null;
+    source?: string | null;
+    license?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    feature?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cases".
+ */
+export interface Case {
+  id: number;
+  client: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  industry?: string | null;
+  place?: string | null;
+  /**
+   * Ohne https:// möglich.
+   */
+  url?: string | null;
+  /**
+   * Nur, wo die Leistung heute wirklich zutrifft.
+   */
+  services?: (number | Service)[] | null;
+  /**
+   * Frei formuliert, auch für Historisches (z. B. Shopware).
+   */
+  chips?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Aus = nur Karte in der Übersicht.
+   */
+  hasDetailPage?: boolean | null;
+  featuredOnHome?: boolean | null;
+  order?: number | null;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  solution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  result?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Nur belegte Zahlen.
+   */
+  figures?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  screenshots?: (number | Media)[] | null;
+  /**
+   * Nur ein echtes Zitat mit Freigabe. Leer = Block entfällt.
+   */
+  quote?: {
+    text?: string | null;
+    name?: string | null;
+    role?: string | null;
+  };
+  /**
+   * Nur intern. Ohne Freigabe keine Referenz.
+   */
+  releaseDate: string;
+  /**
+   * Nur intern, z. B. „laut Stephan“.
+   */
+  releaseNote?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  /**
+   * Reihenfolge in Menü und Übersicht (klein = oben).
+   */
+  order?: number | null;
+  /**
+   * Eine Zeile für Mega-Menü und Leistungskachel.
+   */
+  shortDescription: string;
+  /**
+   * Zwei, drei Sätze unter der Überschrift der Leistungsseite.
+   */
+  promise?: string | null;
+  scope?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Das erste Paket liefert den Teaser-Preis in Menü und Kacheln. Preise netto – der Zusatz „zzgl. USt., Angebot für Unternehmen“ erscheint automatisch.
+   */
+  packages?:
+    | {
+        name: string;
+        /**
+         * Leer = „auf Anfrage“.
+         */
+        price?: number | null;
+        priceIsFrom?: boolean | null;
+        unit?: ('once' | 'month' | 'hour') | null;
+        term?: string | null;
+        includes?:
+          | {
+              item: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  steps?:
+    | {
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  cases?: (number | Case)[] | null;
+  posts?: (number | Post)[] | null;
+  cta?: {
+    heading?: string | null;
+    buttonLabel?: string | null;
+    text?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  /**
+   * 40–60 Wörter. Beantwortet die Frage aus dem Titel direkt unter der H1.
+   */
+  shortAnswer: string;
+  /**
+   * Für Karten und als Fallback der Meta-Description.
+   */
+  excerpt: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category: number | Category;
+  /**
+   * Speist die CTA-Box im Artikel.
+   */
+  service: number | Service;
+  author: number | Author;
+  /**
+   * Mindestens 1200 px breit.
+   */
+  heroImage: number | Media;
+  /**
+   * 1200 × 630. Leer = Titelbild.
+   */
+  socialImage?: (number | null) | Media;
+  /**
+   * Zukunftsdatum = geplante Veröffentlichung.
+   */
+  publishedAt: string;
+  /**
+   * Nur bei inhaltlicher Änderung setzen.
+   */
+  contentUpdatedAt?: string | null;
+  /**
+   * Bei Rechts- und Faktenthemen.
+   */
+  reviewedAt?: string | null;
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  sources?:
+    | {
+        title: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Leer = automatisch drei aus derselben Kategorie.
+   */
+  relatedPosts?: (number | Post)[] | null;
+  editorial?: {
+    focusKeyword?: string | null;
+    dossierLink?: string | null;
+  };
+  /**
+   * Ausnahmeschalter, Standard aus.
+   */
+  noindex?: boolean | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  description?: string | null;
+  order?: number | null;
+  /**
+   * An, solange die Kategorie dünn ist (noindex,follow). Erst mit genug Artikeln abschalten.
+   */
+  noindex?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  role?: string | null;
+  bio?: string | null;
+  photo?: (number | null) | Media;
+  /**
+   * LinkedIn usw. – landen als sameAs im Person-Schema.
+   */
+  sameAs?:
+    | {
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optional.
+   */
+  user?: (number | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Login-Konten für das Backend.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  username: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  /**
+   * Admin: Nutzer, Einstellungen, Seed. Redaktion: Inhalte.
+   */
+  role: 'admin' | 'redaktion';
+  /**
+   * Optional: das öffentliche Profil dieses Kontos.
+   */
+  author?: (number | null) | Author;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * Veröffentlichen nur mit echtem lokalem Inhalt: Einleitung ab 600 Zeichen und ein lokaler Bezug.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  place: string;
+  region?: string | null;
+  service?: (number | null) | Service;
+  /**
+   * Pflicht zum Veröffentlichen, mindestens 600 Zeichen, echter Ortsbezug.
+   */
+  intro?: string | null;
+  /**
+   * Pflicht zum Veröffentlichen: Referenz vor Ort oder regionale Besonderheit.
+   */
+  localReference?: {
+    type?: ('case' | 'regional') | null;
+    case?: (number | null) | Case;
+    regionalNote?: string | null;
+  };
+  visitInfo?: string | null;
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands".
  */
 export interface Brand {
@@ -149,6 +835,10 @@ export interface Brand {
    * Sortierung auf der Startseite (klein = oben).
    */
   order?: number | null;
+  /**
+   * „ausgeblendet“ = erscheint nirgends auf der Website (z. B. solange es nur eine Idee ist).
+   */
+  status?: ('live' | 'beta' | 'development' | 'hidden') | null;
   /**
    * Kurzer Claim. Erscheint auf Karte & Detailseite.
    */
@@ -207,88 +897,31 @@ export interface Brand {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Alternativtext (Barrierefreiheit & SEO).
-   */
-  alt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    feature?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * Admin-Zugänge.
+ * Keine erkennbaren Kinder auf Fotos. Vereinslogos nur mit Erlaubnis.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "engagements".
  */
-export interface User {
+export interface Engagement {
   id: number;
-  name?: string | null;
+  institution: string;
+  place?: string | null;
+  /**
+   * z. B. Trikots, Warnwesten, Kleidung
+   */
+  kind: string;
+  years?: string | null;
+  photos?: (number | Media)[] | null;
+  link?: string | null;
+  logo?: (number | null) | Media;
+  /**
+   * Ohne Häkchen wird das Logo nicht angezeigt.
+   */
+  logoPermission?: boolean | null;
+  visible?: boolean | null;
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -299,10 +932,31 @@ export interface Redirect {
   from: string;
   to?: {
     type?: ('reference' | 'custom') | null;
-    reference?: {
-      relationTo: 'brands';
-      value: number | Brand;
-    } | null;
+    reference?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'services';
+          value: number | Service;
+        } | null)
+      | ({
+          relationTo: 'locations';
+          value: number | Location;
+        } | null)
+      | ({
+          relationTo: 'cases';
+          value: number | Case;
+        } | null)
+      | ({
+          relationTo: 'brands';
+          value: number | Brand;
+        } | null)
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null);
     url?: string | null;
   };
   updatedAt: string;
@@ -333,8 +987,40 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'locations';
+        value: number | Location;
+      } | null)
+    | ({
+        relationTo: 'cases';
+        value: number | Case;
+      } | null)
+    | ({
         relationTo: 'brands';
         value: number | Brand;
+      } | null)
+    | ({
+        relationTo: 'engagements';
+        value: number | Engagement;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
       } | null)
     | ({
         relationTo: 'media';
@@ -392,6 +1078,297 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  layout?:
+    | T
+    | {
+        hero?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              text?: T;
+              image?: T;
+              primary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              secondary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        serviceTiles?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              id?: T;
+              blockName?: T;
+            };
+        packages?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              id?: T;
+              blockName?: T;
+            };
+        caseTeaser?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              cases?: T;
+              id?: T;
+              blockName?: T;
+            };
+        brandShowcase?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              id?: T;
+              blockName?: T;
+            };
+        trustBar?:
+          | T
+          | {
+              heading?: T;
+              id?: T;
+              blockName?: T;
+            };
+        engagementBand?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              id?: T;
+              blockName?: T;
+            };
+        postTeaser?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              id?: T;
+              blockName?: T;
+            };
+        faq?:
+          | T
+          | {
+              heading?: T;
+              items?:
+                | T
+                | {
+                    question?: T;
+                    answer?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        cta?:
+          | T
+          | {
+              heading?: T;
+              text?: T;
+              button?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        textImage?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              body?: T;
+              image?: T;
+              imagePosition?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  order?: T;
+  shortDescription?: T;
+  promise?: T;
+  scope?: T;
+  packages?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        priceIsFrom?: T;
+        unit?: T;
+        term?: T;
+        includes?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  steps?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  cases?: T;
+  posts?: T;
+  cta?:
+    | T
+    | {
+        heading?: T;
+        buttonLabel?: T;
+        text?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations_select".
+ */
+export interface LocationsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  place?: T;
+  region?: T;
+  service?: T;
+  intro?: T;
+  localReference?:
+    | T
+    | {
+        type?: T;
+        case?: T;
+        regionalNote?: T;
+      };
+  visitInfo?: T;
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cases_select".
+ */
+export interface CasesSelect<T extends boolean = true> {
+  client?: T;
+  slug?: T;
+  industry?: T;
+  place?: T;
+  url?: T;
+  services?: T;
+  chips?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  hasDetailPage?: T;
+  featuredOnHome?: T;
+  order?: T;
+  challenge?: T;
+  solution?: T;
+  result?: T;
+  figures?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  screenshots?: T;
+  quote?:
+    | T
+    | {
+        text?: T;
+        name?: T;
+        role?: T;
+      };
+  releaseDate?: T;
+  releaseNote?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "brands_select".
  */
 export interface BrandsSelect<T extends boolean = true> {
@@ -399,6 +1376,7 @@ export interface BrandsSelect<T extends boolean = true> {
   slug?: T;
   category?: T;
   order?: T;
+  status?: T;
   tagline?: T;
   description?: T;
   accentColor?: T;
@@ -436,10 +1414,119 @@ export interface BrandsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "engagements_select".
+ */
+export interface EngagementsSelect<T extends boolean = true> {
+  institution?: T;
+  place?: T;
+  kind?: T;
+  years?: T;
+  photos?: T;
+  link?: T;
+  logo?: T;
+  logoPermission?: T;
+  visible?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  shortAnswer?: T;
+  excerpt?: T;
+  content?: T;
+  category?: T;
+  service?: T;
+  author?: T;
+  heroImage?: T;
+  socialImage?: T;
+  publishedAt?: T;
+  contentUpdatedAt?: T;
+  reviewedAt?: T;
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  sources?:
+    | T
+    | {
+        title?: T;
+        url?: T;
+        id?: T;
+      };
+  relatedPosts?: T;
+  editorial?:
+    | T
+    | {
+        focusKeyword?: T;
+        dossierLink?: T;
+      };
+  noindex?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  order?: T;
+  noindex?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  role?: T;
+  bio?: T;
+  photo?: T;
+  sameAs?:
+    | T
+    | {
+        url?: T;
+        id?: T;
+      };
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  credit?:
+    | T
+    | {
+        author?: T;
+        source?: T;
+        license?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -501,7 +1588,11 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  name?: T;
+  username?: T;
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  author?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -582,29 +1673,96 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface SiteSetting {
   id: number;
   siteName?: string | null;
+  company?: {
+    legalName?: string | null;
+    managingDirector?: string | null;
+    /**
+     * Bei Änderung auch im eRecht24-Portal und im Google-Unternehmensprofil anpassen.
+     */
+    street?: string | null;
+    postalCode?: string | null;
+    city?: string | null;
+    /**
+     * Darf im Fließtext stehen (z. B. Satrup).
+     */
+    district?: string | null;
+    country?: string | null;
+    /**
+     * Anzeigeformat, z. B. 04633 202 9925 – der Anruf-Link wird daraus erzeugt. Bei Änderung auch im eRecht24-Portal und im Google-Unternehmensprofil anpassen.
+     */
+    phone?: string | null;
+    /**
+     * Bei Änderung auch im eRecht24-Portal und im Google-Unternehmensprofil anpassen.
+     */
+    email?: string | null;
+    registerCourt?: string | null;
+    registerNumber?: string | null;
+    /**
+     * Leer, solange nicht erteilt – die Anzeige blendet sich dann aus.
+     */
+    vatId?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    /**
+     * Landet als areaServed im JSON-LD.
+     */
+    areaServed?:
+      | {
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+    hourlyRate?: number | null;
+  };
+  contact?: {
+    hours?: string | null;
+    /**
+     * Später. Leer = kein Termin-Button.
+     */
+    bookingUrl?: string | null;
+  };
+  profiles?: {
+    linkedin?: string | null;
+    instagram?: string | null;
+    googleBusiness?: string | null;
+    googleReviewUrl?: string | null;
+  };
+  seo?: {
+    /**
+     * Wird an jeden Seitentitel gehängt, z. B. „ | beau marketing“.
+     */
+    titleSuffix?: string | null;
+    defaultOgImage?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
   /**
-   * Untertitel / Claim der Marke.
+   * Nach dem Menüpunkt „Agentur“ (Leistungen, automatisch).
    */
-  tagline?: string | null;
-  nav?:
+  header?:
     | {
         label: string;
         /**
-         * z. B. /marken
+         * Ohne Sprachpräfix, z. B. /referenzen
          */
         href: string;
         id?: string | null;
       }[]
     | null;
-  contact?: {
-    email?: string | null;
-    phone?: string | null;
-    address?: string | null;
-  };
-  social?:
+  footerLegal?:
     | {
-        platform?: string | null;
-        url?: string | null;
+        label: string;
+        /**
+         * Ohne Sprachpräfix, z. B. /referenzen
+         */
+        href: string;
         id?: string | null;
       }[]
     | null;
@@ -612,43 +1770,48 @@ export interface SiteSetting {
   createdAt?: string | null;
 }
 /**
- * Wird nicht mehr ausgespielt. Der Text kommt automatisch aus dem eRecht24 Project Manager — Änderungen bitte dort vornehmen. Dieser Eintrag bleibt nur als Archiv bestehen.
- *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "impressum".
+ * via the `definition` "trust".
  */
-export interface Impressum {
+export interface Trust {
   id: number;
-  title?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
   /**
-   * Stand der letzten Änderung.
+   * SH-Partner „Der echte Norden“ ist Pflicht und verlinkt auf https://partner-sh.de.
    */
-  lastUpdated?: string | null;
+  badges?:
+    | {
+        name: string;
+        href?: string | null;
+        image: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Nur für Payload-Websites zutreffend, nicht für Shopify.
+   */
+  serverNote?: string | null;
+  /**
+   * Erst nach Anlage des Partnerkontos. Leer = kein Siegel, kein Platzhalter.
+   */
+  shopifyBadge?: (number | null) | Media;
+  googleReviews?: {
+    /**
+     * Nur mit echten Werten aus dem Google-Unternehmensprofil.
+     */
+    show?: boolean | null;
+    rating?: number | null;
+    count?: number | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
 /**
- * Wird nicht mehr ausgespielt. Der Text kommt automatisch aus dem eRecht24 Project Manager — Änderungen bitte dort vornehmen. Dieser Eintrag bleibt nur als Archiv bestehen.
+ * Wird unter /agb ausgespielt und im Footer verlinkt. Bleibt der Inhalt leer, versteckt sich der Footer-Link von selbst.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "datenschutz".
+ * via the `definition` "agb".
  */
-export interface Datenschutz {
+export interface Agb {
   id: number;
   title?: string | null;
   content?: {
@@ -705,62 +1868,77 @@ export interface Widerruf {
   createdAt?: string | null;
 }
 /**
- * Wird unter /agb ausgespielt und im Footer verlinkt. Bleibt der Inhalt leer, versteckt sich der Footer-Link von selbst.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "agb".
- */
-export interface Agb {
-  id: number;
-  title?: string | null;
-  content?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Stand der letzten Änderung.
-   */
-  lastUpdated?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings_select".
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   siteName?: T;
-  tagline?: T;
-  nav?:
+  company?:
+    | T
+    | {
+        legalName?: T;
+        managingDirector?: T;
+        street?: T;
+        postalCode?: T;
+        city?: T;
+        district?: T;
+        country?: T;
+        phone?: T;
+        email?: T;
+        registerCourt?: T;
+        registerNumber?: T;
+        vatId?: T;
+        latitude?: T;
+        longitude?: T;
+        areaServed?:
+          | T
+          | {
+              name?: T;
+              id?: T;
+            };
+        hourlyRate?: T;
+      };
+  contact?:
+    | T
+    | {
+        hours?: T;
+        bookingUrl?: T;
+      };
+  profiles?:
+    | T
+    | {
+        linkedin?: T;
+        instagram?: T;
+        googleBusiness?: T;
+        googleReviewUrl?: T;
+      };
+  seo?:
+    | T
+    | {
+        titleSuffix?: T;
+        defaultOgImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  header?:
     | T
     | {
         label?: T;
         href?: T;
         id?: T;
       };
-  contact?:
+  footerLegal?:
     | T
     | {
-        email?: T;
-        phone?: T;
-        address?: T;
-      };
-  social?:
-    | T
-    | {
-        platform?: T;
-        url?: T;
+        label?: T;
+        href?: T;
         id?: T;
       };
   updatedAt?: T;
@@ -769,21 +1947,35 @@ export interface SiteSettingsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "impressum_select".
+ * via the `definition` "trust_select".
  */
-export interface ImpressumSelect<T extends boolean = true> {
-  title?: T;
-  content?: T;
-  lastUpdated?: T;
+export interface TrustSelect<T extends boolean = true> {
+  badges?:
+    | T
+    | {
+        name?: T;
+        href?: T;
+        image?: T;
+        id?: T;
+      };
+  serverNote?: T;
+  shopifyBadge?: T;
+  googleReviews?:
+    | T
+    | {
+        show?: T;
+        rating?: T;
+        count?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "datenschutz_select".
+ * via the `definition` "agb_select".
  */
-export interface DatenschutzSelect<T extends boolean = true> {
+export interface AgbSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   lastUpdated?: T;
@@ -796,18 +1988,6 @@ export interface DatenschutzSelect<T extends boolean = true> {
  * via the `definition` "widerruf_select".
  */
 export interface WiderrufSelect<T extends boolean = true> {
-  title?: T;
-  content?: T;
-  lastUpdated?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "agb_select".
- */
-export interface AgbSelect<T extends boolean = true> {
   title?: T;
   content?: T;
   lastUpdated?: T;

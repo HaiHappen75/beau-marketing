@@ -31,7 +31,7 @@ export function RotatingWord({
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span
           key={index}
-          className="text-gradient-accent [grid-area:1/1]"
+          className="text-ink [grid-area:1/1]"
           initial={reduce ? false : { y: '0.45em', opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={reduce ? undefined : { y: '-0.45em', opacity: 0 }}

@@ -11,9 +11,14 @@
   "Hero": {
     "eyebrow": "Brand house & software studio",
     "titleLead": "We build",
-    "rotating": ["brands.", "apps.", "experiences.", "products."],
+    "rotating": [
+      "brands.",
+      "apps.",
+      "experiences.",
+      "products."
+    ],
     "titleTail": "that last.",
-    "subtitle": "Beau-Marketing develops, runs and markets its own digital brands — and builds software for select partners.",
+    "subtitle": "Beau Marketing develops, runs and markets its own digital brands — and builds software for select partners.",
     "ctaPrimary": "Our brands",
     "ctaSecondary": "Studio work",
     "scroll": "Explore"
@@ -25,13 +30,21 @@
       "label": "Brand house",
       "title": "Our own brands, from idea to market.",
       "body": "We treat products as brands: strategy, design, engineering and marketing under one roof — across e-commerce, SaaS and native apps.",
-      "points": ["Product & brand strategy", "Design & engineering", "Growth & marketing"]
+      "points": [
+        "Product & brand strategy",
+        "Design & engineering",
+        "Growth & marketing"
+      ]
     },
     "studio": {
       "label": "Studio",
       "title": "Contract development for select partners.",
       "body": "The same care that goes into our own brands, brought to third-party projects — iOS, Android, macOS and web.",
-      "points": ["Native apps (iOS, Android, macOS)", "Web & SaaS platforms", "From MVP to scale"]
+      "points": [
+        "Native apps (iOS, Android, macOS)",
+        "Web & SaaS platforms",
+        "From MVP to scale"
+      ]
     }
   },
   "Brands": {
@@ -47,23 +60,32 @@
     "otherBrands": "More brands",
     "detailEyebrow": "Brand",
     "indexTitle": "All brands",
-    "indexSubtitle": "The Beau-Marketing brand house at a glance."
+    "indexSubtitle": "The Beau Marketing brand house at a glance."
   },
   "Studio": {
     "eyebrow": "Studio",
     "title": "Software we'd build for ourselves.",
     "subtitle": "We take on select contract work in software and app development.",
     "services": [
-      { "title": "Native apps", "body": "iOS, Android and macOS — fast and close to the platform." },
-      { "title": "Web & SaaS", "body": "Scalable platforms, portals and dashboards." },
-      { "title": "Product & design", "body": "From idea through prototype to finished product." }
+      {
+        "title": "Native apps",
+        "body": "iOS, Android and macOS — fast and close to the platform."
+      },
+      {
+        "title": "Web & SaaS",
+        "body": "Scalable platforms, portals and dashboards."
+      },
+      {
+        "title": "Product & design",
+        "body": "From idea through prototype to finished product."
+      }
     ],
     "cta": "Discuss a project"
   },
   "About": {
     "eyebrow": "About",
     "title": "A team with a long design history.",
-    "body": "Beau-Marketing is both a brand house and a software studio. We develop, run and market our own brands — and share that craft with partners who value design."
+    "body": "Beau Marketing is both a brand house and a software studio. We develop, run and market our own brands — and share that craft with partners who value design."
   },
   "Contact": {
     "eyebrow": "Contact",
@@ -92,7 +114,7 @@
     "notFound": "Page not found"
   },
   "Meta": {
-    "homeTitle": "Beau-Marketing — Brand house & software studio",
+    "homeTitle": "Beau Marketing — Brand house & software studio",
     "homeDescription": "We develop, run and market our own digital brands — and build software for select partners. e-commerce, SaaS and native apps."
   },
   "LocaleSwitcher": {
@@ -100,5 +122,31 @@
     "de": "Deutsch",
     "en": "English",
     "da": "Dansk"
+  },
+  "Layout": {
+    "skipToContent": "Skip to content",
+    "homeLabel": "Beau Marketing – home",
+    "mainNav": "Main navigation",
+    "agency": "Agency",
+    "services": "Services",
+    "packages": "Three packages",
+    "packageAppearance": "Presence",
+    "packageAppearanceNote": "Website or shop",
+    "packageOperation": "Operation",
+    "packageOperationNote": "Care plan",
+    "packageVisibility": "Visibility",
+    "packageVisibilityNote": "monthly",
+    "allPrices": "See all prices",
+    "priceNote": "Net, plus VAT – offer for businesses.",
+    "cta": "Start a project",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "callInstead": "Rather call?",
+    "language": "Choose language",
+    "footerAbout": "Agency and brand house from Satrup, Mittelangeln. Since 2016.",
+    "contact": "Contact",
+    "legal": "Legal",
+    "claim": "success simplified",
+    "reviews": "{rating} of 5 · {count} Google reviews"
   }
 }

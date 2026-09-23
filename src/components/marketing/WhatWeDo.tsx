@@ -26,7 +26,7 @@ function Track({
           : 'border-line bg-paper-2 text-ink'
       }`}
     >
-      <span className={`eyebrow ${featured ? 'text-accent-soft' : 'text-accent'}`}>{label}</span>
+      <span className={`eyebrow ${featured ? 'text-muted' : 'text-muted'}`}>{label}</span>
       <h3 className="mt-4 text-2xl font-bold sm:text-[1.7rem]">{title}</h3>
       <p className={`mt-4 leading-relaxed ${featured ? 'text-paper/70' : 'text-ink-soft'}`}>{body}</p>
       <ul className="mt-8 flex flex-col gap-3">
@@ -54,7 +54,7 @@ export async function WhatWeDo({ locale }: { locale: Locale }) {
     <section className="bg-paper py-24 sm:py-32">
       <Container>
         <Reveal className="max-w-2xl">
-          <p className="eyebrow text-accent">{t('eyebrow')}</p>
+          <p className="eyebrow text-muted">{t('eyebrow')}</p>
           <h2 className="mt-4 text-balance text-4xl font-extrabold sm:text-5xl">{t('title')}</h2>
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-5">

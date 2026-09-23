@@ -15,6 +15,8 @@ export const Widerruf: GlobalConfig = {
       'Wird unter /widerrufsbelehrung ausgespielt und im Footer verlinkt. Bleibt der Inhalt leer, versteckt sich der Footer-Link von selbst.',
   },
   access: { read: () => true },
+  // Version history: proves which wording applied at which time.
+  versions: { max: 50 },
   fields: [
     { name: 'title', type: 'text', localized: true, defaultValue: 'Widerrufsbelehrung' },
     { name: 'content', type: 'richText', localized: true },

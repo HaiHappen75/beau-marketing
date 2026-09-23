@@ -21,7 +21,7 @@ export async function Hero({ locale, brandNames }: { locale: Locale; brandNames:
       </div>
 
       <Container className="flex flex-1 flex-col justify-center pb-16 pt-32 sm:pt-40">
-        <p className="eyebrow text-accent-soft">{t('eyebrow')}</p>
+        <p className="eyebrow text-muted">{t('eyebrow')}</p>
         <h1 className="mt-6 text-[clamp(2.75rem,8.5vw,7rem)] font-extrabold leading-[0.95] tracking-tight">
           <span className="sr-only">
             {t('titleLead')} {words[0]} {t('titleTail')}

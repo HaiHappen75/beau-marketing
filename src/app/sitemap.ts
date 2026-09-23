@@ -21,7 +21,12 @@ const LEGAL_PATHS = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayloadClient()
-  const { docs } = await payload.find({ collection: 'brands', limit: 100, depth: 0 })
+  const { docs } = await payload.find({
+    collection: 'brands',
+    where: { status: { not_equals: 'hidden' } },
+    limit: 100,
+    depth: 0,
+  })
 
   // Widerruf and AGB are optional Payload globals — while empty the page 404s,
   // so it must not be announced. Localized with fallback, hence all locales.

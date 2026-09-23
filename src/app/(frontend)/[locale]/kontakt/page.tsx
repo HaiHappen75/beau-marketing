@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
+import { telHref } from '@/lib/phone'
 import { getSiteSettings } from '@/lib/queries/getSiteSettings'
 import { canonicalUrl, pageMetadata } from '@/lib/seo'
 
@@ -24,9 +25,13 @@ export default async function KontaktPage(props: { params: Promise<{ locale: str
   const t = await getTranslations({ locale, namespace: 'Contact' })
   const settings = await getSiteSettings(locale as Locale)
 
-  const email = settings?.contact?.email || 's.beau@beau-marketing.de'
-  const phone = settings?.contact?.phone
-  const address = settings?.contact?.address
+  const c = settings.company ?? {}
+  const email = c.email ?? null
+  const phone = c.phone ?? null
+  const phoneLink = telHref(phone)
+  const address = [c.legalName, c.street, [c.postalCode, c.city].filter(Boolean).join(' ')]
+    .filter(Boolean)
+    .join('\n')
 
   return (
     <>
@@ -43,8 +48,9 @@ export default async function KontaktPage(props: { params: Promise<{ locale: str
       <PageMasthead eyebrow={t('eyebrow')} title={t('title')} subtitle={t('subtitle')} />
       <section className="bg-paper py-16 sm:py-24">
         <Container className="grid gap-12 md:grid-cols-2">
+          {email && (
           <div>
-            <p className="eyebrow text-accent">{t('labelEmail')}</p>
+            <p className="eyebrow text-muted">{t('labelEmail')}</p>
             <a
               href={`mailto:${email}`}
               className="link-sweep mt-3 block font-display text-2xl font-bold sm:text-3xl"
@@ -57,18 +63,19 @@ export default async function KontaktPage(props: { params: Promise<{ locale: str
               </Button>
             </div>
           </div>
+          )}
           <div className="space-y-8">
-            {phone && (
+            {phone && phoneLink && (
               <div>
-                <p className="eyebrow text-accent">{t('labelPhone')}</p>
-                <a href={`tel:${phone.replace(/\s+/g, '')}`} className="link-sweep mt-2 block text-lg">
+                <p className="eyebrow text-muted">{t('labelPhone')}</p>
+                <a href={phoneLink} className="link-sweep mt-2 block text-lg">
                   {phone}
                 </a>
               </div>
             )}
             {address && (
               <div>
-                <p className="eyebrow text-accent">{t('labelAddress')}</p>
+                <p className="eyebrow text-muted">{t('labelAddress')}</p>
                 <p className="mt-2 whitespace-pre-line text-lg leading-relaxed text-ink-soft">
                   {address}
                 </p>

@@ -58,7 +58,7 @@ export function pageMetadata(args: {
   title: string
   description?: string
   images?: string[]
-  /** Use the title verbatim (skip the layout's "%s — Beau-Marketing" template). */
+  /** Use the title verbatim (skip the layout's "%s | beau marketing" template). */
   absoluteTitle?: boolean
   /** Replaces the default self-canonical + all-locale hreflang (see legalAlternates). */
   alternates?: NonNullable<Metadata['alternates']>
@@ -78,7 +78,7 @@ export function pageMetadata(args: {
       title,
       description,
       url: canonical,
-      siteName: 'Beau-Marketing',
+      siteName: 'Beau Marketing',
       locale,
       type: 'website',
       ...(images ? { images } : {}),

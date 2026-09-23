@@ -62,7 +62,7 @@ export async function BrandShowcase({ brands, locale }: { brands: Brand[]; local
     <section id="marken" className="scroll-mt-24 bg-paper py-24 sm:py-32">
       <Container>
         <Reveal className="max-w-2xl">
-          <p className="eyebrow text-accent">{t('eyebrow')}</p>
+          <p className="eyebrow text-muted">{t('eyebrow')}</p>
           <h2 className="mt-4 text-balance text-4xl font-extrabold sm:text-6xl">{t('title')}</h2>
           <p className="mt-5 text-lg text-ink-soft">{t('subtitle')}</p>
         </Reveal>

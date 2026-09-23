@@ -16,7 +16,7 @@ export async function StudioSection({ locale }: { locale: Locale }) {
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-end">
           <Reveal>
-            <p className="eyebrow text-accent-soft">{t('eyebrow')}</p>
+            <p className="eyebrow text-muted">{t('eyebrow')}</p>
             <h2 className="mt-4 text-balance text-4xl font-extrabold sm:text-5xl">{t('title')}</h2>
             <p className="mt-5 max-w-md text-lg text-paper/70">{t('subtitle')}</p>
             <div className="mt-8">
