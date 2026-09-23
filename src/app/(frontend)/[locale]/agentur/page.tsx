@@ -11,30 +11,25 @@ import { getBlockContext } from '@/lib/queries/blockContext'
 import { getPageBySlug } from '@/lib/queries/content'
 import { canonicalUrl } from '@/lib/seo'
 
-// Contact = CMS page "kontakt" with the contact form block. ?leistung=<slug>
-// preselects the service (links from the package cards).
+// Agency overview = CMS page "agentur" (services, packages, price table).
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await props.params
-  const page = await getPageBySlug('kontakt', locale as Locale)
-  return cmsMetadata({ locale, path: '/kontakt', meta: page?.meta, fallbackTitle: page?.title ?? 'Kontakt' })
+  const page = await getPageBySlug('agentur', locale as Locale)
+  return cmsMetadata({ locale, path: '/agentur', meta: page?.meta, fallbackTitle: page?.title ?? 'Agentur' })
 }
 
-export default async function ContactPage(props: {
-  params: Promise<{ locale: string }>
-  searchParams: Promise<{ leistung?: string | string[] }>
-}) {
+export default async function AgencyPage(props: { params: Promise<{ locale: string }> }) {
   const { locale } = await props.params
-  const { leistung } = await props.searchParams
   setRequestLocale(locale)
-  const page = await getPageBySlug('kontakt', locale as Locale)
+  const page = await getPageBySlug('agentur', locale as Locale)
   if (!page) notFound()
-  const ctx = await getBlockContext(locale as Locale, typeof leistung === 'string' ? leistung : null)
+  const ctx = await getBlockContext(locale as Locale)
   return (
     <>
       <JsonLd
         graph={[
           webPageNode({
-            canonical: canonicalUrl(locale, '/kontakt'),
+            canonical: canonicalUrl(locale, '/agentur'),
             name: page.meta?.title || page.title,
             description: page.meta?.description ?? undefined,
             lang: locale as Locale,

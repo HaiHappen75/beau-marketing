@@ -280,3 +280,37 @@ export async function ensureMedia(payload: Payload, spec: MediaSpec, summary: Se
   )
   return doc?.id as number
 }
+
+/**
+ * Arrays of existing documents (e.g. packages, trust badges) are atomic for
+ * planFill. This fills empty sub-fields of rows matched by a key (e.g. the
+ * package name) and replaces legacy sub-values — the row itself, its id and
+ * every other value stay as they are. Rows that do not match stay untouched.
+ */
+export function fillRowsByKey(
+  rows: unknown,
+  desired: Obj[],
+  field: string,
+  key: string,
+  locale: SeedLocale,
+  isLegacy: LegacyCheck = () => false,
+  transform?: (row: Obj, want: Obj, plan: Plan, path: string) => Obj,
+): Plan {
+  const plan = emptyPlan()
+  if (!Array.isArray(rows) || rows.length === 0) return plan
+  let touched = false
+  const next = (rows as Obj[]).map((row) => {
+    const want = desired.find((d) => d[key] === row[key])
+    if (!want) return row
+    const path = `${field}[${row[key]}]`
+    const sub = planFill(row, Object.fromEntries(Object.entries(want).filter(([k]) => k !== key)), locale, isLegacy, path)
+    let out = Object.keys(sub.patch).length > 0 ? { ...row, ...sub.patch } : row
+    plan.filled.push(...sub.filled)
+    plan.legacy.push(...sub.legacy)
+    if (transform) out = transform(out, want, plan, path)
+    if (out !== row) touched = true
+    return out
+  })
+  if (touched) plan.patch[field] = next
+  return plan
+}

@@ -166,7 +166,7 @@ export function HeaderNav({ services, packages, links, phone }: Props) {
                   ))}
                 </ul>
                 <p className="mt-6 text-base">
-                  <Link href="/agentur">{t('allPrices')}</Link>
+                  <Link href="/agentur#preise">{t('allPrices')}</Link>
                 </p>
                 <p className="price-note mt-2 text-[13px]">{t('priceNote')}</p>
               </div>

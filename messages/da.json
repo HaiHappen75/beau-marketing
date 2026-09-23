@@ -148,5 +148,146 @@
     "legal": "Juridisk",
     "claim": "success simplified",
     "reviews": "{rating} af 5 · {count} Google-anmeldelser"
+  },
+  "Site": {
+    "_machineTranslated": "Maskinoversat – gennemlæses i pakke 5",
+    "priceNote": "ekskl. moms, tilbud til virksomheder",
+    "pricesNet": "Alle priser netto, ekskl. moms – tilbud til virksomheder.",
+    "from": "fra",
+    "once": "engangsbeløb",
+    "perMonth": "/ måned",
+    "hourlyShort": "Kan bestilles enkeltvis. Små opgaver ind imellem: {rate} € i timen.",
+    "hourlyFootnote": "Enkeltopgaver uden pakke: {rate} € i timen, ekskl. moms.",
+    "package": "Pakke {n}",
+    "moreAbout": "Mere om {title}",
+    "packages": {
+      "appearance": {
+        "title": "Tilstedeværelse",
+        "sub": "Hjemmeside eller Shopify-shop",
+        "items": [
+          "Hjemmeside eller shop, færdig opsat",
+          "Struktur og tekster – sammen med dig",
+          "Kolofon og privatlivspolitik via eRecht24",
+          "Hjemmesider på servere i Tyskland"
+        ]
+      },
+      "operation": {
+        "title": "Drift",
+        "sub": "Vedligeholdelsesabonnement",
+        "items": [
+          "Opdateringer og sikkerhed",
+          "Regelmæssige backups",
+          "Juridiske tekster holdes opdaterede",
+          "Små ændringer inkluderet (fra Plus)"
+        ]
+      },
+      "visibility": {
+        "title": "Synlighed",
+        "sub": "månedligt",
+        "items": [
+          "Google-virksomhedsprofil vedligeholdt",
+          "Lokal SEO for dine områder",
+          "Anmeldelser under opsyn",
+          "Månedlig rapport, kort og læsbar"
+        ],
+        "note": "For virksomheder, der vil findes i deres område."
+      }
+    },
+    "allReferences": "Alle referencer",
+    "referenceAria": "Se reference: {name}",
+    "allArticles": "Alle artikler",
+    "readingTime": "{min} min. læsetid",
+    "brandStatus": {
+      "live": "live",
+      "beta": "Beta",
+      "development": "under udvikling"
+    },
+    "brandVisit": "Se {name}",
+    "phone": "Telefon",
+    "email": "E-mail",
+    "reviews": "{rating} · {count} anmeldelser på Google",
+    "reviewsAria": "{rating} ud af 5 stjerner",
+    "trustLabel": "Partnere og dokumentation",
+    "breadcrumb": "Brødkrummer",
+    "home": "Forside",
+    "agency": "Bureau",
+    "service": {
+      "packagesButton": "Pakker og priser",
+      "deliverablesKicker": "Det får du",
+      "packagesKicker": "Pakker og priser",
+      "packagesHeading": "Faste priser. Du ved på forhånd, hvad det koster.",
+      "request": "Forespørg {name}",
+      "aftercareKicker": "Bagefter",
+      "processKicker": "Forløb",
+      "processHeading": "{count, select, 3 {Tre trin} 4 {Fire trin} 5 {Fem trin} 6 {Seks trin} other {# trin}}. Et ad gangen.",
+      "step": "Trin {n}",
+      "inHouseKicker": "Fra vores eget hus",
+      "referencesKicker": "Relevante referencer",
+      "faqKicker": "Spørgsmål",
+      "faqHeading": "Det vil du gerne vide på forhånd.",
+      "guidesHeading": "Læs videre i vejledningerne",
+      "ctaCall": "Ring:",
+      "ctaOr": "eller skriv til"
+    },
+    "table": {
+      "service": "Ydelse",
+      "package": "Pakke",
+      "price": "Pris",
+      "hourly": "Enkeltopgaver",
+      "byEffort": "efter forbrug",
+      "perHour": "{rate} € / time"
+    },
+    "perHour": "/ time",
+    "onRequest": "efter aftale"
+  },
+  "ContactForm": {
+    "_machineTranslated": "Maskinoversat – gennemlæses i pakke 5",
+    "formLabel": "Forespørgselsformular",
+    "name": "Navn",
+    "company": "Firma",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "optional": "(valgfrit)",
+    "service": "Ydelse",
+    "region": "Region",
+    "budget": "Omtrentligt budget (valgfrit)",
+    "message": "Besked",
+    "choose": "Vælg venligst",
+    "unsure": "Ved det ikke endnu",
+    "regions": [
+      "Slesvig-Holsten",
+      "Hamborg",
+      "Danmark",
+      "andetsteds"
+    ],
+    "budgets": [
+      "under 2.000 €",
+      "2.000 – 5.000 €",
+      "5.000 – 10.000 €",
+      "over 10.000 €",
+      "Ved det ikke endnu"
+    ],
+    "messagePlaceholder": "Hvad laver din virksomhed, hvad skal siden kunne, findes der allerede en?",
+    "errName": "Angiv venligst dit navn.",
+    "errCompany": "Angiv venligst dit firma.",
+    "errEmail": "Angiv venligst din e-mail.",
+    "errEmailInvalid": "E-mailadressen ser ikke komplet ud.",
+    "errService": "Vælg venligst en ydelse.",
+    "errRegion": "Vælg venligst en region.",
+    "errMessage": "En eller to sætninger er nok.",
+    "errSummary": "Kontrollér venligst de markerede felter ({count}).",
+    "submit": "Send forespørgsel",
+    "sending": "Sender …",
+    "required": "Obligatoriske felter: alle undtagen telefon og budget.",
+    "privacy": "Vi bruger kun dine oplysninger til at besvare din forespørgsel. Læs mere i <link>privatlivspolitikken</link>.",
+    "successTitle": "Tak, den er modtaget.",
+    "successText": "Stephan vender personligt tilbage.",
+    "successCall": "Haster det? Ring:",
+    "again": "Send en forespørgsel mere",
+    "errSend": "Det lykkedes desværre ikke. Prøv igen om lidt, eller ring.",
+    "errRate": "Du har lige sendt flere forespørgsler. Prøv igen senere, eller ring.",
+    "honeypot": "Lad venligst dette felt være tomt",
+    "directContact": "Direkte kontakt",
+    "personText": "læser selv hver forespørgsel."
   }
 }

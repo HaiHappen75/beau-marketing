@@ -148,5 +148,146 @@
     "legal": "Legal",
     "claim": "success simplified",
     "reviews": "{rating} of 5 · {count} Google reviews"
+  },
+  "Site": {
+    "_machineTranslated": "Machine-translated – proofread in package 5",
+    "priceNote": "plus VAT, offer for businesses",
+    "pricesNet": "All prices net, plus VAT – offer for businesses.",
+    "from": "from",
+    "once": "one-off",
+    "perMonth": "/ month",
+    "hourlyShort": "Bookable individually. Small tasks in between: {rate} € per hour.",
+    "hourlyFootnote": "Individual tasks without a package: {rate} € per hour, plus VAT.",
+    "package": "Package {n}",
+    "moreAbout": "More about {title}",
+    "packages": {
+      "appearance": {
+        "title": "Presence",
+        "sub": "Website or Shopify shop",
+        "items": [
+          "Website or shop, fully set up",
+          "Structure and copy – together with you",
+          "Imprint & privacy policy via eRecht24",
+          "Websites on servers in Germany"
+        ]
+      },
+      "operation": {
+        "title": "Operation",
+        "sub": "Care plan",
+        "items": [
+          "Updates and security",
+          "Regular backups",
+          "Legal texts stay up to date",
+          "Small changes included (from Plus)"
+        ]
+      },
+      "visibility": {
+        "title": "Visibility",
+        "sub": "monthly",
+        "items": [
+          "Google Business Profile maintained",
+          "Local SEO for your area",
+          "Reviews kept in view",
+          "Monthly report, short and readable"
+        ],
+        "note": "For businesses that want to be found in their area."
+      }
+    },
+    "allReferences": "All work",
+    "referenceAria": "View project: {name}",
+    "allArticles": "All articles",
+    "readingTime": "{min} min read",
+    "brandStatus": {
+      "live": "live",
+      "beta": "beta",
+      "development": "in development"
+    },
+    "brandVisit": "Visit {name}",
+    "phone": "Phone",
+    "email": "Email",
+    "reviews": "{rating} · {count} reviews on Google",
+    "reviewsAria": "{rating} out of 5 stars",
+    "trustLabel": "Partners and credentials",
+    "breadcrumb": "Breadcrumbs",
+    "home": "Home",
+    "agency": "Agency",
+    "service": {
+      "packagesButton": "Packages & prices",
+      "deliverablesKicker": "What you get",
+      "packagesKicker": "Packages & prices",
+      "packagesHeading": "Fixed prices. You know the cost up front.",
+      "request": "Request {name}",
+      "aftercareKicker": "Afterwards",
+      "processKicker": "Process",
+      "processHeading": "{count, select, 3 {Three steps} 4 {Four steps} 5 {Five steps} 6 {Six steps} other {# steps}}. One at a time.",
+      "step": "Step {n}",
+      "inHouseKicker": "From our own house",
+      "referencesKicker": "Related work",
+      "faqKicker": "Questions",
+      "faqHeading": "What you want to know first.",
+      "guidesHeading": "Read more in the guides",
+      "ctaCall": "Call:",
+      "ctaOr": "or write to"
+    },
+    "table": {
+      "service": "Service",
+      "package": "Package",
+      "price": "Price",
+      "hourly": "Individual tasks",
+      "byEffort": "by effort",
+      "perHour": "{rate} € / hour"
+    },
+    "perHour": "/ hour",
+    "onRequest": "on request"
+  },
+  "ContactForm": {
+    "_machineTranslated": "Machine-translated – proofread in package 5",
+    "formLabel": "Enquiry form",
+    "name": "Name",
+    "company": "Company",
+    "email": "Email",
+    "phone": "Phone",
+    "optional": "(optional)",
+    "service": "Service",
+    "region": "Region",
+    "budget": "Rough budget (optional)",
+    "message": "Message",
+    "choose": "Please choose",
+    "unsure": "Don't know yet",
+    "regions": [
+      "Schleswig-Holstein",
+      "Hamburg",
+      "Denmark",
+      "elsewhere"
+    ],
+    "budgets": [
+      "under 2,000 €",
+      "2,000 – 5,000 €",
+      "5,000 – 10,000 €",
+      "over 10,000 €",
+      "Don't know yet"
+    ],
+    "messagePlaceholder": "What does your business do, what should the site do, is there one already?",
+    "errName": "Please enter your name.",
+    "errCompany": "Please enter your company.",
+    "errEmail": "Please enter your email.",
+    "errEmailInvalid": "The email address doesn't look complete.",
+    "errService": "Please choose a service.",
+    "errRegion": "Please choose a region.",
+    "errMessage": "One or two sentences are enough.",
+    "errSummary": "Please check the marked fields ({count}).",
+    "submit": "Send enquiry",
+    "sending": "Sending …",
+    "required": "Required: all fields except phone and budget.",
+    "privacy": "We only use your details to answer your enquiry. More in the <link>privacy policy</link>.",
+    "successTitle": "Thanks, it arrived.",
+    "successText": "Stephan will get back to you personally.",
+    "successCall": "In a hurry? Call:",
+    "again": "Send another enquiry",
+    "errSend": "Sorry, that didn't work. Please try again shortly or give us a call.",
+    "errRate": "You have just sent several enquiries. Please try again later or give us a call.",
+    "honeypot": "Please leave this field empty",
+    "directContact": "Direct contact",
+    "personText": "reads every enquiry personally."
   }
 }
