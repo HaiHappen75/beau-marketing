@@ -12,7 +12,14 @@ import type { SeedLocale, SeedSummary } from './types'
 // blocks are not localized here — only their leaves are — so rows are sent back
 // whole, with their ids, and nothing but the empty leaves changes.
 
-type Entry = { de: string; da?: string; en?: string; richText?: boolean }
+type Entry = {
+  de: string
+  da?: string
+  en?: string
+  richText?: boolean
+  /** Earlier translations of this field: they count as empty and are replaced (reported). */
+  legacy?: Partial<Record<'da' | 'en', string[]>>
+}
 type DocTranslation = { collection: string; match: Record<string, string>; fields: Record<string, Entry> }
 
 type Obj = Record<string, unknown>
@@ -69,11 +76,14 @@ export async function fillTranslations(payload: Payload, summary: SeedSummary): 
           s.skipped.push(`${key} · ${path} (${locale}): deutscher Text geändert`)
           continue
         }
-        if (!isEmpty(getPath(current, parts))) continue
+        const have = getPath(current, parts)
         const text = e[locale]!
+        const legacy = typeof have === 'string' && (e.legacy?.[locale] ?? []).includes(have)
+        if (!isEmpty(have) && !legacy) continue
         setPath(next, parts, e.richText ? rt(text.split('\n\n')) : text)
         touched.add(parts[0])
-        s.filledFields.push(`${key} · ${path} (${locale})`)
+        if (legacy) s.legacyReplaced.push({ doc: key, field: path, locale, from: have as string, to: text })
+        else s.filledFields.push(`${key} · ${path} (${locale})`)
       }
       if (touched.size === 0) continue
       await payload.update({

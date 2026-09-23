@@ -14,8 +14,6 @@ import type { Brand, Service, SiteSetting } from '@/payload-types'
 //
 // Guard rail throughout: no markup without coverage in the visible content.
 // Deliberately NOT included, and why:
-//   - `logo`            → there is no clean asset for the GmbH. public/brand/logo.png
-//                         is 0 bytes; the logo project is parked.
 //   - `sameAs`          → the footer carries no social profile link
 //   - `vatID`           → the VAT ID has not been issued
 //   - `Brand.logo`      → the brand assets are Payload uploads without a stable URL
@@ -78,6 +76,8 @@ export function organizationNode(brands: Brand[], settings?: SiteSetting | null)
     '@id': ORGANIZATION_ID,
     name: c.legalName || 'Beau Marketing GmbH',
     url: `${SITE_URL}/`,
+    // The company logo shown in the header (public/brand, 1200 × 358).
+    logo: { '@type': 'ImageObject', url: `${SITE_URL}/brand/beau-marketing-logo.png`, width: 1200, height: 358 },
     ...(c.email ? { email: c.email } : {}),
     ...(phone ? { telephone: phone } : {}),
     ...(address ? { address } : {}),
