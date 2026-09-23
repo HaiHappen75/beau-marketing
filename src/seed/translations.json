@@ -1,0 +1,1996 @@
+[
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "ueber-uns"
+  },
+  "fields": {
+   "title": {
+    "de": "Über uns",
+    "da": "Om os",
+    "en": "About us"
+   },
+   "layout.0.kicker": {
+    "de": "Über uns",
+    "da": "Om os",
+    "en": "About us"
+   },
+   "layout.0.heading": {
+    "de": "Moin, ich bin *Stephan.*",
+    "da": "Moin, jeg er *Stephan.*",
+    "en": "Moin, I'm *Stephan.*"
+   },
+   "layout.0.text": {
+    "de": "Ich führe Beau Marketing in Satrup. Wenn du anrufst, landest du bei mir – nicht bei einer Hotline und nicht bei einem Projektmanager, der erst nachfragen muss.\n\nSeit 2016 baue ich Websites und Shops. Angefangen hat das mit einem eigenen Onlineshop.",
+    "da": "Jeg driver Beau Marketing i Satrup. Når du ringer, taler du med mig – ikke med en hotline og ikke med en projektleder, der først skal spørge sig for.\n\nSiden 2016 har jeg bygget hjemmesider og shops. Det begyndte med min egen webshop.",
+    "en": "I run Beau Marketing in Satrup. When you call, you get me – not a hotline, and not a project manager who has to check first.\n\nI have been building websites and shops since 2016. It started with an online shop of my own."
+   },
+   "layout.1.items.0.label": {
+    "de": "Früher",
+    "da": "Før",
+    "en": "Back then"
+   },
+   "layout.1.items.0.title": {
+    "de": "C16, dann alles andere",
+    "da": "C16, så alt det andet",
+    "en": "C16, then everything else"
+   },
+   "layout.1.items.0.text": {
+    "de": "Die erste Zeile Code auf einem Commodore C16. Seitdem ist immer irgendwas in Arbeit – heute auch Apps in Swift.",
+    "da": "Den første linje kode på en Commodore C16. Siden da er der altid noget i gang – i dag også apps i Swift.",
+    "en": "The first line of code on a Commodore C16. Something has been in the works ever since – today including apps in Swift."
+   },
+   "layout.1.items.1.label": {
+    "de": "2016",
+    "da": "2016",
+    "en": "2016"
+   },
+   "layout.1.items.1.title": {
+    "de": "Der eigene Onlineshop",
+    "da": "Den egen webshop",
+    "en": "An online shop of my own"
+   },
+   "layout.1.items.1.text": {
+    "de": "Ein eigener Shop, selbst gebaut, selbst vermarktet. Dabei gelernt, was ein Shop wirklich braucht – und was nicht.",
+    "da": "En egen shop, selv bygget, selv markedsført. Undervejs lærte jeg, hvad en shop virkelig har brug for – og hvad ikke.",
+    "en": "A shop of my own, built and marketed myself. Along the way I learned what a shop really needs – and what it doesn't."
+   },
+   "layout.1.items.2.label": {
+    "de": "Danach",
+    "da": "Derefter",
+    "en": "After that"
+   },
+   "layout.1.items.2.title": {
+    "de": "the working Dad → Nerdlicht",
+    "da": "the working Dad → Nerdlicht",
+    "en": "the working Dad → Nerdlicht"
+   },
+   "layout.1.items.2.text": {
+    "de": "Aus dem eigenen Shop wurde eine Agentur – erst ‚the working Dad‘, dann ‚Nerdlicht‘, heute Beau Marketing.",
+    "da": "Den egen shop blev til et bureau – først ‚the working Dad‘, så ‚Nerdlicht‘, i dag Beau Marketing.",
+    "en": "The shop turned into an agency – first ‘the working Dad’, then ‘Nerdlicht’, today Beau Marketing."
+   },
+   "layout.1.items.3.label": {
+    "de": "Heute",
+    "da": "I dag",
+    "en": "Today"
+   },
+   "layout.1.items.3.title": {
+    "de": "Beau Marketing GmbH",
+    "da": "Beau Marketing GmbH",
+    "en": "Beau Marketing GmbH"
+   },
+   "layout.1.items.3.text": {
+    "de": "Agentur für Betriebe im Norden und Markenhaus für eigene Produkte wie Tappi, Huusbook und Fjella.",
+    "da": "Bureau for virksomheder i Nordtyskland og brandhus for egne produkter som Tappi, Huusbook og Fjella.",
+    "en": "Agency for businesses in northern Germany and brand house for our own products such as Tappi, Huusbook and Fjella."
+   },
+   "layout.1.kicker": {
+    "de": "Die Geschichte",
+    "da": "Historien",
+    "en": "The story"
+   },
+   "layout.1.heading": {
+    "de": "Drei Namen, eine Sache.",
+    "da": "Tre navne, én sag.",
+    "en": "Three names, one thing."
+   },
+   "layout.1.intro": {
+    "de": "Software habe ich schon immer entwickelt – vom C16 bis Swift. Der Rest hat sich ergeben.",
+    "da": "Software har jeg altid udviklet – fra C16 til Swift. Resten kom af sig selv.",
+    "en": "I have always developed software – from the C16 to Swift. The rest followed."
+   },
+   "layout.2.kicker": {
+    "de": "Die Werkstatt",
+    "da": "Værkstedet",
+    "en": "The workshop"
+   },
+   "layout.2.heading": {
+    "de": "Nicht nur Pixel. Auch *Holz, Leder und Filament.*",
+    "da": "Ikke kun pixels. Også *træ, læder og filament.*",
+    "en": "Not just pixels. *Wood, leather and filament,* too."
+   },
+   "layout.2.text": {
+    "de": "In Satrup stehen ein Laser und ein 3D-Drucker. Damit entstehen Deko, Gravuren und Prototypen.",
+    "da": "I Satrup står en laser og en 3D-printer. Med dem laver vi pynt, graveringer og prototyper.",
+    "en": "In Satrup there is a laser and a 3D printer. We use them for decorations, engravings and prototypes."
+   },
+   "layout.3.kicker": {
+    "de": "Für die Region",
+    "da": "For regionen",
+    "en": "For the region"
+   },
+   "layout.3.heading": {
+    "de": "Was wir in Satrup und Mittelangeln unterstützen",
+    "da": "Det støtter vi i Satrup og Mittelangeln",
+    "en": "What we support in Satrup and Mittelangeln"
+   },
+   "layout.4.heading": {
+    "de": "Lass uns schnacken.",
+    "da": "Lad os snakke.",
+    "en": "Let's talk."
+   },
+   "layout.4.button.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "meta.title": {
+    "de": "Über uns – Stephan Beau und Beau Marketing",
+    "da": "Om os – Stephan Beau og Beau Marketing",
+    "en": "About us – Stephan Beau and Beau Marketing"
+   },
+   "meta.description": {
+    "de": "Beau Marketing aus Satrup: seit 2016 Websites und Shops, heute Agentur für Betriebe im Norden und Markenhaus.",
+    "da": "Beau Marketing fra Satrup: hjemmesider og shops siden 2016, i dag bureau for virksomheder i Nordtyskland og brandhus.",
+    "en": "Beau Marketing from Satrup: websites and shops since 2016, today an agency for businesses in northern Germany and a brand house."
+   }
+  }
+ },
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "marken"
+  },
+  "fields": {
+   "title": {
+    "de": "Marken",
+    "da": "Brands"
+   },
+   "layout.0.kicker": {
+    "de": "Markenhaus",
+    "da": "Brandhus"
+   },
+   "layout.0.heading": {
+    "de": "Wir bauen das auch *für uns selbst.*",
+    "da": "Vi bygger det også *til os selv.*"
+   },
+   "layout.0.text": {
+    "de": "Beau Marketing ist auch ein Markenhaus. Websites, Shops und Apps bauen wir auch für unsere eigenen Marken.",
+    "da": "Beau Marketing er også et brandhus. Hjemmesider, shops og apps bygger vi også til vores egne brands."
+   },
+   "layout.1.kicker": {
+    "de": "Unsere Marken",
+    "da": "Vores brands"
+   },
+   "layout.1.heading": {
+    "de": "Live und in Entwicklung.",
+    "da": "Live og under udvikling."
+   },
+   "layout.2.heading": {
+    "de": "Erzähl uns von deinem *Betrieb.*",
+    "da": "Fortæl os om din *virksomhed.*"
+   },
+   "layout.2.text": {
+    "de": "Ein Anruf reicht. Du bekommst eine ehrliche Einschätzung und einen Preis – ohne Verkaufsgespräch.",
+    "da": "Et opkald er nok. Du får en ærlig vurdering og en pris – uden salgssnak."
+   },
+   "layout.2.button.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt"
+   },
+   "meta.title": {
+    "de": "Markenhaus – unsere eigenen Marken",
+    "da": "Brandhus – vores egne brands"
+   },
+   "meta.description": {
+    "de": "Beau Marketing ist auch ein Markenhaus: Tappi, Huusbook, Fjella und weitere eigene Marken.",
+    "da": "Beau Marketing er også et brandhus: Tappi, Huusbook, Fjella og flere egne brands."
+   }
+  }
+ },
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "referenzen"
+  },
+  "fields": {
+   "title": {
+    "de": "Referenzen",
+    "da": "Referencer"
+   },
+   "layout.0.kicker": {
+    "de": "Referenzen",
+    "da": "Referencer"
+   },
+   "layout.0.heading": {
+    "de": "Echte Betriebe, echte Projekte.",
+    "da": "Rigtige virksomheder, rigtige projekter."
+   },
+   "layout.0.text": {
+    "de": "Eine Auswahl an Projekten – nach Leistung filterbar.",
+    "da": "Et udvalg af projekter – kan filtreres efter ydelse."
+   },
+   "layout.2.heading": {
+    "de": "Erzähl uns von deinem *Betrieb.*",
+    "da": "Fortæl os om din *virksomhed.*"
+   },
+   "layout.2.text": {
+    "de": "Ein Anruf reicht. Du bekommst eine ehrliche Einschätzung und einen Preis – ohne Verkaufsgespräch.",
+    "da": "Et opkald er nok. Du får en ærlig vurdering og en pris – uden salgssnak."
+   },
+   "layout.2.button.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt"
+   },
+   "meta.title": {
+    "de": "Referenzen – Websites, Shops und Druck für Betriebe",
+    "da": "Referencer – hjemmesider, shops og tryk til virksomheder"
+   },
+   "meta.description": {
+    "de": "Projekte von Beau Marketing: Websites, Shops und Werbemittel für Betriebe in Schleswig-Holstein und Ostwestfalen-Lippe.",
+    "da": "Projekter fra Beau Marketing: hjemmesider, shops og reklamemateriale til virksomheder i Slesvig-Holsten og Ostwestfalen-Lippe."
+   }
+  }
+ },
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "kontakt"
+  },
+  "fields": {
+   "title": {
+    "de": "Kontakt",
+    "da": "Kontakt",
+    "en": "Contact"
+   },
+   "layout.0.heading": {
+    "de": "Projekt *anfragen.*",
+    "da": "Forespørg *projekt.*",
+    "en": "Request a *project.*"
+   },
+   "layout.0.intro": {
+    "de": "Erzähl kurz, worum es geht. Stephan meldet sich persönlich – mit einer ehrlichen Einschätzung und einem Preis.",
+    "da": "Fortæl kort, hvad det drejer sig om. Stephan vender personligt tilbage – med en ærlig vurdering og en pris.",
+    "en": "Tell us briefly what it's about. Stephan gets back to you personally – with an honest assessment and a price."
+   },
+   "meta.title": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "meta.description": {
+    "de": "Erzähl kurz, worum es geht. Stephan meldet sich persönlich – mit einer ehrlichen Einschätzung und einem Preis.",
+    "da": "Fortæl kort, hvad det drejer sig om. Stephan vender personligt tilbage – med en ærlig vurdering og en pris.",
+    "en": "Tell us briefly what it's about. Stephan gets back to you personally – with an honest assessment and a price."
+   }
+  }
+ },
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "agentur"
+  },
+  "fields": {
+   "title": {
+    "de": "Agentur",
+    "da": "Bureau",
+    "en": "Agency"
+   },
+   "layout.0.kicker": {
+    "de": "Agentur",
+    "da": "Bureau",
+    "en": "Agency"
+   },
+   "layout.0.heading": {
+    "de": "Sechs Leistungen. *Drei Pakete.*",
+    "da": "Seks ydelser. *Tre pakker.*",
+    "en": "Six services. *Three packages.*"
+   },
+   "layout.0.text": {
+    "de": "Websites, Shopify-Shops, Betreuung, lokale Sichtbarkeit, Apps und Druck – für Betriebe in Schleswig-Holstein, Hamburg und Dänemark. Einzeln buchbar, zu festen Preisen.",
+    "da": "Hjemmesider, Shopify-shops, support, lokal synlighed, apps og tryk – til virksomheder i Slesvig-Holsten, Hamborg og Danmark. Kan bestilles enkeltvis, til faste priser.",
+    "en": "Websites, Shopify shops, support, local visibility, apps and print – for businesses in Schleswig-Holstein, Hamburg and Denmark. Bookable individually, at fixed prices."
+   },
+   "layout.0.primary.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "layout.0.secondary.label": {
+    "de": "Alle Preise",
+    "da": "Alle priser",
+    "en": "All prices"
+   },
+   "layout.1.kicker": {
+    "de": "Sechs Leistungen",
+    "da": "Seks ydelser",
+    "en": "Six services"
+   },
+   "layout.1.heading": {
+    "de": "Alles, was ein Betrieb online braucht. Und ein bisschen offline.",
+    "da": "Alt, hvad en virksomhed har brug for online. Og lidt offline.",
+    "en": "Everything a business needs online. And a little offline."
+   },
+   "layout.2.kicker": {
+    "de": "Drei Pakete",
+    "da": "Tre pakker",
+    "en": "Three packages"
+   },
+   "layout.2.heading": {
+    "de": "Erst der Auftritt. Dann läuft der *Betrieb.* Dann wirst du gefunden.",
+    "da": "Først tilstedeværelsen. Så kører *driften.* Så bliver du fundet.",
+    "en": "First your presence. Then *operations* run. Then you get found."
+   },
+   "layout.3.kicker": {
+    "de": "Preise",
+    "da": "Priser",
+    "en": "Prices"
+   },
+   "layout.3.heading": {
+    "de": "Alle Preise auf einen Blick.",
+    "da": "Alle priser på ét blik.",
+    "en": "All prices at a glance."
+   },
+   "layout.5.heading": {
+    "de": "Erzähl uns von deinem *Betrieb.*",
+    "da": "Fortæl os om din *virksomhed.*",
+    "en": "Tell us about your *business.*"
+   },
+   "layout.5.text": {
+    "de": "Ein Anruf reicht. Du bekommst eine ehrliche Einschätzung und einen Preis – ohne Verkaufsgespräch.",
+    "da": "Et opkald er nok. Du får en ærlig vurdering og en pris – uden salgssnak.",
+    "en": "One call is enough. You get an honest assessment and a price – no sales pitch."
+   },
+   "layout.5.button.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "meta.title": {
+    "de": "Agentur für Websites, Shopify-Shops und lokale Sichtbarkeit",
+    "da": "Bureau for hjemmesider, Shopify-shops og lokal synlighed",
+    "en": "Agency for websites, Shopify shops and local visibility"
+   },
+   "meta.description": {
+    "de": "Sechs Leistungen, drei Pakete, feste Preise: Websites, Shopify-Shops, Betreuung, lokale Sichtbarkeit, Apps und Druck für Betriebe im Norden.",
+    "da": "Seks ydelser, tre pakker, faste priser: hjemmesider, Shopify-shops, support, lokal synlighed, apps og tryk til virksomheder i Nordtyskland.",
+    "en": "Six services, three packages, fixed prices: websites, Shopify shops, support, local visibility, apps and print for businesses in northern Germany."
+   }
+  }
+ },
+ {
+  "collection": "pages",
+  "match": {
+   "slug": "start"
+  },
+  "fields": {
+   "title": {
+    "de": "Startseite",
+    "da": "Forside",
+    "en": "Home"
+   },
+   "layout.0.checks.2.text": {
+    "de": "Server in Deutschland",
+    "da": "Servere i Tyskland",
+    "en": "Servers in Germany"
+   },
+   "layout.0.kicker": {
+    "de": "Agentur aus Satrup · Mittelangeln · seit 2016",
+    "da": "Bureau fra Satrup · Mittelangeln · siden 2016",
+    "en": "Agency from Satrup · Mittelangeln · since 2016"
+   },
+   "layout.0.heading": {
+    "de": "Websites, Shops und Sichtbarkeit für Betriebe *im Norden.*",
+    "da": "Hjemmesider, shops og synlighed for virksomheder *i Nordtyskland.*",
+    "en": "Websites, shops and visibility for businesses *in the north.*"
+   },
+   "layout.0.text": {
+    "de": "Wir bauen Websites und Shopify-Shops für Handwerk, Handel und Gastro in Schleswig-Holstein, Hamburg und Dänemark – und halten sie danach am Laufen.",
+    "da": "Vi bygger hjemmesider og Shopify-shops til håndværk, handel og restauration i Slesvig-Holsten, Hamborg og Danmark – og holder dem kørende bagefter.",
+    "en": "We build websites and Shopify shops for trades, retail and hospitality in Schleswig-Holstein, Hamburg and Denmark – and keep them running afterwards."
+   },
+   "layout.0.captionText": {
+    "de": "Inhaber. Du sprichst direkt mit ihm.",
+    "da": "Indehaver. Du taler direkte med ham.",
+    "en": "Owner. You talk to him directly."
+   },
+   "layout.0.primary.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "layout.0.secondary.label": {
+    "de": "Preise ansehen",
+    "da": "Se priser",
+    "en": "See prices"
+   },
+   "layout.1.kicker": {
+    "de": "Drei Pakete",
+    "da": "Tre pakker",
+    "en": "Three packages"
+   },
+   "layout.1.heading": {
+    "de": "Erst der Auftritt. Dann läuft der *Betrieb.* Dann wirst du gefunden.",
+    "da": "Først tilstedeværelsen. Så kører *driften.* Så bliver du fundet.",
+    "en": "First your presence. Then *operations* run. Then you get found."
+   },
+   "layout.2.kicker": {
+    "de": "Sechs Leistungen",
+    "da": "Seks ydelser",
+    "en": "Six services"
+   },
+   "layout.2.heading": {
+    "de": "Alles, was ein Betrieb online braucht. Und ein bisschen offline.",
+    "da": "Alt, hvad en virksomhed har brug for online. Og lidt offline.",
+    "en": "Everything a business needs online. And a little offline."
+   },
+   "layout.3.kicker": {
+    "de": "Referenzen",
+    "da": "Referencer",
+    "en": "References"
+   },
+   "layout.3.heading": {
+    "de": "Echte Betriebe, echte Projekte.",
+    "da": "Rigtige virksomheder, rigtige projekter.",
+    "en": "Real businesses, real projects."
+   },
+   "layout.4.kicker": {
+    "de": "Markenhaus",
+    "da": "Brandhus",
+    "en": "Brand house"
+   },
+   "layout.4.heading": {
+    "de": "Wir bauen das auch *für uns selbst.*",
+    "da": "Vi bygger det også *til os selv.*",
+    "en": "We build it *for ourselves,* too."
+   },
+   "layout.4.intro": {
+    "de": "Beau Marketing ist auch ein Markenhaus. Websites, Shops und Apps bauen wir auch für unsere eigenen Marken.",
+    "da": "Beau Marketing er også et brandhus. Hjemmesider, shops og apps bygger vi også til vores egne brands.",
+    "en": "Beau Marketing is also a brand house. We build websites, shops and apps for our own brands, too."
+   },
+   "layout.5.kicker": {
+    "de": "Für die Region",
+    "da": "For regionen",
+    "en": "For the region"
+   },
+   "layout.5.heading": {
+    "de": "Satrup ist nicht nur unsere Adresse.",
+    "da": "Satrup er ikke kun vores adresse.",
+    "en": "Satrup is more than our address."
+   },
+   "layout.5.text": {
+    "de": "Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.",
+    "da": "Når sportsklubben har brug for trøjer eller 1.-klasserne for refleksveste, så klarer vi det. Uden stort postyr – det står her kun, så du ved, hvem vi er.",
+    "en": "When the sports club needs shirts or the first-graders need hi-vis vests, we take care of it. No fuss – it's only here so you know who we are."
+   },
+   "layout.5.link.label": {
+    "de": "Mehr über uns und die Region",
+    "da": "Mere om os og regionen",
+    "en": "More about us and the region"
+   },
+   "layout.7.kicker": {
+    "de": "Ratgeber",
+    "da": "Guide",
+    "en": "Guide"
+   },
+   "layout.7.heading": {
+    "de": "Frag erst mal den Ratgeber.",
+    "da": "Spørg først guiden.",
+    "en": "Ask the guide first."
+   },
+   "layout.8.heading": {
+    "de": "Erzähl uns von deinem *Betrieb.*",
+    "da": "Fortæl os om din *virksomhed.*",
+    "en": "Tell us about your *business.*"
+   },
+   "layout.8.text": {
+    "de": "Ein Anruf reicht. Du bekommst eine ehrliche Einschätzung und einen Preis – ohne Verkaufsgespräch.",
+    "da": "Et opkald er nok. Du får en ærlig vurdering og en pris – uden salgssnak.",
+    "en": "One call is enough. You get an honest assessment and a price – no sales pitch."
+   },
+   "layout.8.button.label": {
+    "de": "Projekt anfragen",
+    "da": "Forespørg projekt",
+    "en": "Request a project"
+   },
+   "meta.title": {
+    "de": "Webdesign & Shops in Schleswig-Holstein – Beau Marketing",
+    "da": "Webdesign og shops i Slesvig-Holsten – Beau Marketing",
+    "en": "Web design & shops in Schleswig-Holstein – Beau Marketing"
+   },
+   "meta.description": {
+    "de": "Websites, Shopify-Shops und lokale Sichtbarkeit für Betriebe in Schleswig-Holstein, Hamburg und Dänemark – feste Preise, Betreuung aus Satrup in Angeln.",
+    "da": "Hjemmesider, Shopify-shops og lokal synlighed for virksomheder i Slesvig-Holsten, Hamborg og Danmark – faste priser, support fra Satrup i Angel.",
+    "en": "Websites, Shopify shops and local visibility for businesses in Schleswig-Holstein, Hamburg and Denmark – fixed prices, support from Satrup in Angeln."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "websites"
+  },
+  "fields": {
+   "title": {
+    "de": "Websites",
+    "da": "Hjemmesider",
+    "en": "Websites"
+   },
+   "shortLabel": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   },
+   "shortDescription": {
+    "de": "Klar gebaut, schnell auf dem Handy.",
+    "da": "Klart bygget, hurtig på mobilen.",
+    "en": "Clearly built, fast on mobile."
+   },
+   "teaser": {
+    "de": "Klar aufgebaut, schnell auf dem Handy, von dir selbst pflegbar.",
+    "da": "Klart opbygget, hurtig på mobilen, og du kan selv vedligeholde den.",
+    "en": "Clearly structured, fast on mobile, easy for you to maintain."
+   },
+   "headline": {
+    "de": "Eine Website, die für deinen Betrieb *arbeitet.*",
+    "da": "En hjemmeside, der *arbejder* for din virksomhed.",
+    "en": "A website that *works* for your business."
+   },
+   "promise": {
+    "de": "Klar aufgebaut, schnell auf dem Handy, auf Servern in Deutschland. Fester Preis, und danach pflegst du sie selbst – oder wir machen das.",
+    "da": "Klart opbygget, hurtig på mobilen, på servere i Tyskland. Fast pris, og bagefter vedligeholder du den selv – eller vi gør det.",
+    "en": "Clearly structured, fast on mobile, on servers in Germany. A fixed price, and afterwards you maintain it yourself – or we do."
+   },
+   "deliverables.heading": {
+    "de": "Eine fertige Seite. Nicht nur ein Entwurf.",
+    "da": "En færdig side. Ikke bare et udkast.",
+    "en": "A finished site. Not just a draft."
+   },
+   "deliverables.text": {
+    "de": "Du lieferst Wissen über deinen Betrieb, wir den Rest. Am Ende steht eine Seite, die online ist und funktioniert.",
+    "da": "Du leverer viden om din virksomhed, vi resten. Til sidst står der en side, der er online og virker.",
+    "en": "You bring the knowledge about your business, we do the rest. In the end there is a site that is online and works."
+   },
+   "deliverables.items.0.item": {
+    "de": "Struktur und Texte, gemeinsam mit dir erarbeitet",
+    "da": "Struktur og tekster, udarbejdet sammen med dig",
+    "en": "Structure and copy, worked out together with you"
+   },
+   "deliverables.items.1.item": {
+    "de": "Design, das nach deinem Betrieb aussieht – nicht nach Baukasten",
+    "da": "Design, der ligner din virksomhed – ikke en byggeklods-løsning",
+    "en": "Design that looks like your business – not like a site builder"
+   },
+   "deliverables.items.2.item": {
+    "de": "Optimiert für Handy, Tablet und Desktop",
+    "da": "Optimeret til mobil, tablet og computer",
+    "en": "Optimised for phone, tablet and desktop"
+   },
+   "deliverables.items.3.item": {
+    "de": "Kontaktformular, Karte, Öffnungszeiten",
+    "da": "Kontaktformular, kort, åbningstider",
+    "en": "Contact form, map, opening hours"
+   },
+   "deliverables.items.4.item": {
+    "de": "Impressum und Datenschutz über eRecht24",
+    "da": "Impressum og privatlivspolitik via eRecht24",
+    "en": "Imprint and privacy policy via eRecht24"
+   },
+   "deliverables.items.5.item": {
+    "de": "Hosting auf Servern in Deutschland",
+    "da": "Hosting på servere i Tyskland",
+    "en": "Hosting on servers in Germany"
+   },
+   "deliverables.items.6.item": {
+    "de": "Grundlagen für Google: Ladezeit, Struktur, Metadaten",
+    "da": "Grundlaget for Google: indlæsningstid, struktur, metadata",
+    "en": "The basics for Google: load time, structure, metadata"
+   },
+   "deliverables.items.7.item": {
+    "de": "Einweisung, damit du Texte selbst ändern kannst",
+    "da": "Introduktion, så du selv kan ændre tekster",
+    "en": "Onboarding so you can change the copy yourself"
+   },
+   "packages.0.includes.0.item": {
+    "de": "Onepager oder wenige Unterseiten",
+    "da": "Onepager eller få undersider",
+    "en": "One-pager or a few subpages"
+   },
+   "packages.0.includes.1.item": {
+    "de": "Kontaktformular und Karte",
+    "da": "Kontaktformular og kort",
+    "en": "Contact form and map"
+   },
+   "packages.0.includes.2.item": {
+    "de": "Rechtstexte über eRecht24",
+    "da": "Juridiske tekster via eRecht24",
+    "en": "Legal texts via eRecht24"
+   },
+   "packages.0.name": {
+    "de": "Website Start",
+    "da": "Website Start",
+    "en": "Website Start"
+   },
+   "packages.0.kicker": {
+    "de": "Einstieg",
+    "da": "Start",
+    "en": "Entry"
+   },
+   "packages.0.description": {
+    "de": "Für Betriebe, die erst mal ordentlich gefunden werden wollen.",
+    "da": "Til virksomheder, der først og fremmest vil findes ordentligt.",
+    "en": "For businesses that first of all want to be found properly."
+   },
+   "packages.1.includes.0.item": {
+    "de": "bis 8 Seiten",
+    "da": "op til 8 sider",
+    "en": "up to 8 pages"
+   },
+   "packages.1.includes.1.item": {
+    "de": "CMS zum Selbstpflegen",
+    "da": "CMS til selv at vedligeholde",
+    "en": "CMS for editing it yourself"
+   },
+   "packages.1.includes.2.item": {
+    "de": "Rechtstexte automatisch aktuell",
+    "da": "Juridiske tekster automatisk opdaterede",
+    "en": "Legal texts kept up to date automatically"
+   },
+   "packages.1.includes.3.item": {
+    "de": "strukturierte Daten (JSON-LD)",
+    "da": "strukturerede data (JSON-LD)",
+    "en": "structured data (JSON-LD)"
+   },
+   "packages.1.includes.4.item": {
+    "de": "Basis-SEO",
+    "da": "Basis-SEO",
+    "en": "Basic SEO"
+   },
+   "packages.1.name": {
+    "de": "Website Standard",
+    "da": "Website Standard",
+    "en": "Website Standard"
+   },
+   "packages.1.kicker": {
+    "de": "Mehr Umfang",
+    "da": "Større omfang",
+    "en": "More scope"
+   },
+   "packages.1.description": {
+    "de": "Für Betriebe mit mehreren Leistungen, Team und Referenzen.",
+    "da": "Til virksomheder med flere ydelser, team og referencer.",
+    "en": "For businesses with several services, a team and references."
+   },
+   "steps.0.title": {
+    "de": "Erstgespräch",
+    "da": "Første samtale",
+    "en": "First conversation"
+   },
+   "steps.0.text": {
+    "de": "Du erzählst, wir hören zu. Am Telefon oder bei dir im Betrieb.",
+    "da": "Du fortæller, vi lytter. I telefonen eller hos dig i virksomheden.",
+    "en": "You talk, we listen. On the phone or at your business."
+   },
+   "steps.1.title": {
+    "de": "Angebot",
+    "da": "Tilbud",
+    "en": "Quote"
+   },
+   "steps.1.text": {
+    "de": "Schriftlich, mit Festpreis und Zeitplan.",
+    "da": "Skriftligt, med fast pris og tidsplan.",
+    "en": "In writing, with a fixed price and schedule."
+   },
+   "steps.2.title": {
+    "de": "Umsetzung",
+    "da": "Udførelse",
+    "en": "Build"
+   },
+   "steps.2.text": {
+    "de": "Wir bauen, du siehst jeden Zwischenstand.",
+    "da": "Vi bygger, du ser hvert delresultat.",
+    "en": "We build, you see every interim stage."
+   },
+   "steps.3.title": {
+    "de": "Livegang",
+    "da": "Go-live",
+    "en": "Go-live"
+   },
+   "steps.3.text": {
+    "de": "Wir schalten live und prüfen alles noch einmal.",
+    "da": "Vi går live og tjekker alt en gang til.",
+    "en": "We go live and check everything once more."
+   },
+   "steps.4.title": {
+    "de": "Betreuung",
+    "da": "Support",
+    "en": "Support"
+   },
+   "steps.4.text": {
+    "de": "Wenn du willst, bleiben wir dran.",
+    "da": "Hvis du vil, bliver vi ved.",
+    "en": "If you like, we stay on it."
+   },
+   "faq.0.question": {
+    "de": "Was kostet eine Website bei euch?",
+    "da": "Hvad koster en hjemmeside hos jer?",
+    "en": "What does a website cost with you?"
+   },
+   "faq.0.answer": {
+    "de": "Die Preise für Website Start und Website Standard stehen oben bei den Paketen, netto. Nach dem Erstgespräch bekommst du ein schriftliches Angebot mit Festpreis.",
+    "da": "Priserne for Website Start og Website Standard står ovenfor ved pakkerne, ekskl. moms. Efter den første samtale får du et skriftligt tilbud med fast pris.",
+    "en": "The prices for Website Start and Website Standard are listed with the packages above, net. After the first conversation you get a written quote with a fixed price."
+   },
+   "faq.1.question": {
+    "de": "Wie lange dauert das?",
+    "da": "Hvor lang tid tager det?",
+    "en": "How long does it take?"
+   },
+   "faq.1.answer": {
+    "de": "Das hängt vor allem daran, wie schnell Texte und Fotos da sind. Den Zeitplan schreiben wir ins Angebot.",
+    "da": "Det afhænger mest af, hvor hurtigt tekster og fotos er klar. Tidsplanen skriver vi i tilbuddet.",
+    "en": "That depends mostly on how quickly copy and photos are ready. We put the schedule in the quote."
+   },
+   "faq.2.question": {
+    "de": "Kann ich später selbst etwas ändern?",
+    "da": "Kan jeg selv ændre noget senere?",
+    "en": "Can I change things myself later?"
+   },
+   "faq.2.answer": {
+    "de": "Ja. Du bekommst eine Einweisung und kannst Texte, Bilder und Öffnungszeiten selbst pflegen.",
+    "da": "Ja. Du får en introduktion og kan selv vedligeholde tekster, billeder og åbningstider.",
+    "en": "Yes. You get an introduction and can maintain copy, images and opening hours yourself."
+   },
+   "faq.3.question": {
+    "de": "Brauche ich die Betreuung?",
+    "da": "Har jeg brug for support?",
+    "en": "Do I need the support plan?"
+   },
+   "faq.3.answer": {
+    "de": "Nicht zwingend. Ohne Updates wird aber jede Website mit der Zeit unsicher.",
+    "da": "Ikke nødvendigvis. Men uden opdateringer bliver enhver hjemmeside med tiden usikker.",
+    "en": "Not necessarily. But without updates, every website becomes insecure over time."
+   },
+   "faq.4.question": {
+    "de": "Was passiert mit meiner alten Seite?",
+    "da": "Hvad sker der med min gamle side?",
+    "en": "What happens to my old site?"
+   },
+   "faq.4.answer": {
+    "de": "Wir übernehmen, was gut ist, leiten alte Adressen um und kümmern uns um den Umzug der Domain.",
+    "da": "Vi overtager det, der er godt, viderestiller gamle adresser og tager os af flytningen af domænet.",
+    "en": "We keep what is good, redirect old addresses and take care of moving the domain."
+   },
+   "cta.heading": {
+    "de": "Lass uns über deine Website reden.",
+    "da": "Lad os tale om din hjemmeside.",
+    "en": "Let's talk about your website."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "shopify-shops"
+  },
+  "fields": {
+   "title": {
+    "de": "Shopify-Shops",
+    "da": "Shopify-shops",
+    "en": "Shopify shops"
+   },
+   "shortLabel": {
+    "de": "Shop",
+    "da": "Shop",
+    "en": "Shop"
+   },
+   "shortDescription": {
+    "de": "Verkaufen ohne Technikfrust.",
+    "da": "Sælg uden teknikbesvær.",
+    "en": "Selling without tech hassle."
+   },
+   "teaser": {
+    "de": "Verkaufen ohne Technikfrust – inklusive aller Pflichtangaben.",
+    "da": "Sælg uden teknikbesvær – inklusive alle lovpligtige oplysninger.",
+    "en": "Selling without tech hassle – including all mandatory information."
+   },
+   "headline": {
+    "de": "Ein Shopify-Shop, der *verkauft.*",
+    "da": "En Shopify-shop, der *sælger.*",
+    "en": "A Shopify shop that *sells.*"
+   },
+   "promise": {
+    "de": "Eingerichtet, mit allen Pflichtangaben umgesetzt und so gebaut, dass du ihn selbst bedienen kannst. Wir betreiben selbst einen – wir wissen, wo es hakt.",
+    "da": "Sat op, med alle lovpligtige oplysninger implementeret og bygget, så du selv kan betjene den. Vi driver selv en – vi ved, hvor det driller.",
+    "en": "Set up, with all mandatory information implemented, and built so you can run it yourself. We run one ourselves – we know where things get stuck."
+   },
+   "deliverables.heading": {
+    "de": "Ein Shop, der am ersten Tag Bestellungen annimmt.",
+    "da": "En shop, der tager imod ordrer fra første dag.",
+    "en": "A shop that takes orders on day one."
+   },
+   "deliverables.text": {
+    "de": "Vom Theme bis zur ersten Bestellung. Inklusive der Pflichtangaben, die viele Shops noch nicht haben.",
+    "da": "Fra tema til første ordre. Inklusive de lovpligtige oplysninger, som mange shops endnu ikke har.",
+    "en": "From the theme to the first order. Including the mandatory information many shops still lack."
+   },
+   "deliverables.items.0.item": {
+    "de": "Shopify eingerichtet: Theme, Produkte, Versand, Steuern",
+    "da": "Shopify sat op: tema, produkter, forsendelse, moms",
+    "en": "Shopify set up: theme, products, shipping, taxes"
+   },
+   "deliverables.items.1.item": {
+    "de": "Zahlungsarten eingerichtet und getestet",
+    "da": "Betalingsmetoder sat op og testet",
+    "en": "Payment methods set up and tested"
+   },
+   "deliverables.items.2.item": {
+    "de": "Rechtstexte über einen Rechtstexte-Dienst wie eRecht24",
+    "da": "Juridiske tekster via en tjeneste som eRecht24",
+    "en": "Legal texts via a legal-text service such as eRecht24"
+   },
+   "deliverables.items.3.item": {
+    "de": "Widerrufsbutton und EU-Gewährleistungslabel",
+    "da": "Fortrydelsesknap og EU-garantimærke",
+    "en": "Withdrawal button and EU warranty label"
+   },
+   "deliverables.items.4.item": {
+    "de": "Herstellerangaben zur Produktsicherheit",
+    "da": "Producentoplysninger om produktsikkerhed",
+    "en": "Manufacturer information on product safety"
+   },
+   "deliverables.items.5.item": {
+    "de": "Anbindung an Versand oder Warenwirtschaft nach Bedarf",
+    "da": "Integration med forsendelse eller lagerstyring efter behov",
+    "en": "Connection to shipping or inventory management as needed"
+   },
+   "deliverables.items.6.item": {
+    "de": "Optimiert für Handy – da kaufen die meisten",
+    "da": "Optimeret til mobil – det er dér, de fleste køber",
+    "en": "Optimised for mobile – that's where most people buy"
+   },
+   "deliverables.items.7.item": {
+    "de": "Einweisung für dich und dein Team",
+    "da": "Introduktion for dig og dit team",
+    "en": "Onboarding for you and your team"
+   },
+   "packages.0.includes.0.item": {
+    "de": "Standard-Theme",
+    "da": "Standardtema",
+    "en": "Standard theme"
+   },
+   "packages.0.includes.1.item": {
+    "de": "bis ca. 30 Produkte",
+    "da": "op til ca. 30 produkter",
+    "en": "up to approx. 30 products"
+   },
+   "packages.0.includes.2.item": {
+    "de": "Zahlungen und Versand",
+    "da": "Betaling og forsendelse",
+    "en": "Payments and shipping"
+   },
+   "packages.0.includes.3.item": {
+    "de": "Rechtstexte über einen Rechtstexte-Dienst",
+    "da": "Juridiske tekster via en tjeneste",
+    "en": "Legal texts via a legal-text service"
+   },
+   "packages.0.includes.4.item": {
+    "de": "Widerrufsbutton",
+    "da": "Fortrydelsesknap",
+    "en": "Withdrawal button"
+   },
+   "packages.0.includes.5.item": {
+    "de": "EU-Gewährleistungslabel",
+    "da": "EU-garantimærke",
+    "en": "EU warranty label"
+   },
+   "packages.0.includes.6.item": {
+    "de": "GPSR-Angaben",
+    "da": "GPSR-oplysninger",
+    "en": "GPSR information"
+   },
+   "packages.0.includes.7.item": {
+    "de": "Mail-Authentifizierung",
+    "da": "Mail-autentificering",
+    "en": "Email authentication"
+   },
+   "packages.0.includes.8.item": {
+    "de": "Google Search Console",
+    "da": "Google Search Console",
+    "en": "Google Search Console"
+   },
+   "packages.0.name": {
+    "de": "Shop Start",
+    "da": "Shop Start",
+    "en": "Shop Start"
+   },
+   "packages.0.kicker": {
+    "de": "Einstieg",
+    "da": "Start",
+    "en": "Entry"
+   },
+   "packages.0.description": {
+    "de": "Für ein überschaubares Sortiment, das schnell online soll.",
+    "da": "Til et overskueligt sortiment, der hurtigt skal online.",
+    "en": "For a manageable range that needs to go online quickly."
+   },
+   "packages.1.includes.0.item": {
+    "de": "Theme-Anpassungen",
+    "da": "Tilpasninger af tema",
+    "en": "Theme customisations"
+   },
+   "packages.1.includes.1.item": {
+    "de": "Produktanlage für bis zu ca. 150 Produkte",
+    "da": "Oprettelse af op til ca. 150 produkter",
+    "en": "Product setup for up to approx. 150 products"
+   },
+   "packages.1.includes.2.item": {
+    "de": "Magazin/Blog mit SEO-Setup",
+    "da": "Magasin/blog med SEO-opsætning",
+    "en": "Magazine/blog with SEO setup"
+   },
+   "packages.1.name": {
+    "de": "Shop Standard",
+    "da": "Shop Standard",
+    "en": "Shop Standard"
+   },
+   "packages.1.kicker": {
+    "de": "Mehr Umfang",
+    "da": "Større omfang",
+    "en": "More scope"
+   },
+   "packages.1.description": {
+    "de": "Für größere Sortimente und Anbindungen.",
+    "da": "Til større sortimenter og integrationer.",
+    "en": "For larger ranges and integrations."
+   },
+   "packages.2.includes.0.item": {
+    "de": "Widerrufsbutton",
+    "da": "Fortrydelsesknap",
+    "en": "Withdrawal button"
+   },
+   "packages.2.includes.1.item": {
+    "de": "EU-Gewährleistungslabel",
+    "da": "EU-garantimærke",
+    "en": "EU warranty label"
+   },
+   "packages.2.includes.2.item": {
+    "de": "GPSR-Angaben",
+    "da": "GPSR-oplysninger",
+    "en": "GPSR information"
+   },
+   "packages.2.includes.3.item": {
+    "de": "Zahlarten nach CCD II einrichten",
+    "da": "Opsætte betalingsmetoder efter CCD II",
+    "en": "Set up payment methods according to CCD II"
+   },
+   "packages.2.name": {
+    "de": "Pflichtangaben-Update",
+    "da": "Opdatering af lovpligtige oplysninger",
+    "en": "Mandatory information update"
+   },
+   "packages.2.kicker": {
+    "de": "Für bestehende Shops",
+    "da": "Til eksisterende shops",
+    "en": "For existing shops"
+   },
+   "packages.2.description": {
+    "de": "Dein Shop läuft schon, aber die neuen Pflichten fehlen noch? Wir rüsten nach – ohne Relaunch.",
+    "da": "Din shop kører allerede, men de nye pligter mangler? Vi eftermonterer – uden relaunch.",
+    "en": "Your shop is already running, but the new obligations are still missing? We retrofit them – without a relaunch."
+   },
+   "steps.0.title": {
+    "de": "Erstgespräch",
+    "da": "Første samtale",
+    "en": "First conversation"
+   },
+   "steps.0.text": {
+    "de": "Du erzählst, wir hören zu. Am Telefon oder bei dir im Betrieb.",
+    "da": "Du fortæller, vi lytter. I telefonen eller hos dig i virksomheden.",
+    "en": "You talk, we listen. On the phone or at your business."
+   },
+   "steps.1.title": {
+    "de": "Angebot",
+    "da": "Tilbud",
+    "en": "Quote"
+   },
+   "steps.1.text": {
+    "de": "Schriftlich, mit Festpreis und Zeitplan.",
+    "da": "Skriftligt, med fast pris og tidsplan.",
+    "en": "In writing, with a fixed price and schedule."
+   },
+   "steps.2.title": {
+    "de": "Umsetzung",
+    "da": "Udførelse",
+    "en": "Build"
+   },
+   "steps.2.text": {
+    "de": "Wir bauen, du siehst jeden Zwischenstand.",
+    "da": "Vi bygger, du ser hvert delresultat.",
+    "en": "We build, you see every interim stage."
+   },
+   "steps.3.title": {
+    "de": "Livegang",
+    "da": "Go-live",
+    "en": "Go-live"
+   },
+   "steps.3.text": {
+    "de": "Wir schalten live und prüfen alles noch einmal.",
+    "da": "Vi går live og tjekker alt en gang til.",
+    "en": "We go live and check everything once more."
+   },
+   "steps.4.title": {
+    "de": "Betreuung",
+    "da": "Support",
+    "en": "Support"
+   },
+   "steps.4.text": {
+    "de": "Wenn du willst, bleiben wir dran.",
+    "da": "Hvis du vil, bliver vi ved.",
+    "en": "If you like, we stay on it."
+   },
+   "faq.0.question": {
+    "de": "Was kostet ein Shopify-Shop?",
+    "da": "Hvad koster en Shopify-shop?",
+    "en": "What does a Shopify shop cost?"
+   },
+   "faq.0.answer": {
+    "de": "Die Preise für Shop Start und Shop Standard stehen oben bei den Paketen, netto. Dazu kommen die monatlichen Shopify-Gebühren, die du direkt an Shopify zahlst.",
+    "da": "Priserne for Shop Start og Shop Standard står ovenfor ved pakkerne, ekskl. moms. Dertil kommer de månedlige Shopify-gebyrer, som du betaler direkte til Shopify.",
+    "en": "The prices for Shop Start and Shop Standard are listed with the packages above, net. On top come the monthly Shopify fees, which you pay directly to Shopify."
+   },
+   "faq.1.question": {
+    "de": "Warum Shopify und nicht WooCommerce?",
+    "da": "Hvorfor Shopify og ikke WooCommerce?",
+    "en": "Why Shopify and not WooCommerce?"
+   },
+   "faq.1.answer": {
+    "de": "Weil du dich um Server, Updates und Sicherheit nicht kümmern musst. Für die meisten kleinen Shops ist das die ruhigere Wahl.",
+    "da": "Fordi du ikke skal bekymre dig om servere, opdateringer og sikkerhed. For de fleste små shops er det det roligere valg.",
+    "en": "Because you don't have to worry about servers, updates and security. For most small shops that is the calmer choice."
+   },
+   "faq.2.question": {
+    "de": "Mein Shop läuft schon. Könnt ihr nur die Pflichtangaben nachrüsten?",
+    "da": "Min shop kører allerede. Kan I blot eftermontere de lovpligtige oplysninger?",
+    "en": "My shop is already running. Can you just retrofit the mandatory information?"
+   },
+   "faq.2.answer": {
+    "de": "Ja, mit dem Pflichtangaben-Update: Widerrufsbutton, EU-Gewährleistungslabel und Herstellerangaben zur Produktsicherheit.",
+    "da": "Ja, med opdateringen af lovpligtige oplysninger: fortrydelsesknap, EU-garantimærke og producentoplysninger om produktsikkerhed.",
+    "en": "Yes, with the mandatory information update: withdrawal button, EU warranty label and manufacturer information on product safety."
+   },
+   "faq.3.question": {
+    "de": "Kann ich auch nach Dänemark verkaufen?",
+    "da": "Kan jeg også sælge til Danmark?",
+    "en": "Can I sell to Denmark, too?"
+   },
+   "faq.3.answer": {
+    "de": "Grundsätzlich ja, über Shopify Markets. Für Dänemark brauchst du dänische Rechtstexte – das klären wir vorher.",
+    "da": "I princippet ja, via Shopify Markets. Til Danmark skal du bruge danske juridiske tekster – det afklarer vi på forhånd.",
+    "en": "In principle yes, via Shopify Markets. For Denmark you need Danish legal texts – we sort that out beforehand."
+   },
+   "inHouse.heading": {
+    "de": "Fjella – unser eigener *Shopify-Shop.*",
+    "da": "Fjella – vores egen *Shopify-shop.*",
+    "en": "Fjella – our own *Shopify shop.*"
+   },
+   "inHouse.text": {
+    "de": "Fjella ist unser eigener Shopify-Shop. Widerrufsbutton, EU-Gewährleistungslabel und Produkt-Pipeline haben wir dort selbst umgesetzt.",
+    "da": "Fjella er vores egen Shopify-shop. Fortrydelsesknap, EU-garantimærke og produkt-pipeline har vi selv implementeret dér.",
+    "en": "Fjella is our own Shopify shop. We implemented the withdrawal button, EU warranty label and product pipeline there ourselves."
+   },
+   "inHouse.items.0.item": {
+    "de": "Shopify-Theme, Versand und Zahlungen eingerichtet",
+    "da": "Shopify-tema, forsendelse og betaling sat op",
+    "en": "Shopify theme, shipping and payments set up"
+   },
+   "inHouse.items.1.item": {
+    "de": "Widerrufsbutton und Pflichtangaben im Einsatz",
+    "da": "Fortrydelsesknap og lovpligtige oplysninger i brug",
+    "en": "Withdrawal button and mandatory information in use"
+   },
+   "inHouse.items.2.item": {
+    "de": "Von uns betreut",
+    "da": "Drives af os",
+    "en": "Supported by us"
+   },
+   "inHouse.linkLabel": {
+    "de": "Fjella ansehen",
+    "da": "Se Fjella",
+    "en": "View Fjella"
+   },
+   "cta.heading": {
+    "de": "Lass uns über deinen Shop reden.",
+    "da": "Lad os tale om din shop.",
+    "en": "Let's talk about your shop."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "betreuung-pflege"
+  },
+  "fields": {
+   "title": {
+    "de": "Betreuung & Pflege",
+    "da": "Support og vedligeholdelse",
+    "en": "Support & maintenance"
+   },
+   "shortLabel": {
+    "de": "Betreuung",
+    "da": "Support",
+    "en": "Support"
+   },
+   "shortDescription": {
+    "de": "Updates, Backups, Rechtstexte via eRecht24.",
+    "da": "Opdateringer, backups, juridiske tekster via eRecht24.",
+    "en": "Updates, backups, legal texts via eRecht24."
+   },
+   "teaser": {
+    "de": "Updates, Backups, Rechtstexte über eRecht24. Du merkst nichts davon.",
+    "da": "Opdateringer, backups, juridiske tekster via eRecht24. Du mærker intet til det.",
+    "en": "Updates, backups, legal texts via eRecht24. You won't notice a thing."
+   },
+   "headline": {
+    "de": "Damit deine Website *am Laufen bleibt.*",
+    "da": "Så din hjemmeside *bliver ved med at køre.*"
+   },
+   "promise": {
+    "de": "Hosting, Backups, Updates und Rechtstexte in einem monatlichen Paket. Impressum und Datenschutz halten wir über die eRecht24-Partnerschaft automatisch aktuell.",
+    "da": "Hosting, backups, opdateringer og juridiske tekster i én månedlig pakke. Impressum og privatlivspolitik holder vi automatisk opdateret via eRecht24-partnerskabet."
+   },
+   "deliverables.heading": {
+    "de": "Was im Abo steckt.",
+    "da": "Det indeholder abonnementet."
+   },
+   "deliverables.items.0.item": {
+    "de": "Hosting auf Servern in Deutschland",
+    "da": "Hosting på servere i Tyskland",
+    "en": "Hosting on servers in Germany"
+   },
+   "deliverables.items.1.item": {
+    "de": "SSL-Zertifikat",
+    "da": "SSL-certifikat",
+    "en": "SSL certificate"
+   },
+   "deliverables.items.2.item": {
+    "de": "Regelmäßige Backups",
+    "da": "Regelmæssige backups",
+    "en": "Regular backups"
+   },
+   "deliverables.items.3.item": {
+    "de": "Monitoring",
+    "da": "Overvågning",
+    "en": "Monitoring"
+   },
+   "deliverables.items.4.item": {
+    "de": "Updates und Sicherheit",
+    "da": "Opdateringer og sikkerhed",
+    "en": "Updates and security"
+   },
+   "deliverables.items.5.item": {
+    "de": "Impressum und Datenschutz automatisch aktuell",
+    "da": "Impressum og privatlivspolitik automatisk opdateret",
+    "en": "Imprint and privacy policy kept up to date automatically"
+   },
+   "deliverables.items.6.item": {
+    "de": "Änderungskontingent ab Plus",
+    "da": "Ændringskvote fra Plus",
+    "en": "Change allowance from Plus"
+   },
+   "deliverables.items.7.item": {
+    "de": "Monatsreport ab Plus",
+    "da": "Månedsrapport fra Plus",
+    "en": "Monthly report from Plus"
+   },
+   "packages.0.includes.0.item": {
+    "de": "Hosting",
+    "da": "Hosting",
+    "en": "Hosting"
+   },
+   "packages.0.includes.1.item": {
+    "de": "Backups",
+    "da": "Backups",
+    "en": "Backups"
+   },
+   "packages.0.includes.2.item": {
+    "de": "Monitoring",
+    "da": "Overvågning",
+    "en": "Monitoring"
+   },
+   "packages.0.includes.3.item": {
+    "de": "Updates",
+    "da": "Opdateringer",
+    "en": "Updates"
+   },
+   "packages.0.includes.4.item": {
+    "de": "Rechtstexte automatisch aktuell",
+    "da": "Juridiske tekster automatisk opdaterede",
+    "en": "Legal texts kept up to date automatically"
+   },
+   "packages.0.name": {
+    "de": "Basis",
+    "da": "Basis",
+    "en": "Basic"
+   },
+   "packages.1.includes.0.item": {
+    "de": "alles aus Basis",
+    "da": "alt fra Basis",
+    "en": "everything in Basic"
+   },
+   "packages.1.includes.1.item": {
+    "de": "1 h Änderungen pro Monat",
+    "da": "1 time ændringer pr. måned",
+    "en": "1 h of changes per month"
+   },
+   "packages.1.includes.2.item": {
+    "de": "Monatsreport",
+    "da": "Månedsrapport",
+    "en": "Monthly report"
+   },
+   "packages.1.name": {
+    "de": "Plus",
+    "da": "Plus",
+    "en": "Plus"
+   },
+   "packages.2.includes.0.item": {
+    "de": "alles aus Plus",
+    "da": "alt fra Plus",
+    "en": "everything in Plus"
+   },
+   "packages.2.includes.1.item": {
+    "de": "Pflege des Google-Unternehmensprofils",
+    "da": "Vedligeholdelse af Google-virksomhedsprofilen",
+    "en": "Google Business Profile upkeep"
+   },
+   "packages.2.includes.2.item": {
+    "de": "2 h Änderungen pro Monat",
+    "da": "2 timer ændringer pr. måned",
+    "en": "2 h of changes per month"
+   },
+   "packages.2.name": {
+    "de": "Pro",
+    "da": "Pro",
+    "en": "Pro"
+   },
+   "packages.3.includes.0.item": {
+    "de": "App- und Theme-Updates",
+    "da": "App- og temaopdateringer",
+    "en": "App and theme updates"
+   },
+   "packages.3.includes.1.item": {
+    "de": "neue Pflichtangaben",
+    "da": "nye lovpligtige oplysninger",
+    "en": "new mandatory information"
+   },
+   "packages.3.includes.2.item": {
+    "de": "kleine Änderungen",
+    "da": "små ændringer",
+    "en": "small changes"
+   },
+   "packages.3.includes.3.item": {
+    "de": "1 h inklusive",
+    "da": "1 time inkluderet",
+    "en": "1 h included"
+   },
+   "packages.3.name": {
+    "de": "Shop-Betreuung",
+    "da": "Shop-support",
+    "en": "Shop support"
+   },
+   "packages.3.description": {
+    "de": "Damit der Shop läuft, während du verkaufst.",
+    "da": "Så shoppen kører, mens du sælger."
+   },
+   "faq.0.question": {
+    "de": "Brauche ich die Betreuung?",
+    "da": "Har jeg brug for support?",
+    "en": "Do I need the support plan?"
+   },
+   "faq.0.answer": {
+    "de": "Nicht zwingend. Ohne Updates wird aber jede Website mit der Zeit unsicher.",
+    "da": "Ikke nødvendigvis. Men uden opdateringer bliver enhver hjemmeside med tiden usikker.",
+    "en": "Not necessarily. But without updates, every website becomes insecure over time."
+   },
+   "cta.heading": {
+    "de": "Lass uns über die Betreuung reden.",
+    "da": "Lad os tale om support."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "lokale-sichtbarkeit"
+  },
+  "fields": {
+   "title": {
+    "de": "Lokale Sichtbarkeit",
+    "da": "Lokal synlighed",
+    "en": "Local visibility"
+   },
+   "shortLabel": {
+    "de": "Sichtbarkeit",
+    "da": "Synlighed",
+    "en": "Visibility"
+   },
+   "shortDescription": {
+    "de": "Google-Unternehmensprofil und lokales SEO.",
+    "da": "Google-virksomhedsprofil og lokal SEO.",
+    "en": "Google Business Profile and local SEO."
+   },
+   "teaser": {
+    "de": "Google-Unternehmensprofil und lokales SEO, damit man dich im Ort findet.",
+    "da": "Google-virksomhedsprofil og lokal SEO, så man finder dig i dit område.",
+    "en": "Google Business Profile and local SEO, so people nearby find you."
+   },
+   "headline": {
+    "de": "Lokale Sichtbarkeit für Betriebe *in Schleswig-Holstein.*",
+    "da": "Lokal synlighed for virksomheder *i Slesvig-Holsten.*"
+   },
+   "promise": {
+    "de": "Google-Unternehmensprofil, Bewertungen und lokales SEO – monatlich betreut, mit einem kurzen Bericht.",
+    "da": "Google-virksomhedsprofil, anmeldelser og lokal SEO – passet hver måned, med en kort rapport."
+   },
+   "deliverables.heading": {
+    "de": "Gefunden werden, wo du arbeitest.",
+    "da": "Bliv fundet, hvor du arbejder."
+   },
+   "deliverables.items.0.item": {
+    "de": "Google-Unternehmensprofil gepflegt",
+    "da": "Google-virksomhedsprofil vedligeholdt",
+    "en": "Google Business Profile maintained"
+   },
+   "deliverables.items.1.item": {
+    "de": "Lokales SEO für deine Orte",
+    "da": "Lokal SEO for dine byer",
+    "en": "Local SEO for your towns"
+   },
+   "deliverables.items.2.item": {
+    "de": "Bewertungen im Blick",
+    "da": "Anmeldelser under opsyn",
+    "en": "Reviews monitored"
+   },
+   "deliverables.items.3.item": {
+    "de": "Lokale Landingpages",
+    "da": "Lokale landingpages",
+    "en": "Local landing pages"
+   },
+   "deliverables.items.4.item": {
+    "de": "Technisches SEO",
+    "da": "Teknisk SEO",
+    "en": "Technical SEO"
+   },
+   "deliverables.items.5.item": {
+    "de": "Monatlicher Bericht, kurz und lesbar",
+    "da": "Månedlig rapport, kort og læsbar",
+    "en": "Monthly report, short and readable"
+   },
+   "packages.0.includes.0.item": {
+    "de": "Google-Unternehmensprofil",
+    "da": "Google-virksomhedsprofil",
+    "en": "Google Business Profile"
+   },
+   "packages.0.includes.1.item": {
+    "de": "Bewertungen",
+    "da": "Anmeldelser",
+    "en": "Reviews"
+   },
+   "packages.0.includes.2.item": {
+    "de": "lokale Landingpages",
+    "da": "lokale landingpages",
+    "en": "local landing pages"
+   },
+   "packages.0.includes.3.item": {
+    "de": "technisches SEO",
+    "da": "teknisk SEO",
+    "en": "technical SEO"
+   },
+   "packages.0.includes.4.item": {
+    "de": "Monatsreport aus der Search Console",
+    "da": "Månedsrapport fra Search Console",
+    "en": "Monthly report from Search Console"
+   },
+   "packages.0.name": {
+    "de": "Sichtbarkeit",
+    "da": "Synlighed",
+    "en": "Visibility"
+   },
+   "packages.0.description": {
+    "de": "Für Betriebe, die in ihrer Gegend gefunden werden wollen.",
+    "da": "Til virksomheder, der vil findes i deres område."
+   },
+   "packages.0.term": {
+    "de": "Mindestlaufzeit 6 Monate",
+    "da": "Mindste løbetid 6 måneder",
+    "en": "Minimum term 6 months"
+   },
+   "cta.heading": {
+    "de": "Lass uns über deine Sichtbarkeit reden.",
+    "da": "Lad os tale om din synlighed."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "apps-software"
+  },
+  "fields": {
+   "title": {
+    "de": "Apps & Software",
+    "da": "Apps og software",
+    "en": "Apps & software"
+   },
+   "shortLabel": {
+    "de": "Apps",
+    "da": "Apps",
+    "en": "Apps"
+   },
+   "shortDescription": {
+    "de": "Wenn es ein eigenes Werkzeug sein muss.",
+    "da": "Når det skal være et eget værktøj.",
+    "en": "When it has to be a tool of your own."
+   },
+   "teaser": {
+    "de": "Wenn dein Betrieb ein eigenes Werkzeug braucht. Von der Idee bis zur App.",
+    "da": "Når din virksomhed har brug for et eget værktøj. Fra idé til app.",
+    "en": "When your business needs a tool of its own. From idea to app."
+   },
+   "headline": {
+    "de": "Wenn es ein eigenes *Werkzeug* sein muss.",
+    "da": "Når det skal være et eget *værktøj.*"
+   },
+   "promise": {
+    "de": "Wir übernehmen ausgewählte Auftragsarbeiten in Software- und App-Entwicklung. Der Preis richtet sich nach dem Vorhaben.",
+    "da": "Vi påtager os udvalgte opgaver inden for software- og app-udvikling. Prisen afhænger af projektet."
+   },
+   "deliverables.heading": {
+    "de": "Von der Idee bis zur fertigen App.",
+    "da": "Fra idé til færdig app."
+   },
+   "deliverables.text": {
+    "de": "Unsere eigenen Marken bauen wir genauso: Huusbook, Tappi, FamilyManager und Anwurf.",
+    "da": "Vores egne brands bygger vi på samme måde: Huusbook, Tappi, FamilyManager og Anwurf."
+   },
+   "deliverables.items.0.item": {
+    "de": "Native Apps für iOS, Android und macOS",
+    "da": "Native apps til iOS, Android og macOS",
+    "en": "Native apps for iOS, Android and macOS"
+   },
+   "deliverables.items.1.item": {
+    "de": "Web-Plattformen, Portale und Dashboards",
+    "da": "Webplatforme, portaler og dashboards",
+    "en": "Web platforms, portals and dashboards"
+   },
+   "deliverables.items.2.item": {
+    "de": "Von der Idee über den Prototyp bis zum fertigen Produkt",
+    "da": "Fra idé over prototype til færdigt produkt",
+    "en": "From idea to prototype to finished product"
+   },
+   "cta.heading": {
+    "de": "Lass uns über dein Vorhaben reden.",
+    "da": "Lad os tale om dit projekt."
+   }
+  }
+ },
+ {
+  "collection": "services",
+  "match": {
+   "slug": "druck-werbemittel"
+  },
+  "fields": {
+   "title": {
+    "de": "Druck & Werbemittel",
+    "da": "Tryk og reklamemateriale",
+    "en": "Print & promotional items"
+   },
+   "shortLabel": {
+    "de": "Druck",
+    "da": "Tryk",
+    "en": "Print"
+   },
+   "shortDescription": {
+    "de": "Gestaltung und Druck über Partnerdruckereien.",
+    "da": "Design og tryk via partnertrykkerier.",
+    "en": "Design and printing via partner print shops."
+   },
+   "teaser": {
+    "de": "Flyer, Visitenkarten, Banner – gestaltet von uns, gedruckt bei Partnerdruckereien.",
+    "da": "Flyers, visitkort, bannere – designet af os, trykt hos partnertrykkerier.",
+    "en": "Flyers, business cards, banners – designed by us, printed by partner print shops."
+   },
+   "promise": {
+    "de": "Wir gestalten Flyer, Visitenkarten, Banner und mehr. Gedruckt wird bei unseren Partnerdruckereien.",
+    "da": "Vi designer flyers, visitkort, bannere og mere. Trykket sker hos vores partnertrykkerier."
+   },
+   "deliverables.heading": {
+    "de": "Gestaltet, gedruckt, geliefert.",
+    "da": "Designet, trykt, leveret."
+   },
+   "deliverables.items.0.item": {
+    "de": "Gestaltung",
+    "da": "Design",
+    "en": "Design"
+   },
+   "deliverables.items.1.item": {
+    "de": "Flyer und Visitenkarten",
+    "da": "Flyers og visitkort",
+    "en": "Flyers and business cards"
+   },
+   "deliverables.items.2.item": {
+    "de": "Banner und Roll-ups",
+    "da": "Bannere og roll-ups",
+    "en": "Banners and roll-ups"
+   },
+   "deliverables.items.3.item": {
+    "de": "Druck über Partnerdruckereien",
+    "da": "Tryk via partnertrykkerier",
+    "en": "Printing via partner print shops"
+   },
+   "cta.heading": {
+    "de": "Lass uns über dein Druckprojekt reden.",
+    "da": "Lad os tale om dit trykprojekt."
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "huepfburgen-owl"
+  },
+  "fields": {
+   "industry": {
+    "de": "Hüpfburgenverleih",
+    "da": "Udlejning af hoppeborge",
+    "en": "Bouncy castle rental"
+   },
+   "summary": {
+    "de": "Die Website von Hüpfburgen OWL – einer Marke der DJ GmbH aus Detmold.",
+    "da": "Hjemmesiden for Hüpfburgen OWL – et brand under DJ GmbH fra Detmold."
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   },
+   "chips.1.label": {
+    "de": "Verleih-Dashboard",
+    "da": "Udlejnings-dashboard",
+    "en": "Rental dashboard"
+   },
+   "chips.2.label": {
+    "de": "Betreuung",
+    "da": "Support",
+    "en": "Support"
+   },
+   "solution": {
+    "de": "Website mit Produktseiten und Preisen, die aus hinterlegten Preisregeln berechnet werden. Dahinter Verfügbarkeits- und Buchungslogik und ein Verleih-Dashboard für den Betrieb. Impressum und Datenschutz kommen über eRecht24.",
+    "da": "Hjemmeside med produktsider og priser, der beregnes ud fra gemte prisregler. Bagved ligger logik for tilgængelighed og booking og et udlejnings-dashboard til virksomheden. Impressum og privatlivspolitik kommer via eRecht24.",
+    "richText": true
+   },
+   "result": {
+    "de": "Live seit August 2026 unter huepfburg-owl.de. Wir betreuen die Seite laufend.",
+    "da": "Live siden august 2026 på huepfburg-owl.de. Vi passer siden løbende.",
+    "richText": true
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "keramikwerkstatt-hinrichsen"
+  },
+  "fields": {
+   "industry": {
+    "de": "Keramik-Manufaktur mit Onlineshop",
+    "da": "Keramikværksted med webshop",
+    "en": "Ceramics workshop with online shop"
+   },
+   "summary": {
+    "de": "Der Onlineshop der Keramik-Manufaktur aus Mittelangeln.",
+    "da": "Webshoppen for keramikværkstedet fra Mittelangeln."
+   },
+   "chips.0.label": {
+    "de": "Onlineshop-Aufbau (Shopware)",
+    "da": "Opbygning af webshop (Shopware)",
+    "en": "Online shop build (Shopware)"
+   },
+   "chips.1.label": {
+    "de": "erstes SEO",
+    "da": "første SEO",
+    "en": "initial SEO"
+   },
+   "chips.2.label": {
+    "de": "Beratung",
+    "da": "Rådgivning",
+    "en": "Consulting"
+   },
+   "solution": {
+    "de": "Aufbau des kompletten Onlineshops mit Shopware, erstes SEO und Beratung rund um den Shop.",
+    "da": "Opbygning af hele webshoppen med Shopware, første SEO og rådgivning om shoppen.",
+    "richText": true
+   },
+   "result": {
+    "de": "Der Shop ist online; die Weiterentwicklung liegt heute bei einer anderen Agentur.",
+    "da": "Shoppen er online; videreudviklingen ligger i dag hos et andet bureau.",
+    "richText": true
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "solids-technologies"
+  },
+  "fields": {
+   "industry": {
+    "de": "Maschinenbau (Schüttguttechnik)",
+    "da": "Maskinbyggeri (bulkgodsteknik)",
+    "en": "Mechanical engineering (bulk handling)"
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   },
+   "chips.1.label": {
+    "de": "SEO",
+    "da": "SEO",
+    "en": "SEO"
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "wirtshaus-frankenburg"
+  },
+  "fields": {
+   "industry": {
+    "de": "Gastronomie",
+    "da": "Restauration",
+    "en": "Hospitality"
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "nelges-immobilien"
+  },
+  "fields": {
+   "industry": {
+    "de": "Immobilienmakler",
+    "da": "Ejendomsmægler",
+    "en": "Estate agent"
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "windhausen-immobilien"
+  },
+  "fields": {
+   "industry": {
+    "de": "Immobilienmakler",
+    "da": "Ejendomsmægler",
+    "en": "Estate agent"
+   },
+   "chips.0.label": {
+    "de": "Visitenkarten (Gestaltung + Druck)",
+    "da": "Visitkort (design + tryk)",
+    "en": "Business cards (design + print)"
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "fjella"
+  },
+  "fields": {
+   "industry": {
+    "de": "Nordisches Interior",
+    "da": "Nordisk interiør",
+    "en": "Nordic interior"
+   },
+   "summary": {
+    "de": "Fjella ist der Onlineshop der Beau Marketing GmbH – nordisches Interior, gebaut und betrieben im eigenen Haus.",
+    "da": "Fjella er Beau Marketing GmbH's webshop – nordisk interiør, bygget og drevet i eget hus."
+   },
+   "chips.0.label": {
+    "de": "Shopify-Shop komplett",
+    "da": "Komplet Shopify-shop",
+    "en": "Complete Shopify shop"
+   },
+   "solution": {
+    "de": "Shopify-Shop mit dem Theme Horizon, Versand und Zahlungen eingerichtet. AGB und Widerrufsbelehrung über eRecht24, Widerrufsbutton und EU-Gewährleistungslabel an allen vier Stellen.",
+    "da": "Shopify-shop med temaet Horizon, forsendelse og betaling sat op. Handelsbetingelser og fortrydelsesvejledning via eRecht24, fortrydelsesknap og EU-garantimærke på alle fire steder.",
+    "richText": true
+   },
+   "result": {
+    "de": "Live seit dem 13. September 2026.",
+    "da": "Live siden 13. september 2026.",
+    "richText": true
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "mittelangler-schuetzenverein"
+  },
+  "fields": {
+   "industry": {
+    "de": "Verein",
+    "da": "Forening",
+    "en": "Club"
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "cases",
+  "match": {
+   "slug": "torfchecker"
+  },
+  "fields": {
+   "industry": {
+    "de": "Dart-Sportverein",
+    "da": "Dartklub",
+    "en": "Darts club"
+   },
+   "chips.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "brands",
+  "match": {
+   "slug": "tappi"
+  },
+  "fields": {
+   "tagline": {
+    "de": "Die digitale Visitenkarte mit NFC – einmal tippen, immer aktuell.",
+    "da": "Det digitale visitkort med NFC – tap én gang, altid opdateret.",
+    "en": "The digital business card with NFC – tap once, always up to date."
+   },
+   "links.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "brands",
+  "match": {
+   "slug": "huusbook"
+  },
+  "fields": {
+   "tagline": {
+    "de": "Das Haushaltsbuch, neu gedacht.",
+    "da": "Husholdningsbogen, tænkt på ny.",
+    "en": "The household budget book, reimagined."
+   },
+   "links.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "brands",
+  "match": {
+   "slug": "fjella"
+  },
+  "fields": {
+   "tagline": {
+    "de": "Nordisches Interior – „Schön. Schlicht. Echt Fjella“. Unser eigener Shopify-Shop.",
+    "da": "Nordisk interiør – „Schön. Schlicht. Echt Fjella“. Vores egen Shopify-shop.",
+    "en": "Nordic interior – “Schön. Schlicht. Echt Fjella”. Our own Shopify shop."
+   },
+   "links.0.label": {
+    "de": "Website",
+    "da": "Hjemmeside",
+    "en": "Website"
+   }
+  }
+ },
+ {
+  "collection": "brands",
+  "match": {
+   "slug": "family-manager"
+  },
+  "fields": {
+   "tagline": {
+    "de": "Familienalltag in einer App organisiert.",
+    "da": "Familiens hverdag organiseret i én app.",
+    "en": "Family life organised in one app."
+   }
+  }
+ },
+ {
+  "collection": "brands",
+  "match": {
+   "slug": "anwurf"
+  },
+  "fields": {
+   "tagline": {
+    "de": "Die Angel-App für Nord- und Ostsee.",
+    "da": "Fiske-appen til Nordsøen og Østersøen.",
+    "en": "The fishing app for the North Sea and the Baltic."
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "websites"
+  },
+  "fields": {
+   "title": {
+    "de": "Websites",
+    "da": "Hjemmesider"
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "shopify-e-commerce"
+  },
+  "fields": {
+   "title": {
+    "de": "Shopify & E-Commerce",
+    "da": "Shopify og e-handel"
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "sichtbarkeit-seo"
+  },
+  "fields": {
+   "title": {
+    "de": "Sichtbarkeit & SEO",
+    "da": "Synlighed og SEO"
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "pflichtangaben-recht"
+  },
+  "fields": {
+   "title": {
+    "de": "Pflichtangaben & Recht",
+    "da": "Lovpligtige oplysninger og jura"
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "druck-werbemittel"
+  },
+  "fields": {
+   "title": {
+    "de": "Druck & Werbemittel",
+    "da": "Tryk og reklamemateriale"
+   }
+  }
+ },
+ {
+  "collection": "categories",
+  "match": {
+   "slug": "apps-software"
+  },
+  "fields": {
+   "title": {
+    "de": "Apps & Software",
+    "da": "Apps og software"
+   }
+  }
+ },
+ {
+  "collection": "authors",
+  "match": {
+   "slug": "stephan-beau"
+  },
+  "fields": {
+   "role": {
+    "de": "Geschäftsführer",
+    "da": "Direktør",
+    "en": "Managing Director"
+   }
+  }
+ },
+ {
+  "collection": "engagements",
+  "match": {
+   "institution": "TSV Nordmark Satrup"
+  },
+  "fields": {
+   "kind": {
+    "de": "Trikots",
+    "da": "Trøjer",
+    "en": "Shirts"
+   }
+  }
+ },
+ {
+  "collection": "engagements",
+  "match": {
+   "institution": "Regenbogen-Grundschule Satrup"
+  },
+  "fields": {
+   "kind": {
+    "de": "Warnwesten für die Erstklässler",
+    "da": "Refleksveste til 1.-klasserne",
+    "en": "Hi-vis vests for the first-graders"
+   }
+  }
+ },
+ {
+  "collection": "engagements",
+  "match": {
+   "institution": "ADS-Kindergarten am Schwimmbad"
+  },
+  "fields": {
+   "kind": {
+    "de": "Warnwesten",
+    "da": "Refleksveste",
+    "en": "Hi-vis vests"
+   }
+  }
+ },
+ {
+  "collection": "engagements",
+  "match": {
+   "institution": "Mittelangler Schützenverein"
+  },
+  "fields": {
+   "kind": {
+    "de": "Kleidung",
+    "da": "Tøj",
+    "en": "Clothing"
+   }
+  }
+ }
+]

@@ -1,47 +1,19 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { setRequestLocale } from 'next-intl/server'
 
-import { RenderBlocks } from '@/components/blocks/RenderBlocks'
-import { JsonLd } from '@/components/seo/JsonLd'
-import { webPageNode } from '@/lib/json-ld'
-import type { Locale } from '@/lib/locale'
-import { cmsMetadata } from '@/lib/pageMeta'
-import { getBlockContext } from '@/lib/queries/blockContext'
-import { getPageBySlug } from '@/lib/queries/content'
-import { canonicalUrl } from '@/lib/seo'
+import { CmsPage, cmsPageMetadata } from '@/lib/cmsPage'
 
-// Contact = CMS page "kontakt" with the contact form block. ?leistung=<slug>
-// preselects the service (links from the package cards).
+// Contact = CMS page "kontakt"; ?leistung=<slug> preselects the service.
+
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await props.params
-  const page = await getPageBySlug('kontakt', locale as Locale)
-  return cmsMetadata({ locale, path: '/kontakt', meta: page?.meta, fallbackTitle: page?.title ?? 'Kontakt' })
+  return cmsPageMetadata('kontakt', '/kontakt', locale, 'Kontakt')
 }
 
-export default async function ContactPage(props: {
+export default async function Page(props: {
   params: Promise<{ locale: string }>
   searchParams: Promise<{ leistung?: string | string[] }>
 }) {
   const { locale } = await props.params
   const { leistung } = await props.searchParams
-  setRequestLocale(locale)
-  const page = await getPageBySlug('kontakt', locale as Locale)
-  if (!page) notFound()
-  const ctx = await getBlockContext(locale as Locale, typeof leistung === 'string' ? leistung : null)
-  return (
-    <>
-      <JsonLd
-        graph={[
-          webPageNode({
-            canonical: canonicalUrl(locale, '/kontakt'),
-            name: page.meta?.title || page.title,
-            description: page.meta?.description ?? undefined,
-            lang: locale as Locale,
-          }),
-        ]}
-      />
-      <RenderBlocks blocks={page.layout} ctx={ctx} />
-    </>
-  )
+  return <CmsPage slug="kontakt" path="/kontakt" locale={locale} service={typeof leistung === 'string' ? leistung : null} />
 }

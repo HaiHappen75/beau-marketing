@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { Container } from '@/components/ui/Container'
+import { Kicker, Wrap } from '@/components/site/primitives'
 
-/** Petrol "stage" masthead for inner pages so the fixed header always sits over a dark top. */
+/** Plain masthead for inner pages (legal texts). */
 export function PageMasthead({
   eyebrow,
   title,
@@ -11,26 +11,25 @@ export function PageMasthead({
 }: {
   eyebrow?: string
   /**
-   * Omitted on the legal pages: the eRecht24 text brings its own <h1>, and a
-   * page must not carry two. The dark band still renders — the fixed header
-   * needs a dark background to sit on.
+   * Omitted on the legal pages whose eRecht24 text brings its own <h1> — a page
+   * must not carry two.
    */
   title?: string
   subtitle?: string
   children?: ReactNode
 }) {
   return (
-    <section className="stage grain relative overflow-hidden text-paper">
-      <Container className="relative pb-16 pt-36 sm:pb-20 sm:pt-44">
-        {eyebrow && <p className="eyebrow text-muted">{eyebrow}</p>}
+    <section className="bg-white pt-[clamp(32px,6vw,72px)] pb-6">
+      <Wrap>
+        {eyebrow && <Kicker>{eyebrow}</Kicker>}
         {title && (
-          <h1 className="mt-4 max-w-4xl text-balance text-4xl font-extrabold tracking-tight sm:text-6xl">
+          <h1 className="max-w-4xl text-[clamp(34px,4.4vw,54px)] leading-[1.08] font-extrabold tracking-[-0.025em] text-balance">
             {title}
           </h1>
         )}
-        {subtitle && <p className="mt-5 max-w-2xl text-lg leading-relaxed text-paper/70">{subtitle}</p>}
+        {subtitle && <p className="mt-5 max-w-2xl text-lg">{subtitle}</p>}
         {children}
-      </Container>
+      </Wrap>
     </section>
   )
 }

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { slugRedirectHook } from '../hooks/slugRedirect'
 import { editorialAccess, loggedInField } from '../access'
 import { slugField } from '../fields/slug'
 
@@ -18,6 +19,7 @@ export const Cases: CollectionConfig = {
   },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 25 },
+  hooks: { afterChange: [slugRedirectHook('/referenzen')] },
   defaultSort: 'order',
   fields: [
     { name: 'client', label: 'Kunde', type: 'text', required: true },

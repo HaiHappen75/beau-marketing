@@ -9,7 +9,8 @@ import { Container } from '@/components/ui/Container'
 import { webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { getAGB, hasContent } from '@/lib/queries/getLegalDocs'
-import { canonicalUrl, pageMetadata } from '@/lib/seo'
+import { canonicalUrl, localeAlternates, pageMetadata } from '@/lib/seo'
+import { translatedGlobalLocales } from '@/lib/translations'
 
 // Maintained in Payload, not pulled from eRecht24 — their API only serves
 // imprint and privacy policy. Empty global = no page, so an unfilled draft
@@ -20,7 +21,14 @@ export async function generateMetadata(props: {
   const { locale } = await props.params
   const t = await getTranslations({ locale, namespace: 'Footer' })
   const data = await getAGB(locale as Locale)
-  return pageMetadata({ locale, path: '/agb', title: data.title || t('agb') })
+  // Localized with fallback: only locales with their own text are real versions.
+  const available = await translatedGlobalLocales('agb', 'content')
+  return pageMetadata({
+    locale,
+    path: '/agb',
+    title: data.title || t('agb'),
+    alternates: localeAlternates('/agb', available, locale).alternates,
+  })
 }
 
 export default async function AGBPage(props: { params: Promise<{ locale: string }> }) {
@@ -36,7 +44,7 @@ export default async function AGBPage(props: { params: Promise<{ locale: string 
       <JsonLd
         graph={[
           webPageNode({
-            canonical: canonicalUrl(locale, '/agb'),
+            canonical: canonicalUrl(localeAlternates('/agb', await translatedGlobalLocales('agb', 'content'), locale).servedLang, '/agb'),
             name: data.title || t('agb'),
             lang: locale as Locale,
           }),

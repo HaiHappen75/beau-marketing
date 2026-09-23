@@ -1,6 +1,6 @@
 import type { Locale } from '@/lib/locale'
 import { SITE_URL } from '@/lib/seo'
-import type { Brand } from '@/payload-types'
+import type { Brand, Service, SiteSetting } from '@/payload-types'
 
 // Building blocks for the JSON-LD of the public pages.
 //
@@ -28,7 +28,8 @@ const ref = (id: string): Ref => ({ '@id': id })
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`
 export const WEBSITE_ID = `${SITE_URL}/#website`
-export const brandId = (slug: string) => `${SITE_URL}/#brand-${slug}`
+/** Brand anchor on the brand house page (the old /marken/<slug> pages 308 there). */
+export const brandId = (slug: string) => `${SITE_URL}/de/marken#${slug}`
 export const webPageId = (canonical: string) => `${canonical}#webpage`
 
 /**
@@ -37,20 +38,17 @@ export const webPageId = (canonical: string) => `${canonical}#webpage`
  */
 const BCP47: Record<Locale, string> = { de: 'de-DE', en: 'en', da: 'da' }
 
-// Address and telephone come from the imprint. That is fetched from eRecht24 at
-// runtime and therefore not machine-readable here — the values sit as constants.
-// If the imprint changes, this place has to be pulled along.
-// Quelle: Impressum, Stand 26.08.2026
-const ORGANIZATION_NAME = 'Beau Marketing GmbH' // the company; the site brand is "Beau Marketing"
-const ORGANIZATION_EMAIL = 's.beau@beau-marketing.de'
-const ORGANIZATION_PHONE = '+49 4633 2029925'
-const ORGANIZATION_ADDRESS = {
-  '@type': 'PostalAddress',
-  streetAddress: 'Buschlück 7',
-  postalCode: '24986',
-  addressLocality: 'Mittelangeln',
-  addressCountry: 'DE',
-} as const
+// NAP data comes from site-settings (tab "Firma") — the one source the footer,
+// contact page and landing pages use as well. The imprint itself comes from
+// eRecht24; the admin hint on those fields asks to change both together.
+
+/** schema.org place type for an area name (countries vs. German states/cities). */
+const COUNTRIES = new Set(['Dänemark', 'Deutschland', 'Danmark', 'Denmark'])
+export const areaServedOf = (settings: SiteSetting | null | undefined) =>
+  (settings?.company?.areaServed ?? [])
+    .map((a) => a.name)
+    .filter(Boolean)
+    .map((name) => ({ '@type': COUNTRIES.has(name) ? 'Country' : 'AdministrativeArea', name }))
 
 /** Brands that can be anchored — a Payload brand without a slug has no stable @id. */
 const anchorable = (brands: Brand[]) =>
@@ -60,16 +58,30 @@ const anchorable = (brands: Brand[]) =>
  * The GmbH. Same NAP values as the gettappi.de graph — that identity is the whole
  * point: both sites have to resolve to one and the same entity.
  */
-export function organizationNode(brands: Brand[]): JsonLdNode {
+export function organizationNode(brands: Brand[], settings?: SiteSetting | null): JsonLdNode {
   const named = anchorable(brands)
+  const c = settings?.company ?? {}
+  const address =
+    c.street && c.postalCode && c.city
+      ? {
+          '@type': 'PostalAddress',
+          streetAddress: c.street,
+          postalCode: c.postalCode,
+          addressLocality: c.city,
+          addressCountry: 'DE',
+        }
+      : null
+  const phone = c.phone ? c.phone.replace(/\s+/g, ' ').replace(/^0/, '+49 ') : null
+  const areaServed = areaServedOf(settings)
   return {
     '@type': 'Organization',
     '@id': ORGANIZATION_ID,
-    name: ORGANIZATION_NAME,
+    name: c.legalName || 'Beau Marketing GmbH',
     url: `${SITE_URL}/`,
-    email: ORGANIZATION_EMAIL,
-    telephone: ORGANIZATION_PHONE,
-    address: ORGANIZATION_ADDRESS,
+    ...(c.email ? { email: c.email } : {}),
+    ...(phone ? { telephone: phone } : {}),
+    ...(address ? { address } : {}),
+    ...(areaServed.length ? { areaServed } : {}),
     // `brand` is only valid on Organization / Person / Product / Service.
     // Omitted entirely while there is no brand to point at, rather than an empty array.
     ...(named.length ? { brand: named.map((b) => ref(brandId(b.slug))) } : {}),
@@ -77,16 +89,16 @@ export function organizationNode(brands: Brand[]): JsonLdNode {
 }
 
 /**
- * One node per brand, kept deliberately thin: name only.
- * No `url` — the detail page is locale-prefixed, and hardcoding /de/ into the graph
- * of every language would be wrong. `name` is not localized in Payload, so these
- * nodes are identical across all three locales and the @id stays free of contradictions.
+ * One node per brand. `@id` is the brand's anchor on /de/marken (x-default);
+ * `url` is the brand's own website when it has one, otherwise that anchor.
+ * `name` is not localized, so the nodes are identical in every locale.
  */
 export function brandNodes(brands: Brand[]): JsonLdNode[] {
   return anchorable(brands).map((b) => ({
     '@type': 'Brand',
     '@id': brandId(b.slug),
     name: b.name,
+    url: b.links?.find((l) => l.type === 'website' && l.url)?.url ?? brandId(b.slug),
   }))
 }
 
@@ -106,8 +118,8 @@ export function webSiteNode(): JsonLdNode {
 }
 
 /** The sitewide block, emitted by the frontend layout on every public page. */
-export function siteGraph(brands: Brand[]): JsonLdNode[] {
-  return [organizationNode(brands), ...brandNodes(brands), webSiteNode()]
+export function siteGraph(brands: Brand[], settings?: SiteSetting | null): JsonLdNode[] {
+  return [organizationNode(brands, settings), ...brandNodes(brands), webSiteNode()]
 }
 
 /**
@@ -197,5 +209,46 @@ export function faqPageNode(canonical: string, items: { question: string; answer
       name: f.question,
       acceptedAnswer: { '@type': 'Answer', text: f.answer },
     })),
+  }
+}
+
+// ── Services with offers ─────────────────────────────────────────────────────
+
+const UNIT_CODE = { month: 'MON', hour: 'HUR' } as const
+
+/**
+ * A service page's offer: one Offer per priced package. Net prices
+ * (valueAddedTaxIncluded: false, B2B); "ab" prices as minPrice; monthly and
+ * hourly prices as UnitPriceSpecification. "Auf Anfrage" = no Offer.
+ */
+export function serviceNode(s: Service, canonical: string, settings?: SiteSetting | null): JsonLdNode {
+  const offers = (s.packages ?? [])
+    .filter((p) => p.price !== null && p.price !== undefined)
+    .map((p) => {
+      const unit = p.unit === 'month' || p.unit === 'hour' ? UNIT_CODE[p.unit] : null
+      return {
+        '@type': 'Offer',
+        name: p.name,
+        priceCurrency: 'EUR',
+        priceSpecification: {
+          '@type': unit ? 'UnitPriceSpecification' : 'PriceSpecification',
+          ...(p.priceIsFrom ? { minPrice: p.price } : { price: p.price }),
+          priceCurrency: 'EUR',
+          valueAddedTaxIncluded: false,
+          ...(unit ? { unitCode: unit } : {}),
+        },
+      }
+    })
+  const areaServed = areaServedOf(settings)
+  return {
+    '@type': 'Service',
+    '@id': `${canonical}#service`,
+    name: s.title,
+    ...(s.promise || s.shortDescription ? { description: s.promise || s.shortDescription } : {}),
+    serviceType: s.title,
+    provider: ref(ORGANIZATION_ID),
+    url: canonical,
+    ...(areaServed.length ? { areaServed } : {}),
+    ...(offers.length ? { offers } : {}),
   }
 }

@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { slugRedirectHook } from '../hooks/slugRedirect'
 import { editorialAccess } from '../access'
 import { faqField } from '../fields/faq'
 import { slugField } from '../fields/slug'
@@ -19,6 +20,7 @@ export const Services: CollectionConfig = {
   },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 25 },
+  hooks: { afterChange: [slugRedirectHook('/agentur')] },
   defaultSort: 'order',
   fields: [
     { name: 'title', label: 'Titel', type: 'text', localized: true, required: true },
