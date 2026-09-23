@@ -101,3 +101,27 @@ test('Landingpage Flensburg: Inhalt, Entfernung, keine gestrichenen Aussagen', a
 
   expect((await request.get('/de/region/kiel')).status()).toBe(404)
 })
+
+test('Startseite: Title nach Konvention, Markenname nur einmal, neue Description', async ({ page }) => {
+  await page.goto('/de')
+  await expect(page).toHaveTitle('Webdesign & Shopify in Schleswig-Holstein | beau marketing')
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    'content',
+    'Websites, Shopify-Shops und lokale Sichtbarkeit für Betriebe in Schleswig-Holstein, Hamburg und Dänemark – transparente Preise, Betreuung aus Satrup in Angeln.',
+  )
+  for (const locale of ['da', 'en']) {
+    await page.goto(`/${locale}`)
+    const title = await page.title()
+    expect(title, locale).toMatch(/ \| beau marketing$/)
+    expect(title.toLowerCase().split('beau marketing').length - 1, locale).toBe(1)
+  }
+})
+
+test('JSON-LD: Organization mit Logo (absolute URL, Datei vorhanden)', async ({ page, request }) => {
+  await page.goto('/de')
+  const org = (await graphOf(page)).find((n) => n['@type'] === 'Organization') as { logo: { url: string } }
+  expect(org.logo.url).toMatch(/^https?:\/\/[^/]+\/brand\/beau-marketing-logo\.png$/)
+  const res = await request.get(new URL(org.logo.url).pathname)
+  expect(res.status()).toBe(200)
+  expect(res.headers()['content-type']).toContain('image/png')
+})

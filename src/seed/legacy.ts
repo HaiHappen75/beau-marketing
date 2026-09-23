@@ -154,12 +154,13 @@ export const LEGACY_CASE_CHIPS: Record<string, Record<string, string>> = {
   'huepfburgen-owl': { Buchungssystem: 'Verleih-Dashboard' },
 }
 
-/** Start page meta from Paket 2, replaced by the positioning title in Paket 5. */
+/** Start page meta from Paket 2 and the Paket-5 proposal, replaced by the Xovi-checked title. */
 export const LEGACY_PAGE_META: Record<string, Record<string, string[]>> = {
   start: {
-    'meta.title': ['Beau Marketing – Websites, Shops und Sichtbarkeit für Betriebe im Norden'],
+    'meta.title': ['Beau Marketing – Websites, Shops und Sichtbarkeit für Betriebe im Norden', 'Webdesign & Shops in Schleswig-Holstein – Beau Marketing'],
     'meta.description': [
       'Wir bauen Websites und Shopify-Shops für Handwerk, Handel und Gastro in Schleswig-Holstein, Hamburg und Dänemark – und halten sie danach am Laufen.',
+      'Websites, Shopify-Shops und lokale Sichtbarkeit für Betriebe in Schleswig-Holstein, Hamburg und Dänemark – feste Preise, Betreuung aus Satrup in Angeln.',
     ],
   },
 }
