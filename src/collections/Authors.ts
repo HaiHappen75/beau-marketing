@@ -19,6 +19,12 @@ export const Authors: CollectionConfig = {
     { name: 'bio', label: 'Kurzbio', type: 'textarea', localized: true },
     { name: 'photo', label: 'Foto', type: 'upload', relationTo: 'media' },
     {
+      name: 'aboutPath',
+      label: 'Link „Mehr über …“',
+      type: 'text',
+      admin: { description: 'Pfad ohne Sprachpräfix, z. B. /ueber-uns. Leer = kein Link.' },
+    },
+    {
       name: 'sameAs',
       label: 'Profil-Links',
       type: 'array',

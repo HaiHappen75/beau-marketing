@@ -1,6 +1,6 @@
 import { cache } from 'react'
 
-import type { Case, Engagement, Page, Post, Service } from '@/payload-types'
+import type { Case, Category, Engagement, Page, Post, Service } from '@/payload-types'
 import { getPayloadClient } from '@/lib/getPayload'
 import { toPayloadLocale, type Locale } from '@/lib/locale'
 
@@ -149,3 +149,61 @@ export const getCaseDetail = cache(async (slug: string, locale: Locale): Promise
   })
   return docs[0] ?? null
 })
+
+// ── Guide (Ratgeber) ─────────────────────────────────────────────────────────
+// "Live" = published AND publishedAt reached (future date = scheduled).
+const livePost = () => ({ and: [published, { publishedAt: { less_than_equal: new Date().toISOString() } }] })
+
+/** Drives the guide's visibility: menu items, teaser, sitemap entry, indexing. */
+export const hasPublishedPosts = cache(async (): Promise<boolean> => {
+  const payload = await getPayloadClient()
+  const { totalDocs } = await payload.count({ collection: 'posts', where: livePost() })
+  return totalDocs > 0
+})
+
+export const getPostBySlug = cache(async (slug: string, locale: Locale): Promise<Post | null> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'posts',
+    where: { and: [{ slug: { equals: slug } }, ...livePost().and] },
+    depth: 2,
+    limit: 1,
+    ...opts(locale),
+  })
+  return docs[0] ?? null
+})
+
+export const getLivePosts = cache(async (locale: Locale, categoryId?: number): Promise<Post[]> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'posts',
+    where: { and: [...livePost().and, ...(categoryId ? [{ category: { equals: categoryId } }] : [])] },
+    sort: '-publishedAt',
+    depth: 1,
+    limit: 200,
+    ...opts(locale),
+  })
+  return docs
+})
+
+export const getCategoryBySlug = cache(async (slug: string, locale: Locale): Promise<Category | null> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'categories',
+    where: { slug: { equals: slug } },
+    depth: 0,
+    limit: 1,
+    ...opts(locale),
+  })
+  return docs[0] ?? null
+})
+
+export const getCategories = cache(async (locale: Locale): Promise<Category[]> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({ collection: 'categories', sort: 'order', depth: 0, limit: 50, ...opts(locale) })
+  return docs
+})
+
+/** Blog standard: category pages stay noindex,follow while thin (< 3 articles). */
+export const CATEGORY_MIN_POSTS = 3
+export const categoryIndexable = (c: Category, postCount: number) => !c.noindex && postCount >= CATEGORY_MIN_POSTS

@@ -25,6 +25,7 @@ import {
   LEGACY_BLOCK_HEADINGS,
   LEGACY_BRAND_TAGLINES,
   LEGACY_BRAND_TAGLINES_REDESIGN,
+  LEGACY_CASE_CHIPS,
   LEGACY_PACKAGE_INCLUDES,
   LEGACY_PACKAGE_ITEMS,
   LEGACY_SERVICE_TEXTS,
@@ -221,7 +222,7 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
     await upsertDoc(
       payload,
       'authors',
-      { key: a.slug, where: { slug: { equals: a.slug } }, data: { de: { name: a.name, slug: a.slug, role: a.role } } },
+      { key: a.slug, where: { slug: { equals: a.slug } }, data: { de: { name: a.name, slug: a.slug, role: a.role, aboutPath: a.aboutPath } } },
       summary,
     )
   }
@@ -291,6 +292,22 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
               ? { summary: c.detail.summary, solution: rt([c.detail.solution]), result: rt([c.detail.result]) }
               : {}),
           },
+        },
+        // Reworded chips: only the chip row itself is replaced, the rest stays.
+        custom: (current, locale) => {
+          const map = LEGACY_CASE_CHIPS[c.slug]
+          const plan = emptyPlan()
+          if (locale !== 'de' || !map || !Array.isArray(current.chips)) return plan
+          let changed = false
+          const next = (current.chips as Obj[]).map((row) => {
+            const to = map[String(row.label)]
+            if (!to) return row
+            changed = true
+            plan.legacy.push({ field: 'chips', from: String(row.label), to })
+            return { ...row, label: to }
+          })
+          if (changed) plan.patch.chips = next
+          return plan
         },
       },
       summary,

@@ -5,6 +5,7 @@ import { Check } from '@/components/brand/Check'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/locale'
 import { telHref } from '@/lib/phone'
+import { hasPublishedPosts } from '@/lib/queries/content'
 import { getNavigation, getPublishedServices, getSettings, getTrust } from '@/lib/queries/getLayoutData'
 import type { Media } from '@/payload-types'
 
@@ -31,12 +32,14 @@ const badgeSource = (m: Media) => {
  */
 export async function Footer({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'Layout' })
-  const [settings, services, navigation, trust] = await Promise.all([
+  const [settings, services, navigation, trust, guideLive] = await Promise.all([
     getSettings(locale),
     getPublishedServices(locale),
     getNavigation(locale),
     getTrust(locale),
+    hasPublishedPosts(),
   ])
+  const guideLabel = (navigation.header ?? []).find((n) => n.href === '/ratgeber')?.label
 
   const c = settings.company ?? {}
   const phoneHref = telHref(c.phone)
@@ -107,6 +110,14 @@ export async function Footer({ locale }: { locale: Locale }) {
                     </Link>
                   </li>
                 ))}
+                {/* Blog standard: the guide hub is linked in header AND footer — once it has an article. */}
+                {guideLive && guideLabel && (
+                  <li className="mt-3">
+                    <Link href="/ratgeber" className="nav-link hover:underline">
+                      {guideLabel}
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           )}
