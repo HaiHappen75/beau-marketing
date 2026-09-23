@@ -39,12 +39,14 @@ export function Header({ settings, brands }: { settings: SiteSetting; locale: Lo
     }
   }, [])
 
-  // Close all menus on navigation.
-  useEffect(() => {
+  // Close all menus on navigation — adjusted during render, not in an effect.
+  const [lastPathname, setLastPathname] = useState(pathname)
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname)
     setOpen(false)
     setBrandsOpen(false)
     setMobileBrandsOpen(false)
-  }, [pathname])
+  }
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
