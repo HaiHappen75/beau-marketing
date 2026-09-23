@@ -2,6 +2,7 @@ import { ValidationError } from 'payload'
 import type { CollectionBeforeChangeHook, CollectionConfig } from 'payload'
 
 import { editorialAccess } from '../access'
+import { slugRedirectHook } from '../hooks/slugRedirect'
 import { faqField } from '../fields/faq'
 import { slugField } from '../fields/slug'
 
@@ -58,7 +59,7 @@ export const Locations: CollectionConfig = {
   },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 25 },
-  hooks: { beforeChange: [blockThinPublish] },
+  hooks: { beforeChange: [blockThinPublish], afterChange: [slugRedirectHook('/region')] },
   fields: [
     { name: 'title', label: 'Titel', type: 'text', localized: true, required: true },
     slugField('place'),
@@ -70,6 +71,15 @@ export const Locations: CollectionConfig = {
       ],
     },
     { name: 'service', label: 'Leistung', type: 'relationship', relationTo: 'services' },
+    {
+      name: 'headline',
+      label: 'Überschrift (H1)',
+      type: 'text',
+      localized: true,
+      admin: { description: '*Betonung* in Sternchen wird kursiv. Leer = Titel.' },
+    },
+    { name: 'lead', label: 'Einleitung im Kopf', type: 'textarea', localized: true },
+    { name: 'introHeading', label: 'Überschrift der lokalen Einleitung', type: 'text', localized: true },
     {
       name: 'intro',
       label: 'Lokaler Einleitungstext',
@@ -108,7 +118,29 @@ export const Locations: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'highlights',
+      label: 'Punkte zur Einleitung',
+      type: 'array',
+      labels: { singular: 'Punkt', plural: 'Punkte' },
+      fields: [{ name: 'item', label: 'Punkt', type: 'text', localized: true, required: true }],
+    },
+    {
+      name: 'cases',
+      label: 'Referenzen aus der Region',
+      type: 'relationship',
+      relationTo: 'cases',
+      hasMany: true,
+      admin: { description: 'Nur echte Referenzen aus der Gegend; leer = Abschnitt entfällt.' },
+    },
     { name: 'visitInfo', label: 'Termin vor Ort / Anfahrt', type: 'textarea', localized: true },
+    {
+      name: 'distance',
+      label: 'Entfernung ab Satrup',
+      type: 'text',
+      localized: true,
+      admin: { description: 'z. B. „gut 20 km“. Leer = keine Entfernungsangabe.' },
+    },
     faqField(),
   ],
 }

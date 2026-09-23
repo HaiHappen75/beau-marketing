@@ -52,6 +52,32 @@ export function legalAlternates(args: {
   return { canonical: canonicalUrl(servedLang, path), languages }
 }
 
+/**
+ * Canonical + hreflang for a document that exists in some locales only:
+ *  - current locale not translated → canonical to the default-language URL, no hreflang
+ *    (the page serves the German fallback; `servedLang` tells the page to mark it)
+ *  - only one language exists → self-canonical, no hreflang at all
+ *  - otherwise self-canonical, hreflang over the translated locales + x-default
+ */
+export function localeAlternates(
+  path: string,
+  available: string[],
+  current: string,
+): { alternates: NonNullable<Metadata['alternates']>; servedLang: string; translated: boolean } {
+  const def = routing.defaultLocale
+  const langs = available.length > 0 ? available : [def]
+  if (!langs.includes(current)) {
+    return { alternates: { canonical: canonicalUrl(def, path) }, servedLang: def, translated: false }
+  }
+  if (langs.length < 2) {
+    return { alternates: { canonical: canonicalUrl(current, path) }, servedLang: current, translated: true }
+  }
+  const languages: Record<string, string> = {}
+  for (const l of routing.locales) if (langs.includes(l)) languages[l] = canonicalUrl(l, path)
+  languages['x-default'] = canonicalUrl(def, path)
+  return { alternates: { canonical: canonicalUrl(current, path), languages }, servedLang: current, translated: true }
+}
+
 export function pageMetadata(args: {
   locale: string
   path: string

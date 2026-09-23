@@ -17,7 +17,8 @@ import type { Locale } from '@/lib/locale'
 import { formatPackagePrice, serviceTeaserPrice } from '@/lib/price'
 import { getLivePosts, getPostBySlug } from '@/lib/queries/content'
 import { findRedirect } from '@/lib/redirects'
-import { SITE_URL, canonicalUrl, pageMetadata } from '@/lib/seo'
+import { SITE_URL, canonicalUrl, localeAlternates, pageMetadata } from '@/lib/seo'
+import { translatedLocales } from '@/lib/translations'
 import type { Author, Category, Media, Service } from '@/payload-types'
 
 // Guide article (design: Ratgeber Artikel.dc.html), built to the blog standard:
@@ -59,6 +60,7 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
       authors: author ? [author.name] : undefined,
     },
     noindex: Boolean(post.noindex),
+    alternates: localeAlternates(`/ratgeber/${slug}`, await translatedLocales('posts', post.id), locale).alternates,
   })
 }
 
@@ -81,7 +83,8 @@ export default async function ArticlePage(props: { params: Promise<{ locale: str
   const category = typeof post.category === 'object' ? (post.category as Category) : null
   const author = typeof post.author === 'object' ? (post.author as Author) : null
   const service = typeof post.service === 'object' ? (post.service as Service) : null
-  const canonical = canonicalUrl(locale, `/ratgeber/${slug}`)
+  const { servedLang } = localeAlternates(`/ratgeber/${slug}`, await translatedLocales('posts', post.id), locale)
+  const canonical = canonicalUrl(servedLang, `/ratgeber/${slug}`)
   const minutes = readingMinutes(post.shortAnswer, post.content)
   const faq = (post.faq ?? []).map((f) => ({ question: f.question, answer: f.answer }))
   const sources = post.sources ?? []
@@ -125,7 +128,7 @@ export default async function ArticlePage(props: { params: Promise<{ locale: str
     { name: stripEmphasis(post.title), url: canonical },
   ]
   const graph = [
-    webPageNode({ canonical, name: stripEmphasis(post.meta?.title || post.title), description: post.meta?.description || post.excerpt, lang: loc }),
+    webPageNode({ canonical, name: stripEmphasis(post.meta?.title || post.title), description: post.meta?.description || post.excerpt, lang: servedLang as Locale }),
     blogPostingNode({
       canonical,
       headline: stripEmphasis(post.title),
@@ -134,7 +137,7 @@ export default async function ArticlePage(props: { params: Promise<{ locale: str
       datePublished: post.publishedAt,
       dateModified: post.contentUpdatedAt ?? post.publishedAt,
       authorSlug: author?.slug ?? 'autor',
-      lang: loc,
+      lang: servedLang as Locale,
     }),
     ...(author
       ? [
@@ -160,7 +163,7 @@ export default async function ArticlePage(props: { params: Promise<{ locale: str
   return (
     <>
       <JsonLd graph={graph} />
-      <article>
+      <article lang={servedLang !== locale ? servedLang : undefined}>
         <header className="mx-auto max-w-[1200px] px-[clamp(20px,4vw,40px)] pt-7">
           <nav aria-label={ts('breadcrumb')}>
             <ol className="flex flex-wrap gap-2 text-[15px] text-muted">

@@ -4,6 +4,7 @@ import * as migration_20260923_141629_redesign_fundament from './20260923_141629
 import * as migration_20260923_155007_agentur_seiten from './20260923_155007_agentur_seiten';
 import * as migration_20260923_163024_referenzen_ueber_uns from './20260923_163024_referenzen_ueber_uns';
 import * as migration_20260923_165405_ratgeber from './20260923_165405_ratgeber';
+import * as migration_20260923_174217_landingpages from './20260923_174217_landingpages';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260923_165405_ratgeber.up,
     down: migration_20260923_165405_ratgeber.down,
-    name: '20260923_165405_ratgeber'
+    name: '20260923_165405_ratgeber',
+  },
+  {
+    up: migration_20260923_174217_landingpages.up,
+    down: migration_20260923_174217_landingpages.down,
+    name: '20260923_174217_landingpages'
   },
 ];
