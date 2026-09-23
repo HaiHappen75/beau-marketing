@@ -45,7 +45,13 @@ export const SERVICES: ServiceSeed[] = [
     shortDescription: 'Klar gebaut, schnell auf dem Handy.',
     order: 1,
     packages: [
-      { name: 'Website Start', price: 1900, priceIsFrom: true, unit: 'once', includes: ['Onepager'] },
+      {
+        name: 'Website Start',
+        price: 1900,
+        priceIsFrom: true,
+        unit: 'once',
+        includes: ['Onepager oder wenige Unterseiten', 'Kontaktformular und Karte', 'Rechtstexte über eRecht24'],
+      },
       {
         name: 'Website Standard',
         price: 4900,
@@ -168,7 +174,7 @@ export const SERVICES: ServiceSeed[] = [
   {
     slug: 'druck-werbemittel',
     title: 'Druck & Werbemittel',
-    shortDescription: 'Flyer, Schilder, Textil, Lasergravur.',
+    shortDescription: 'Gestaltung und Druck über Partnerdruckereien.',
     order: 6,
     packages: [],
   },
@@ -211,7 +217,7 @@ export const BRANDS: BrandSeed[] = [
     slug: 'fjella',
     name: 'Fjella',
     status: 'live',
-    tagline: 'Nordisches Interior – „Zuhause, nordisch gedacht.“ Unser eigener Shopify-Shop.',
+    tagline: 'Nordisches Interior – „Schön. Schlicht. Echt Fjella“. Unser eigener Shopify-Shop.',
     url: 'https://fjella-shop.de',
     order: 3,
     category: 'ecommerce',
@@ -241,6 +247,8 @@ export const BRANDS: BrandSeed[] = [
 ]
 
 type CaseSeed = {
+  /** Detail page copy — verified facts only (Second Brain), nothing invented. */
+  detail?: { summary: string; solution: string; result: string }
   slug: string
   client: string
   industry: string
@@ -258,6 +266,14 @@ type CaseSeed = {
 export const CASES: CaseSeed[] = [
   {
     slug: 'huepfburgen-owl',
+    // Booking assistant runs behind BOOKING_ENABLED without a documented customer
+    // release — so no claim of online booking, customer login or PWA.
+    detail: {
+      summary: 'Die Website von Hüpfburgen OWL – einer Marke der DJ GmbH aus Detmold.',
+      solution:
+        'Website mit Produktseiten und Preisen, die aus hinterlegten Preisregeln berechnet werden. Dahinter Verfügbarkeits- und Buchungslogik und ein Verleih-Dashboard für den Betrieb. Impressum und Datenschutz kommen über eRecht24.',
+      result: 'Live seit August 2026 unter huepfburg-owl.de. Wir betreuen die Seite laufend.',
+    },
     client: 'Hüpfburgen OWL (DJ GmbH)',
     industry: 'Hüpfburgenverleih',
     place: 'Detmold',
@@ -271,6 +287,12 @@ export const CASES: CaseSeed[] = [
   },
   {
     slug: 'keramikwerkstatt-hinrichsen',
+    // Shopware build in the past, developed further by another agency today.
+    detail: {
+      summary: 'Der Onlineshop der Keramik-Manufaktur aus Mittelangeln.',
+      solution: 'Aufbau des kompletten Onlineshops mit Shopware, erstes SEO und Beratung rund um den Shop.',
+      result: 'Der Shop ist online; die Weiterentwicklung liegt heute bei einer anderen Agentur.',
+    },
     client: 'Keramikwerkstatt Hinrichsen',
     industry: 'Keramik-Manufaktur mit Onlineshop',
     place: 'Mittelangeln',
@@ -336,6 +358,12 @@ export const CASES: CaseSeed[] = [
   },
   {
     slug: 'fjella',
+    detail: {
+      summary: 'Fjella ist der Onlineshop der Beau Marketing GmbH – nordisches Interior, gebaut und betrieben im eigenen Haus.',
+      solution:
+        'Shopify-Shop mit dem Theme Horizon, Versand und Zahlungen eingerichtet. AGB und Widerrufsbelehrung über eRecht24, Widerrufsbutton und EU-Gewährleistungslabel an allen vier Stellen.',
+      result: 'Live seit dem 13. September 2026.',
+    },
     client: 'Fjella (eigene Marke)',
     industry: 'Nordisches Interior',
     place: 'Mittelangeln',

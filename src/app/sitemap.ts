@@ -6,10 +6,11 @@ import { getPayloadClient } from '@/lib/getPayload'
 import { getAGB, getWiderruf, hasContent } from '@/lib/queries/getLegalDocs'
 import { SITE_URL } from '@/lib/seo'
 
-// Generated on request (reads brands from Payload) — keeps the build free of any DB access.
+// Generated on request (reads Payload) — keeps the build free of any DB access.
+// Interim state of the redesign: hreflang/fallback handling follows in Paket 5.
 export const dynamic = 'force-dynamic'
 
-const STATIC_PATHS = ['', '/marken', '/studio', '/ueber-uns', '/kontakt']
+const STATIC_PATHS = ['', '/agentur', '/referenzen', '/marken', '/ueber-uns', '/kontakt']
 
 // The legal pages exist only in the languages eRecht24 delivers (German, plus
 // English if maintained) — listing all three locales would advertise three
@@ -21,12 +22,16 @@ const LEGAL_PATHS = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'brands',
-    where: { status: { not_equals: 'hidden' } },
-    limit: 100,
-    depth: 0,
-  })
+  const published = { _status: { equals: 'published' } } as const
+  const [{ docs: services }, { docs: cases }] = await Promise.all([
+    payload.find({ collection: 'services', where: published, limit: 100, depth: 0 }),
+    payload.find({
+      collection: 'cases',
+      where: { and: [published, { hasDetailPage: { equals: true } }] },
+      limit: 100,
+      depth: 0,
+    }),
+  ])
 
   // Widerruf and AGB are optional Payload globals — while empty the page 404s,
   // so it must not be announced. Localized with fallback, hence all locales.
@@ -36,7 +41,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...(hasContent(agb) ? ['/agb'] : []),
   ]
 
-  const paths = [...STATIC_PATHS, ...optionalPaths, ...docs.map((b) => `/marken/${b.slug}`)]
+  // Brand detail pages are gone (301 to /marken#<slug> in Paket 5).
+  const paths = [
+    ...STATIC_PATHS,
+    ...optionalPaths,
+    ...services.map((s) => `/agentur/${s.slug}`),
+    ...cases.map((c) => `/referenzen/${c.slug}`),
+  ]
 
   const entries: MetadataRoute.Sitemap = []
   for (const path of paths) {

@@ -64,13 +64,6 @@ export const Brands: CollectionConfig = {
       type: 'row',
       fields: [
         {
-          name: 'accentColor',
-          type: 'text',
-          required: true,
-          defaultValue: '#004959',
-          admin: { width: '50%', description: 'Akzentfarbe als Hex, z. B. #F28704' },
-        },
-        {
           name: 'platforms',
           type: 'select',
           hasMany: true,
@@ -80,20 +73,6 @@ export const Brands: CollectionConfig = {
             { label: 'Android', value: 'android' },
             { label: 'macOS', value: 'macos' },
             { label: 'Web', value: 'web' },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'accentGradient',
-      type: 'group',
-      admin: { description: 'Optionaler Verlauf für die Marken-Bühne (sonst wird die Akzentfarbe genutzt).' },
-      fields: [
-        {
-          type: 'row',
-          fields: [
-            { name: 'from', type: 'text', admin: { width: '50%', placeholder: '#004959' } },
-            { name: 'to', type: 'text', admin: { width: '50%', placeholder: '#F28704' } },
           ],
         },
       ],

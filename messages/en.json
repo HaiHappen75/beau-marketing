@@ -238,7 +238,30 @@
       "perHour": "{rate} € / hour"
     },
     "perHour": "/ hour",
-    "onRequest": "on request"
+    "onRequest": "on request",
+    "references": "Work",
+    "case": {
+      "kicker": "Project",
+      "client": "Client",
+      "industry": "Industry",
+      "place": "Location",
+      "services": "Services",
+      "challenge": "Starting point",
+      "solution": "Solution",
+      "result": "Result",
+      "screenshot": "Screenshot",
+      "moreScreenshots": "More screenshots",
+      "story": "Starting point, solution, result",
+      "quote": "Quote",
+      "visit": "Visit {name}'s site",
+      "nav": "Link and more projects",
+      "ctaHeading": "Let's talk about your project."
+    },
+    "filter": {
+      "label": "Filter projects by service",
+      "all": "All",
+      "empty": "There is no published project for this service yet."
+    }
   },
   "ContactForm": {
     "_machineTranslated": "Machine-translated – proofread in package 5",

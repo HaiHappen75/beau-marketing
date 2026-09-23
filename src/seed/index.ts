@@ -22,12 +22,16 @@ import {
   LEGACY_BRAND_DESCRIPTIONS,
   LEGACY_BRAND_NAMES,
   LEGACY_BRAND_ORDER,
+  LEGACY_BLOCK_HEADINGS,
   LEGACY_BRAND_TAGLINES,
+  LEGACY_BRAND_TAGLINES_REDESIGN,
+  LEGACY_PACKAGE_INCLUDES,
   LEGACY_PACKAGE_ITEMS,
+  LEGACY_SERVICE_TEXTS,
   LEGACY_PLACEHOLDER_PARAGRAPH,
   LEGACY_SITE_NAME,
 } from './legacy'
-import { isRichText, nodeText } from './richtext'
+import { isRichText, nodeText, rt } from './richtext'
 import { PAGES, SERVICE_CONTENT, type BlockSeed } from './content'
 import type { SeedLocale, SeedSummary } from './types'
 
@@ -148,6 +152,19 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
               : {}),
           },
         },
+        // Legacy service copy (e.g. Druck & Werbemittel before 23.09.): exact old
+        // strings, or an item list that still equals the old list as a whole.
+        legacy: (field, value) =>
+          (LEGACY_SERVICE_TEXTS[s.slug] ?? []).some(
+            (l) =>
+              l.field === field &&
+              l.values.some((v) =>
+                Array.isArray(v)
+                  ? Array.isArray(value) &&
+                    JSON.stringify((value as Obj[]).map((r) => r.item)) === JSON.stringify(v)
+                  : v === value,
+              ),
+          ),
         // Existing packages: fill new sub-fields per package (matched by name)
         // and reword legacy items — prices and everything else stay untouched.
         custom: (current, locale) =>
@@ -162,6 +179,18 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
                 () => false,
                 (row, _want, plan, path) => {
                   const items = Array.isArray(row.includes) ? (row.includes as Obj[]) : []
+                  // A whole item list that still equals an old seed list is replaced.
+                  const texts = items.map((it) => String(it.item))
+                  const oldLists = LEGACY_PACKAGE_INCLUDES[String(row.name)] ?? []
+                  const fresh = packages.find((p) => p.name === row.name)?.includes
+                  if (fresh && oldLists.some((l) => JSON.stringify(l) === JSON.stringify(texts))) {
+                    plan.legacy.push({
+                      field: `${path}.includes`,
+                      from: texts.join(' / '),
+                      to: fresh.map((f) => f.item).join(' / '),
+                    })
+                    return { ...row, includes: fresh }
+                  }
                   let changed = false
                   const next = items.map((it) => {
                     const replacement = LEGACY_PACKAGE_ITEMS[String(it.item)]
@@ -227,7 +256,8 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         legacy: (field, value, locale) =>
           (field === 'name' && (LEGACY_BRAND_NAMES[b.slug] ?? []).includes(value as string)) ||
           (field === 'order' && legacyOrderIntact && LEGACY_BRAND_ORDER[b.slug] === value) ||
-          (field === 'tagline' && legacyTagline?.[locale] === value),
+          (field === 'tagline' && legacyTagline?.[locale] === value) ||
+          (field === 'tagline' && locale === 'de' && (LEGACY_BRAND_TAGLINES_REDESIGN[b.slug] ?? []).includes(value as string)),
         custom: brandCustom(b.slug, b.url),
       },
       summary,
@@ -257,6 +287,9 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
             order: c.order,
             releaseDate: RELEASE.date,
             releaseNote: RELEASE.note,
+            ...(c.detail
+              ? { summary: c.detail.summary, solution: rt([c.detail.solution]), result: rt([c.detail.result]) }
+              : {}),
           },
         },
       },
@@ -366,6 +399,17 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         status: 'published',
         data: {
           de: { title: page.title, slug: page.slug, meta: page.meta, layout: page.layout.map(toBlock) },
+        },
+        // Reworded block headings of existing pages (matched by block type).
+        custom: (current, locale) => {
+          const legacyHeadings = LEGACY_BLOCK_HEADINGS[page.slug]
+          if (locale !== 'de' || !legacyHeadings) return emptyPlan()
+          const desired = page.layout
+            .filter((b) => b.blockType in legacyHeadings && 'heading' in b)
+            .map((b) => ({ blockType: b.blockType, heading: (b as { heading?: string }).heading }))
+          return fillRowsByKey(current.layout, desired, 'layout', 'blockType', locale, (field, value) =>
+            Object.values(legacyHeadings).some((list) => field.endsWith('.heading') && list.includes(value as string)),
+          )
         },
       },
       summary,
