@@ -11,9 +11,14 @@
   "Hero": {
     "eyebrow": "Brandhus & softwarestudie",
     "titleLead": "Vi bygger",
-    "rotating": ["brands.", "apps.", "oplevelser.", "produkter."],
+    "rotating": [
+      "brands.",
+      "apps.",
+      "oplevelser.",
+      "produkter."
+    ],
     "titleTail": "der holder.",
-    "subtitle": "Beau-Marketing udvikler, driver og markedsfører egne digitale brands — og bygger software for udvalgte partnere.",
+    "subtitle": "Beau Marketing udvikler, driver og markedsfører egne digitale brands — og bygger software for udvalgte partnere.",
     "ctaPrimary": "Vores brands",
     "ctaSecondary": "Studiearbejde",
     "scroll": "Udforsk"
@@ -25,13 +30,21 @@
       "label": "Brandhus",
       "title": "Egne brands, fra idé til marked.",
       "body": "Vi tænker produkter som brands: strategi, design, udvikling og markedsføring under ét tag — på tværs af e-handel, SaaS og native apps.",
-      "points": ["Produkt- & brandstrategi", "Design & udvikling", "Vækst & markedsføring"]
+      "points": [
+        "Produkt- & brandstrategi",
+        "Design & udvikling",
+        "Vækst & markedsføring"
+      ]
     },
     "studio": {
       "label": "Studio",
       "title": "Udvikling på opgave for udvalgte partnere.",
       "body": "Den samme omhu, som vi lægger i vores egne brands, bringer vi ind i tredjepartsprojekter — iOS, Android, macOS og web.",
-      "points": ["Native apps (iOS, Android, macOS)", "Web- & SaaS-platforme", "Fra MVP til skalering"]
+      "points": [
+        "Native apps (iOS, Android, macOS)",
+        "Web- & SaaS-platforme",
+        "Fra MVP til skalering"
+      ]
     }
   },
   "Brands": {
@@ -47,23 +60,32 @@
     "otherBrands": "Flere brands",
     "detailEyebrow": "Brand",
     "indexTitle": "Alle brands",
-    "indexSubtitle": "Beau-Marketings brandhus i overblik."
+    "indexSubtitle": "Beau Marketings brandhus i overblik."
   },
   "Studio": {
     "eyebrow": "Studio",
     "title": "Software, vi ville bygge til os selv.",
     "subtitle": "Vi påtager os udvalgte opgaver inden for software- og appudvikling.",
     "services": [
-      { "title": "Native apps", "body": "iOS, Android og macOS — hurtige og tæt på platformen." },
-      { "title": "Web & SaaS", "body": "Skalerbare platforme, portaler og dashboards." },
-      { "title": "Produkt & design", "body": "Fra idé over prototype til færdigt produkt." }
+      {
+        "title": "Native apps",
+        "body": "iOS, Android og macOS — hurtige og tæt på platformen."
+      },
+      {
+        "title": "Web & SaaS",
+        "body": "Skalerbare platforme, portaler og dashboards."
+      },
+      {
+        "title": "Produkt & design",
+        "body": "Fra idé over prototype til færdigt produkt."
+      }
     ],
     "cta": "Tal om et projekt"
   },
   "About": {
     "eyebrow": "Om os",
     "title": "Et team med en lang designhistorie.",
-    "body": "Beau-Marketing er både et brandhus og et softwarestudie. Vi udvikler, driver og markedsfører egne brands — og deler det håndværk med partnere, der værdsætter design."
+    "body": "Beau Marketing er både et brandhus og et softwarestudie. Vi udvikler, driver og markedsfører egne brands — og deler det håndværk med partnere, der værdsætter design."
   },
   "Contact": {
     "eyebrow": "Kontakt",
@@ -92,7 +114,7 @@
     "notFound": "Siden blev ikke fundet"
   },
   "Meta": {
-    "homeTitle": "Beau-Marketing — Brandhus & softwarestudie",
+    "homeTitle": "Beau Marketing — Brandhus & softwarestudie",
     "homeDescription": "Vi udvikler, driver og markedsfører egne digitale brands — og bygger software for udvalgte partnere. e-handel, SaaS og native apps."
   },
   "LocaleSwitcher": {
@@ -100,5 +122,31 @@
     "de": "Deutsch",
     "en": "English",
     "da": "Dansk"
+  },
+  "Layout": {
+    "skipToContent": "Gå til indhold",
+    "homeLabel": "Beau Marketing – til forsiden",
+    "mainNav": "Hovednavigation",
+    "agency": "Bureau",
+    "services": "Ydelser",
+    "packages": "Tre pakker",
+    "packageAppearance": "Tilstedeværelse",
+    "packageAppearanceNote": "Hjemmeside eller shop",
+    "packageOperation": "Drift",
+    "packageOperationNote": "Vedligeholdelsesabonnement",
+    "packageVisibility": "Synlighed",
+    "packageVisibilityNote": "månedligt",
+    "allPrices": "Se alle priser",
+    "priceNote": "Netto, ekskl. moms – tilbud til virksomheder.",
+    "cta": "Forespørg projekt",
+    "openMenu": "Åbn menu",
+    "closeMenu": "Luk menu",
+    "callInstead": "Hellere ringe?",
+    "language": "Vælg sprog",
+    "footerAbout": "Bureau og brandhus fra Satrup, Mittelangeln. Siden 2016.",
+    "contact": "Kontakt",
+    "legal": "Juridisk",
+    "claim": "success simplified",
+    "reviews": "{rating} af 5 · {count} Google-anmeldelser"
   }
 }

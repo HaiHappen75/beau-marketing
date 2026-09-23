@@ -9,15 +9,26 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
+import { de } from '@payloadcms/translations/languages/de'
+
+import { Authors } from './collections/Authors'
 import { Brands } from './collections/Brands'
+import { Cases } from './collections/Cases'
+import { Categories } from './collections/Categories'
+import { Engagements } from './collections/Engagements'
+import { Locations } from './collections/Locations'
 import { Media } from './collections/Media'
+import { Pages } from './collections/Pages'
+import { Posts } from './collections/Posts'
+import { Services } from './collections/Services'
 import { Users } from './collections/Users'
 import { migrations } from './migrations'
 import { AGB } from './globals/AGB'
-import { Datenschutz } from './globals/Datenschutz'
-import { Impressum } from './globals/Impressum'
+import { Navigation } from './globals/Navigation'
 import { SiteSettings } from './globals/SiteSettings'
+import { Trust } from './globals/Trust'
 import { Widerruf } from './globals/Widerruf'
+import { seedEndpoint } from './seed/endpoint'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -66,13 +77,45 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
+    // House rule: the admin carries the company logo, never Payload's.
+    components: {
+      graphics: {
+        Logo: '/components/admin/AdminLogo#AdminLogo',
+        Icon: '/components/admin/AdminIcon#AdminIcon',
+      },
+      beforeDashboard: ['/components/admin/SeedPanel#SeedPanel'],
+    },
     meta: {
-      titleSuffix: ' — Beau-Marketing',
+      titleSuffix: ' — Beau Marketing',
+      icons: [{ rel: 'icon', type: 'image/svg+xml', url: '/icon.svg' }],
+      // Without its own openGraph block Payload keeps "Payload App" as og:site_name.
+      openGraph: {
+        title: 'Beau Marketing – Backend',
+        description: 'Redaktionssystem von beau-marketing.de',
+        siteName: 'Beau Marketing',
+      },
     },
   },
-  collections: [Brands, Media, Users],
+  i18n: {
+    supportedLanguages: { de },
+    fallbackLanguage: 'de',
+  },
+  collections: [
+    Pages,
+    Services,
+    Locations,
+    Cases,
+    Brands,
+    Engagements,
+    Posts,
+    Categories,
+    Authors,
+    Media,
+    Users,
+  ],
   email,
-  globals: [SiteSettings, Impressum, Datenschutz, Widerruf, AGB],
+  endpoints: [seedEndpoint],
+  globals: [SiteSettings, Navigation, Trust, AGB, Widerruf],
   localization: {
     locales: [
       { label: 'Deutsch', code: 'de' },
@@ -111,15 +154,21 @@ export default buildConfig({
   },
   plugins: [
     seoPlugin({
-      collections: ['brands'],
+      collections: ['pages', 'services', 'locations', 'cases', 'brands', 'posts'],
       uploadsCollection: 'media',
       tabbedUI: true,
       generateTitle: ({ doc }) => {
-        const name = (doc as { name?: string })?.name
-        return name ? `${name} — Beau-Marketing` : 'Beau-Marketing'
+        const d = doc as { title?: string; name?: string; client?: string }
+        return d?.title ?? d?.name ?? d?.client ?? 'Beau Marketing'
       },
-      generateDescription: ({ doc }) => (doc as { tagline?: string })?.tagline ?? '',
+      generateDescription: ({ doc }) => {
+        const d = doc as { excerpt?: string; shortDescription?: string; tagline?: string }
+        return d?.excerpt ?? d?.shortDescription ?? d?.tagline ?? ''
+      },
     }),
-    redirectsPlugin({ collections: ['brands'] }),
+    redirectsPlugin({
+      collections: ['pages', 'services', 'locations', 'cases', 'brands', 'posts'],
+      overrides: { admin: { group: 'Konfiguration' } },
+    }),
   ],
 })

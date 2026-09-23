@@ -41,7 +41,7 @@ const BCP47: Record<Locale, string> = { de: 'de-DE', en: 'en', da: 'da' }
 // runtime and therefore not machine-readable here — the values sit as constants.
 // If the imprint changes, this place has to be pulled along.
 // Quelle: Impressum, Stand 26.08.2026
-const ORGANIZATION_NAME = 'Beau Marketing GmbH' // the company, not the site brand "Beau-Marketing"
+const ORGANIZATION_NAME = 'Beau Marketing GmbH' // the company; the site brand is "Beau Marketing"
 const ORGANIZATION_EMAIL = 's.beau@beau-marketing.de'
 const ORGANIZATION_PHONE = '+49 4633 2029925'
 const ORGANIZATION_ADDRESS = {
@@ -99,7 +99,7 @@ export function webSiteNode(): JsonLdNode {
   return {
     '@type': 'WebSite',
     '@id': WEBSITE_ID,
-    name: 'Beau-Marketing',
+    name: 'Beau Marketing',
     url: `${SITE_URL}/`,
     publisher: ref(ORGANIZATION_ID),
   }

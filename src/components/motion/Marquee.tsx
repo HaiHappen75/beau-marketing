@@ -11,7 +11,7 @@ export function Marquee({ items, className = '' }: { items: string[]; className?
             <span className="px-8 font-display text-2xl font-semibold text-paper/70 sm:text-3xl">
               {item}
             </span>
-            <span className="text-accent">◆</span>
+            <span className="text-muted">◆</span>
           </span>
         ))}
       </div>

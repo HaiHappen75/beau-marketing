@@ -6,6 +6,8 @@ export async function getBrands(locale: Locale): Promise<Brand[]> {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'brands',
+    // „ausgeblendet“ appears nowhere on the site.
+    where: { status: { not_equals: 'hidden' } },
     locale: toPayloadLocale(locale),
     fallbackLocale: toPayloadLocale('de'),
     sort: 'order',

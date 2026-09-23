@@ -11,9 +11,14 @@
   "Hero": {
     "eyebrow": "Markenhaus & Software-Studio",
     "titleLead": "Wir bauen",
-    "rotating": ["Marken.", "Apps.", "Erlebnisse.", "Produkte."],
+    "rotating": [
+      "Marken.",
+      "Apps.",
+      "Erlebnisse.",
+      "Produkte."
+    ],
     "titleTail": "die bleiben.",
-    "subtitle": "Beau-Marketing entwickelt, führt und vermarktet eigene digitale Marken – und baut Software für ausgewählte Partner.",
+    "subtitle": "Beau Marketing entwickelt, führt und vermarktet eigene digitale Marken – und baut Software für ausgewählte Partner.",
     "ctaPrimary": "Unsere Marken",
     "ctaSecondary": "Auftragsentwicklung",
     "scroll": "Entdecken"
@@ -25,13 +30,21 @@
       "label": "Markenhaus",
       "title": "Eigene Marken, von der Idee bis zum Markt.",
       "body": "Wir denken Produkte als Marken: Strategie, Design, Entwicklung und Vermarktung aus einer Hand – über e-Commerce, SaaS und native Apps hinweg.",
-      "points": ["Produkt- & Markenstrategie", "Design & Entwicklung", "Wachstum & Vermarktung"]
+      "points": [
+        "Produkt- & Markenstrategie",
+        "Design & Entwicklung",
+        "Wachstum & Vermarktung"
+      ]
     },
     "studio": {
       "label": "Studio",
       "title": "Auftragsentwicklung für ausgewählte Partner.",
       "body": "Dieselbe Sorgfalt, die in unsere eigenen Marken fließt, bringen wir in Projekte Dritter – iOS, Android, macOS und Web.",
-      "points": ["Native Apps (iOS, Android, macOS)", "Web- & SaaS-Plattformen", "Von MVP bis Skalierung"]
+      "points": [
+        "Native Apps (iOS, Android, macOS)",
+        "Web- & SaaS-Plattformen",
+        "Von MVP bis Skalierung"
+      ]
     }
   },
   "Brands": {
@@ -47,23 +60,32 @@
     "otherBrands": "Weitere Marken",
     "detailEyebrow": "Marke",
     "indexTitle": "Alle Marken",
-    "indexSubtitle": "Das Markenhaus von Beau-Marketing im Überblick."
+    "indexSubtitle": "Das Markenhaus von Beau Marketing im Überblick."
   },
   "Studio": {
     "eyebrow": "Studio",
     "title": "Software, die wir auch für uns selbst bauen würden.",
     "subtitle": "Wir übernehmen ausgewählte Auftragsarbeiten in Software- und App-Entwicklung.",
     "services": [
-      { "title": "Native Apps", "body": "iOS, Android und macOS – performant und nah an der Plattform." },
-      { "title": "Web & SaaS", "body": "Skalierbare Plattformen, Portale und Dashboards." },
-      { "title": "Produkt & Design", "body": "Von der Idee über den Prototyp bis zum fertigen Produkt." }
+      {
+        "title": "Native Apps",
+        "body": "iOS, Android und macOS – performant und nah an der Plattform."
+      },
+      {
+        "title": "Web & SaaS",
+        "body": "Skalierbare Plattformen, Portale und Dashboards."
+      },
+      {
+        "title": "Produkt & Design",
+        "body": "Von der Idee über den Prototyp bis zum fertigen Produkt."
+      }
     ],
     "cta": "Projekt besprechen"
   },
   "About": {
     "eyebrow": "Über uns",
     "title": "Ein Team mit langer Designhistorie.",
-    "body": "Beau-Marketing ist Markenhaus und Software-Studio zugleich. Wir entwickeln, führen und vermarkten eigene Marken – und teilen dieses Handwerk mit Partnern, die Wert auf Gestaltung legen."
+    "body": "Beau Marketing ist Markenhaus und Software-Studio zugleich. Wir entwickeln, führen und vermarkten eigene Marken – und teilen dieses Handwerk mit Partnern, die Wert auf Gestaltung legen."
   },
   "Contact": {
     "eyebrow": "Kontakt",
@@ -92,7 +114,7 @@
     "notFound": "Seite nicht gefunden"
   },
   "Meta": {
-    "homeTitle": "Beau-Marketing — Markenhaus & Software-Studio",
+    "homeTitle": "Beau Marketing — Markenhaus & Software-Studio",
     "homeDescription": "Wir entwickeln, führen und vermarkten eigene digitale Marken – und bauen Software für ausgewählte Partner. e-Commerce, SaaS und native Apps."
   },
   "LocaleSwitcher": {
@@ -100,5 +122,31 @@
     "de": "Deutsch",
     "en": "English",
     "da": "Dansk"
+  },
+  "Layout": {
+    "skipToContent": "Zum Inhalt springen",
+    "homeLabel": "Beau Marketing – zur Startseite",
+    "mainNav": "Hauptnavigation",
+    "agency": "Agentur",
+    "services": "Leistungen",
+    "packages": "Drei Pakete",
+    "packageAppearance": "Auftritt",
+    "packageAppearanceNote": "Website oder Shop",
+    "packageOperation": "Betrieb",
+    "packageOperationNote": "Pflege-Abo",
+    "packageVisibility": "Sichtbarkeit",
+    "packageVisibilityNote": "monatlich",
+    "allPrices": "Alle Preise ansehen",
+    "priceNote": "Netto, zzgl. USt. – Angebot für Unternehmen.",
+    "cta": "Projekt anfragen",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen",
+    "callInstead": "Lieber anrufen?",
+    "language": "Sprache wählen",
+    "footerAbout": "Agentur und Markenhaus aus Satrup, Mittelangeln. Seit 2016.",
+    "contact": "Kontakt",
+    "legal": "Rechtliches",
+    "claim": "success simplified",
+    "reviews": "{rating} von 5 · {count} Google-Bewertungen"
   }
 }

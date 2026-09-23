@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bricolage_Grotesque, Roboto } from 'next/font/google'
+import localFont from 'next/font/local'
 import { notFound } from 'next/navigation'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
@@ -12,21 +12,17 @@ import { siteGraph } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { SITE_URL } from '@/lib/seo'
 import { getBrands } from '@/lib/queries/getBrands'
-import { getSiteSettings } from '@/lib/queries/getSiteSettings'
 import '@/styles/globals.css'
 
-// Effra placeholder until the licensed font files land — a characterful grotesk for display.
-const display = Bricolage_Grotesque({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['600', '700', '800'],
-  variable: '--font-display-src',
-  display: 'swap',
-})
-
-const body = Roboto({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['400', '500', '700'],
-  variable: '--font-body-src',
+// Nunito Sans (SIL OFL, src/app/fonts/OFL.txt), self-hosted — no request to
+// Google. Variable weight axis, upright + italic; the latin subset covers
+// German, Danish and English including „“, – and €.
+const nunito = localFont({
+  src: [
+    { path: '../../fonts/NunitoSans-latin-wght-normal.woff2', weight: '200 1000', style: 'normal' },
+    { path: '../../fonts/NunitoSans-latin-wght-italic.woff2', weight: '200 1000', style: 'italic' },
+  ],
+  variable: '--font-nunito',
   display: 'swap',
 })
 
@@ -45,7 +41,7 @@ export async function generateMetadata(props: {
   const t = await getTranslations({ locale, namespace: 'Meta' })
   return {
     metadataBase: new URL(SITE_URL),
-    title: { default: t('homeTitle'), template: '%s — Beau-Marketing' },
+    title: { default: t('homeTitle'), template: '%s | beau marketing' },
     description: t('homeDescription'),
   }
 }
@@ -58,28 +54,23 @@ export default async function LocaleLayout(props: {
   if (!hasLocale(routing.locales, locale)) notFound()
   setRequestLocale(locale)
 
-  const [settings, brands] = await Promise.all([
-    getSiteSettings(locale as Locale),
-    getBrands(locale as Locale),
-  ])
+  const brands = await getBrands(locale as Locale)
+  const t = await getTranslations({ locale, namespace: 'Layout' })
 
   return (
-    <html lang={locale} className={`${display.variable} ${body.variable}`}>
+    <html lang={locale} className={nunito.variable}>
       <body>
         {/* Sitewide graph: Organization + Brands + WebSite. Every public page carries
             it, so the per-page WebPage node's isPartOf/publisher references resolve.
             Route group (payload) has its own layout — /admin and /api get nothing. */}
         <JsonLd graph={siteGraph(brands)} />
         <NextIntlClientProvider>
-          <a
-            href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2 focus:text-paper"
-          >
-            Zum Inhalt springen
+          <a href="#main" className="btn sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100]">
+            {t('skipToContent')}
           </a>
-          <Header settings={settings} brands={brands} locale={locale as Locale} />
+          <Header locale={locale as Locale} />
           <main id="main">{props.children}</main>
-          <Footer settings={settings} locale={locale as Locale} />
+          <Footer locale={locale as Locale} />
         </NextIntlClientProvider>
       </body>
     </html>

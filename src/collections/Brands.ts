@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { publicReadAccess } from '../access'
 import { slugField } from '../fields/slug'
 
 /** The portfolio: every brand/app shown on the home page + its own detail page. */
@@ -7,10 +8,10 @@ export const Brands: CollectionConfig = {
   labels: { singular: 'Marke', plural: 'Marken' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'category', 'order'],
+    defaultColumns: ['name', 'status', 'category', 'order'],
     group: 'Inhalte',
   },
-  access: { read: () => true },
+  access: publicReadAccess,
   defaultSort: 'order',
   fields: [
     { name: 'name', type: 'text', required: true },
@@ -37,6 +38,20 @@ export const Brands: CollectionConfig = {
           admin: { width: '50%', description: 'Sortierung auf der Startseite (klein = oben).' },
         },
       ],
+    },
+    {
+      name: 'status',
+      type: 'select',
+      options: [
+        { label: 'live', value: 'live' },
+        { label: 'Beta', value: 'beta' },
+        { label: 'in Entwicklung', value: 'development' },
+        { label: 'ausgeblendet', value: 'hidden' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: '„ausgeblendet“ = erscheint nirgends auf der Website (z. B. solange es nur eine Idee ist).',
+      },
     },
     {
       name: 'tagline',
