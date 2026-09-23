@@ -148,5 +148,144 @@
     "legal": "Rechtliches",
     "claim": "success simplified",
     "reviews": "{rating} von 5 · {count} Google-Bewertungen"
+  },
+  "Site": {
+    "priceNote": "zzgl. USt., Angebot für Unternehmen",
+    "pricesNet": "Alle Preise netto, zzgl. USt. – Angebot für Unternehmen.",
+    "from": "ab",
+    "once": "einmalig",
+    "perMonth": "/ Monat",
+    "hourlyShort": "Einzeln buchbar. Kleine Aufgaben zwischendurch: {rate} € pro Stunde.",
+    "hourlyFootnote": "Einzelaufgaben ohne Paket: {rate} € pro Stunde, zzgl. USt.",
+    "package": "Paket {n}",
+    "moreAbout": "Mehr zu {title}",
+    "packages": {
+      "appearance": {
+        "title": "Auftritt",
+        "sub": "Website oder Shopify-Shop",
+        "items": [
+          "Website oder Shop, fertig eingerichtet",
+          "Struktur und Texte – mit dir zusammen",
+          "Impressum & Datenschutz über eRecht24",
+          "Websites auf Servern in Deutschland"
+        ]
+      },
+      "operation": {
+        "title": "Betrieb",
+        "sub": "Pflege-Abo",
+        "items": [
+          "Updates und Sicherheit",
+          "Regelmäßige Backups",
+          "Rechtstexte bleiben aktuell",
+          "Kleine Änderungen inklusive (ab Plus)"
+        ]
+      },
+      "visibility": {
+        "title": "Sichtbarkeit",
+        "sub": "monatlich",
+        "items": [
+          "Google-Unternehmensprofil gepflegt",
+          "Lokales SEO für deine Orte",
+          "Bewertungen im Blick",
+          "Monatlicher Bericht, kurz und lesbar"
+        ],
+        "note": "Für Betriebe, die in ihrer Gegend gefunden werden wollen."
+      }
+    },
+    "allReferences": "Alle Referenzen",
+    "referenceAria": "Referenz ansehen: {name}",
+    "allArticles": "Alle Artikel",
+    "readingTime": "{min} Min. Lesezeit",
+    "brandStatus": {
+      "live": "live",
+      "beta": "Beta",
+      "development": "in Entwicklung"
+    },
+    "brandVisit": "{name} ansehen",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "reviews": "{rating} · {count} Bewertungen auf Google",
+    "reviewsAria": "{rating} von 5 Sternen",
+    "trustLabel": "Partner und Nachweise",
+    "breadcrumb": "Brotkrumen",
+    "home": "Startseite",
+    "agency": "Agentur",
+    "service": {
+      "packagesButton": "Pakete & Preise",
+      "deliverablesKicker": "Das bekommst du",
+      "packagesKicker": "Pakete & Preise",
+      "packagesHeading": "Feste Preise. Du weißt vorher, was es kostet.",
+      "request": "{name} anfragen",
+      "aftercareKicker": "Danach",
+      "processKicker": "Ablauf",
+      "processHeading": "{count, select, 3 {Drei Schritte} 4 {Vier Schritte} 5 {Fünf Schritte} 6 {Sechs Schritte} other {# Schritte}}. Einer nach dem anderen.",
+      "step": "Schritt {n}",
+      "inHouseKicker": "Aus dem eigenen Haus",
+      "referencesKicker": "Passende Referenzen",
+      "faqKicker": "Fragen",
+      "faqHeading": "Was du vorher wissen willst.",
+      "guidesHeading": "Weiterlesen im Ratgeber",
+      "ctaCall": "Ruf an:",
+      "ctaOr": "oder schreib an"
+    },
+    "table": {
+      "service": "Leistung",
+      "package": "Paket",
+      "price": "Preis",
+      "hourly": "Einzelaufgaben",
+      "byEffort": "nach Aufwand",
+      "perHour": "{rate} € / Stunde"
+    },
+    "perHour": "/ Stunde",
+    "onRequest": "auf Anfrage"
+  },
+  "ContactForm": {
+    "formLabel": "Anfrageformular",
+    "name": "Name",
+    "company": "Firma",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "optional": "(optional)",
+    "service": "Leistung",
+    "region": "Region",
+    "budget": "Grobes Budget (optional)",
+    "message": "Nachricht",
+    "choose": "Bitte wählen",
+    "unsure": "Weiß ich noch nicht",
+    "regions": [
+      "Schleswig-Holstein",
+      "Hamburg",
+      "Dänemark",
+      "anderswo"
+    ],
+    "budgets": [
+      "unter 2.000 €",
+      "2.000 – 5.000 €",
+      "5.000 – 10.000 €",
+      "über 10.000 €",
+      "Weiß ich noch nicht"
+    ],
+    "messagePlaceholder": "Was macht dein Betrieb, was soll die Seite können, gibt es schon eine?",
+    "errName": "Bitte gib deinen Namen an.",
+    "errCompany": "Bitte gib deine Firma an.",
+    "errEmail": "Bitte gib deine E-Mail an.",
+    "errEmailInvalid": "Die E-Mail-Adresse sieht nicht vollständig aus.",
+    "errService": "Bitte wähl eine Leistung.",
+    "errRegion": "Bitte wähl eine Region.",
+    "errMessage": "Ein, zwei Sätze reichen.",
+    "errSummary": "Bitte prüf die markierten Felder ({count}).",
+    "submit": "Anfrage senden",
+    "sending": "Wird gesendet …",
+    "required": "Pflichtfelder: alle außer Telefon und Budget.",
+    "privacy": "Deine Angaben verwenden wir nur, um deine Anfrage zu beantworten. Mehr dazu in der <link>Datenschutzerklärung</link>.",
+    "successTitle": "Danke, ist angekommen.",
+    "successText": "Stephan meldet sich persönlich.",
+    "successCall": "Eilig? Ruf an:",
+    "again": "Noch eine Anfrage schicken",
+    "errSend": "Das hat leider nicht geklappt. Bitte versuch es gleich noch einmal oder ruf an.",
+    "errRate": "Du hast gerade schon mehrere Anfragen geschickt. Bitte versuch es später noch einmal oder ruf an.",
+    "honeypot": "Bitte dieses Feld leer lassen",
+    "directContact": "Direkter Kontakt",
+    "personText": "liest jede Anfrage selbst."
   }
 }

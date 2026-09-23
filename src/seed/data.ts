@@ -96,7 +96,7 @@ export const SERVICES: ServiceSeed[] = [
         price: 490,
         priceIsFrom: true,
         unit: 'once',
-        includes: ['Widerrufsbutton', 'EU-Gewährleistungslabel', 'GPSR-Angaben', 'CCD-II-Check der Zahlarten'],
+        includes: ['Widerrufsbutton', 'EU-Gewährleistungslabel', 'GPSR-Angaben', 'Zahlarten nach CCD II einrichten'],
       },
     ],
   },
@@ -428,6 +428,7 @@ export const TRUST_MEDIA = {
     filename: 'erecht24-agentur-partner.png',
     href: null,
     name: 'eRecht24 Agentur Partner',
+    caption: 'Impressum & Datenschutz immer aktuell',
     alt: {
       de: 'eRecht24 Agentur Partner für rechtssichere Webseiten',
       en: 'eRecht24 agency partner for legally compliant websites',

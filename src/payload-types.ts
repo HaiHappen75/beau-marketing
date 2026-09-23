@@ -170,6 +170,8 @@ export interface Page {
              * Leer = Kontur-Quadrat.
              */
             image?: (number | null) | Media;
+            captionName?: string | null;
+            captionText?: string | null;
             primary?: {
               label?: string | null;
               /**
@@ -184,12 +186,27 @@ export interface Page {
                */
               href?: string | null;
             };
+            /**
+             * Preise kommen immer aus der Leistung, nie als freier Text.
+             */
+            checks?:
+              | {
+                  kind?: ('service' | 'text') | null;
+                  service?: (number | null) | Service;
+                  text?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            note?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             intro?: string | null;
             id?: string | null;
@@ -198,6 +215,9 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             intro?: string | null;
             id?: string | null;
@@ -206,6 +226,9 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             /**
              * Leer = alle mit „Auf der Startseite“.
@@ -217,6 +240,9 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             intro?: string | null;
             id?: string | null;
@@ -224,6 +250,9 @@ export interface Page {
             blockType: 'brandShowcase';
           }
         | {
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             id?: string | null;
             blockName?: string | null;
@@ -231,19 +260,36 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
+            text?: string | null;
+            link?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
             id?: string | null;
             blockName?: string | null;
             blockType: 'engagementBand';
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'postTeaser';
           }
         | {
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             items?:
               | {
@@ -257,6 +303,9 @@ export interface Page {
             blockType: 'faq';
           }
         | {
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             text?: string | null;
             button?: {
@@ -272,6 +321,9 @@ export interface Page {
           }
         | {
             kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
             heading?: string | null;
             body?: {
               root: {
@@ -293,6 +345,27 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'textImage';
+          }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'priceTable';
+          }
+        | {
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'contactForm';
           }
       )[]
     | null;
@@ -371,6 +444,151 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
+   */
+  slug?: string | null;
+  /**
+   * Reihenfolge in Menü und Übersicht (klein = oben).
+   */
+  order?: number | null;
+  /**
+   * Für Preis-Häkchen im Hero, z. B. „Website“ → „Website ab 1.900 €“.
+   */
+  shortLabel?: string | null;
+  /**
+   * Eine Zeile für Mega-Menü und Leistungskachel.
+   */
+  shortDescription: string;
+  /**
+   * Ein Satz für die Leistungskachel auf Start- und Agentur-Seite.
+   */
+  teaser?: string | null;
+  /**
+   * Text in *Sternchen* wird kursiv betont. Leer = Titel.
+   */
+  headline?: string | null;
+  /**
+   * Zwei, drei Sätze unter der Überschrift der Leistungsseite.
+   */
+  promise?: string | null;
+  deliverables?: {
+    heading?: string | null;
+    text?: string | null;
+    items?:
+      | {
+          item: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Das erste Paket liefert den Teaser-Preis in Menü und Kacheln. Preise netto – der Zusatz „zzgl. USt., Angebot für Unternehmen“ erscheint automatisch.
+   */
+  packages?:
+    | {
+        name: string;
+        /**
+         * z. B. „Einstieg“
+         */
+        kicker?: string | null;
+        /**
+         * Kasten z. B. für das Pflichtangaben-Update.
+         */
+        display?: ('card' | 'box') | null;
+        description?: string | null;
+        /**
+         * Leer = „auf Anfrage“.
+         */
+        price?: number | null;
+        priceIsFrom?: boolean | null;
+        unit?: ('once' | 'month' | 'hour') | null;
+        term?: string | null;
+        includes?:
+          | {
+              item: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  steps?:
+    | {
+        title: string;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Zeigt nach den eigenen Paketen die Betreuung, z. B. Pflege-Abo nach der Website.
+   */
+  aftercare?: {
+    service?: (number | null) | Service;
+    /**
+     * Name des Pakets oder mehrere, kommagetrennt (z. B. „Basis, Plus, Pro“). Leer = alle Paketkarten.
+     */
+    packageName?: string | null;
+  };
+  faq?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Optionaler Block mit einem eigenen Projekt (z. B. Fjella). Leer = entfällt.
+   */
+  inHouse?: {
+    /**
+     * *Betonung* möglich.
+     */
+    heading?: string | null;
+    text?: string | null;
+    items?:
+      | {
+          item: string;
+          id?: string | null;
+        }[]
+      | null;
+    image?: (number | null) | Media;
+    linkLabel?: string | null;
+    url?: string | null;
+  };
+  /**
+   * Leer = Kontur-Quadrat.
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Leer = automatisch alle veröffentlichten Referenzen mit dieser Leistung.
+   */
+  cases?: (number | Case)[] | null;
+  posts?: (number | Post)[] | null;
+  cta?: {
+    heading?: string | null;
+    buttonLabel?: string | null;
+    text?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -480,99 +698,6 @@ export interface Case {
    * Nur intern, z. B. „laut Stephan“.
    */
   releaseNote?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (number | null) | Media;
-  };
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services".
- */
-export interface Service {
-  id: number;
-  title: string;
-  /**
-   * URL-Pfad. Wird aus dem Namen erzeugt, kann überschrieben werden.
-   */
-  slug?: string | null;
-  /**
-   * Reihenfolge in Menü und Übersicht (klein = oben).
-   */
-  order?: number | null;
-  /**
-   * Eine Zeile für Mega-Menü und Leistungskachel.
-   */
-  shortDescription: string;
-  /**
-   * Zwei, drei Sätze unter der Überschrift der Leistungsseite.
-   */
-  promise?: string | null;
-  scope?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  /**
-   * Das erste Paket liefert den Teaser-Preis in Menü und Kacheln. Preise netto – der Zusatz „zzgl. USt., Angebot für Unternehmen“ erscheint automatisch.
-   */
-  packages?:
-    | {
-        name: string;
-        /**
-         * Leer = „auf Anfrage“.
-         */
-        price?: number | null;
-        priceIsFrom?: boolean | null;
-        unit?: ('once' | 'month' | 'hour') | null;
-        term?: string | null;
-        includes?:
-          | {
-              item: string;
-              id?: string | null;
-            }[]
-          | null;
-        id?: string | null;
-      }[]
-    | null;
-  steps?:
-    | {
-        title: string;
-        text?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  faq?:
-    | {
-        question: string;
-        answer: string;
-        id?: string | null;
-      }[]
-    | null;
-  cases?: (number | Case)[] | null;
-  posts?: (number | Post)[] | null;
-  cta?: {
-    heading?: string | null;
-    buttonLabel?: string | null;
-    text?: string | null;
-  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1093,6 +1218,8 @@ export interface PagesSelect<T extends boolean = true> {
               heading?: T;
               text?: T;
               image?: T;
+              captionName?: T;
+              captionText?: T;
               primary?:
                 | T
                 | {
@@ -1105,6 +1232,15 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              checks?:
+                | T
+                | {
+                    kind?: T;
+                    service?: T;
+                    text?: T;
+                    id?: T;
+                  };
+              note?: T;
               id?: T;
               blockName?: T;
             };
@@ -1156,6 +1292,13 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               kicker?: T;
               heading?: T;
+              text?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
               id?: T;
               blockName?: T;
             };
@@ -1206,6 +1349,23 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        priceTable?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              id?: T;
+              blockName?: T;
+            };
+        contactForm?:
+          | T
+          | {
+              heading?: T;
+              intro?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1226,13 +1386,30 @@ export interface ServicesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   order?: T;
+  shortLabel?: T;
   shortDescription?: T;
+  teaser?: T;
+  headline?: T;
   promise?: T;
-  scope?: T;
+  deliverables?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+      };
   packages?:
     | T
     | {
         name?: T;
+        kicker?: T;
+        display?: T;
+        description?: T;
         price?: T;
         priceIsFrom?: T;
         unit?: T;
@@ -1252,6 +1429,12 @@ export interface ServicesSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  aftercare?:
+    | T
+    | {
+        service?: T;
+        packageName?: T;
+      };
   faq?:
     | T
     | {
@@ -1259,6 +1442,22 @@ export interface ServicesSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
+  inHouse?:
+    | T
+    | {
+        heading?: T;
+        text?: T;
+        items?:
+          | T
+          | {
+              item?: T;
+              id?: T;
+            };
+        image?: T;
+        linkLabel?: T;
+        url?: T;
+      };
+  heroImage?: T;
   cases?: T;
   posts?: T;
   cta?:
@@ -1783,6 +1982,10 @@ export interface Trust {
         name: string;
         href?: string | null;
         image: number | Media;
+        /**
+         * Optional, z. B. „Impressum & Datenschutz immer aktuell“.
+         */
+        caption?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1956,6 +2159,7 @@ export interface TrustSelect<T extends boolean = true> {
         name?: T;
         href?: T;
         image?: T;
+        caption?: T;
         id?: T;
       };
   serverNote?: T;
