@@ -4,7 +4,9 @@ import { SITE_URL } from '@/lib/seo'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: '*', allow: '/', disallow: ['/admin', '/api'] },
+    // Payload serves uploads under /api/media/file/… — the longer Allow rule wins
+    // over Disallow /api, so CMS images stay crawlable.
+    rules: { userAgent: '*', allow: ['/', '/api/media/'], disallow: ['/admin', '/api'] },
     sitemap: `${SITE_URL}/sitemap.xml`,
   }
 }

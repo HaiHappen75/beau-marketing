@@ -33,7 +33,7 @@ const smtpPort = Number(process.env.SMTP_PORT ?? 587)
 const email = process.env.SMTP_HOST
   ? nodemailerAdapter({
       defaultFromAddress: process.env.SMTP_FROM_ADDRESS || 'noreply@beau-marketing.de',
-      defaultFromName: process.env.SMTP_FROM_NAME || 'Beau-Marketing',
+      defaultFromName: process.env.SMTP_FROM_NAME || 'Beau Marketing',
       transportOptions: {
         host: process.env.SMTP_HOST,
         port: smtpPort,
@@ -84,9 +84,20 @@ export default buildConfig({
   },
   editor: lexicalEditor(),
   db: postgresAdapter({
-    pool: { connectionString: process.env.DATABASE_URI || '' },
-    // Dev syncs the schema automatically (push). Production runs these committed
-    // migrations on boot — no CLI needed in the standalone container.
+    // Fleet pool standard: without a connect timeout node-pg waits forever on a
+    // hanging database instead of failing the boot cleanly.
+    pool: {
+      connectionString: process.env.DATABASE_URI || '',
+      max: 10,
+      connectionTimeoutMillis: 5000,
+      idleTimeoutMillis: 30000,
+      allowExitOnIdle: false,
+    },
+    // No dev push: it leaves a `batch = -1` row in payload_migrations (which makes
+    // `payload migrate` prompt and hang) and can silently rewrite constraints.
+    // Schema changes go through `pnpm payload migrate:create` only; production runs
+    // these committed migrations on boot — no CLI needed in the standalone container.
+    push: false,
     prodMigrations: migrations,
   }),
   secret: process.env.PAYLOAD_SECRET || '',
