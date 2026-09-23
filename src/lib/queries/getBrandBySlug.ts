@@ -6,7 +6,7 @@ export async function getBrandBySlug(slug: string, locale: Locale): Promise<Bran
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'brands',
-    where: { slug: { equals: slug } },
+    where: { slug: { equals: slug }, status: { not_equals: 'hidden' } },
     locale: toPayloadLocale(locale),
     fallbackLocale: toPayloadLocale('de'),
     depth: 2,
