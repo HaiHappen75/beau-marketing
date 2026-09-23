@@ -10,7 +10,7 @@ export async function EngagementBlock({ block, ctx }: { block: BlockOf<'engageme
   const items = await getVisibleEngagements(ctx.locale)
   if (items.length === 0) return null
   return (
-    <Section>
+    <Section id="region">
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] items-end gap-x-16 gap-y-6">
         <div>
           <Kicker>{block.kicker}</Kicker>

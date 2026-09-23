@@ -123,3 +123,29 @@ export const getPostsByIds = cache(async (ids: number[], locale: Locale): Promis
 /** Relationship values arrive as id or populated doc depending on depth. */
 export const idOf = (v: unknown): number | null =>
   typeof v === 'number' ? v : v && typeof v === 'object' && 'id' in v ? Number((v as { id: unknown }).id) : null
+
+export const getPublishedCases = cache(async (locale: Locale): Promise<Case[]> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'cases',
+    where: published,
+    sort: 'order',
+    depth: 1,
+    limit: 100,
+    ...opts(locale),
+  })
+  return docs
+})
+
+/** Detail pages exist only for published cases flagged hasDetailPage. */
+export const getCaseDetail = cache(async (slug: string, locale: Locale): Promise<Case | null> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'cases',
+    where: { and: [{ slug: { equals: slug } }, { hasDetailPage: { equals: true } }, published] },
+    depth: 1,
+    limit: 1,
+    ...opts(locale),
+  })
+  return docs[0] ?? null
+})

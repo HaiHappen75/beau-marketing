@@ -101,3 +101,50 @@ export const LEGACY_BRAND_DESCRIPTIONS: Record<string, Record<SeedLocale, string
 export const LEGACY_PACKAGE_ITEMS: Record<string, string> = {
   'CCD-II-Check der Zahlarten': 'Zahlarten nach CCD II einrichten',
 }
+
+/** Brand claims of the redesign seed (Paket 1) that were replaced later. */
+export const LEGACY_BRAND_TAGLINES_REDESIGN: Record<string, string[]> = {
+  fjella: ['Nordisches Interior – „Zuhause, nordisch gedacht.“ Unser eigener Shopify-Shop.'],
+}
+
+/**
+ * Package item lists of the redesign seed (Paket 1) replaced as a whole — only
+ * when the list is exactly this, i.e. nobody has touched it.
+ */
+export const LEGACY_PACKAGE_INCLUDES: Record<string, string[][]> = {
+  'Website Start': [['Onepager']],
+}
+
+/**
+ * Druck & Werbemittel before the decision of 23.09.2026 (design and print via
+ * partner printers; the workshop is not offered as a service).
+ */
+export const LEGACY_SERVICE_TEXTS: Record<string, { field: string; values: (string | string[])[] }[]> = {
+  'druck-werbemittel': [
+    { field: 'shortDescription', values: ['Flyer, Schilder, Textil, Lasergravur.'] },
+    { field: 'teaser', values: ['Flyer, Schilder, Textil, Lasergravur – aus der eigenen Werkstatt.'] },
+    {
+      field: 'promise',
+      values: [
+        'Gestaltung und Druck von Flyern, Visitenkarten, Bannern und Textil. Schilder und Lasergravur entstehen in der eigenen Werkstatt in Satrup.',
+      ],
+    },
+    {
+      field: 'deliverables.items',
+      values: [
+        [
+          'Gestaltung',
+          'Flyer und Visitenkarten',
+          'Banner und Roll-ups',
+          'Textil, z. B. Trikots und Warnwesten',
+          'Schilder und Lasergravur aus der eigenen Werkstatt',
+        ],
+      ],
+    },
+  ],
+}
+
+/** Block headings of the Paket-2 page seed that were reworded (page slug → block type). */
+export const LEGACY_BLOCK_HEADINGS: Record<string, Record<string, string[]>> = {
+  start: { caseTeaser: ['Echte Betriebe, echte Seiten.'] },
+}

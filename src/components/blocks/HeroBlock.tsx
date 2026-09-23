@@ -34,9 +34,18 @@ export async function HeroBlock({ block, ctx }: { block: BlockOf<'hero'>; ctx: B
           <h1 className="text-[clamp(38px,5.2vw,64px)] leading-[1.04] font-extrabold tracking-[-0.025em] text-balance">
             {withEmphasis(block.heading)}
           </h1>
-          {block.text && (
-            <p className="mt-6 max-w-[34em] text-[clamp(18px,1.5vw,21px)] leading-[1.55]">{block.text}</p>
-          )}
+          {block.text?.split(/\n\s*\n/).map((para, i) => (
+            <p
+              key={i}
+              className={
+                i === 0
+                  ? 'mt-6 max-w-[34em] text-[clamp(18px,1.5vw,21px)] leading-[1.55]'
+                  : 'mt-4 max-w-[34em] text-lg'
+              }
+            >
+              {para}
+            </p>
+          ))}
           {(block.primary?.href || block.secondary?.href) && (
             <div className="mt-8 flex flex-wrap gap-3">
               {block.primary?.href && block.primary.label && (

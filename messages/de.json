@@ -237,7 +237,30 @@
       "perHour": "{rate} € / Stunde"
     },
     "perHour": "/ Stunde",
-    "onRequest": "auf Anfrage"
+    "onRequest": "auf Anfrage",
+    "references": "Referenzen",
+    "case": {
+      "kicker": "Referenz",
+      "client": "Kunde",
+      "industry": "Branche",
+      "place": "Ort",
+      "services": "Leistungen",
+      "challenge": "Ausgangslage",
+      "solution": "Lösung",
+      "result": "Ergebnis",
+      "screenshot": "Screenshot",
+      "moreScreenshots": "Weitere Screenshots",
+      "story": "Ausgangslage, Lösung, Ergebnis",
+      "quote": "Zitat",
+      "visit": "Zur Seite von {name}",
+      "nav": "Link und weitere Referenzen",
+      "ctaHeading": "Lass uns über dein Projekt reden."
+    },
+    "filter": {
+      "label": "Referenzen nach Leistung filtern",
+      "all": "Alle",
+      "empty": "Für diese Leistung gibt es noch keine veröffentlichte Referenz."
+    }
   },
   "ContactForm": {
     "formLabel": "Anfrageformular",

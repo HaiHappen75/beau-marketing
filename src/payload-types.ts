@@ -367,6 +367,50 @@ export interface Page {
             blockName?: string | null;
             blockType: 'contactForm';
           }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            items?:
+              | {
+                  label: string;
+                  title: string;
+                  text?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'timeline';
+          }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            text?: string | null;
+            /**
+             * Optional. Ohne Bilder entfällt die Galerie.
+             */
+            images?: (number | Media)[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'darkText';
+          }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'caseGrid';
+          }
       )[]
     | null;
   meta?: {
@@ -607,6 +651,10 @@ export interface Case {
    * Ohne https:// möglich.
    */
   url?: string | null;
+  /**
+   * Ein Satz unter der Überschrift der Detailseite. Nur Belegtes.
+   */
+  summary?: string | null;
   /**
    * Nur, wo die Leistung heute wirklich zutrifft.
    */
@@ -983,18 +1031,7 @@ export interface Brand {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Akzentfarbe als Hex, z. B. #F28704
-   */
-  accentColor: string;
   platforms?: ('ios' | 'android' | 'macos' | 'web')[] | null;
-  /**
-   * Optionaler Verlauf für die Marken-Bühne (sonst wird die Akzentfarbe genutzt).
-   */
-  accentGradient?: {
-    from?: string | null;
-    to?: string | null;
-  };
   logo?: (number | null) | Media;
   screenshots?:
     | {
@@ -1366,6 +1403,41 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        timeline?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              items?:
+                | T
+                | {
+                    label?: T;
+                    title?: T;
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        darkText?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              text?: T;
+              images?: T;
+              id?: T;
+              blockName?: T;
+            };
+        caseGrid?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1525,6 +1597,7 @@ export interface CasesSelect<T extends boolean = true> {
   industry?: T;
   place?: T;
   url?: T;
+  summary?: T;
   services?: T;
   chips?:
     | T
@@ -1578,14 +1651,7 @@ export interface BrandsSelect<T extends boolean = true> {
   status?: T;
   tagline?: T;
   description?: T;
-  accentColor?: T;
   platforms?: T;
-  accentGradient?:
-    | T
-    | {
-        from?: T;
-        to?: T;
-      };
   logo?: T;
   screenshots?:
     | T

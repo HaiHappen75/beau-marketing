@@ -225,20 +225,15 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'druck-werbemittel': {
     shortLabel: 'Druck',
-    teaser: 'Flyer, Schilder, Textil, Lasergravur – aus der eigenen Werkstatt.',
+    // Decision Stephan 23.09.2026: design + print via partner printers; the
+    // workshop is not offered as a service (it only appears on "Über uns").
+    teaser: 'Flyer, Visitenkarten, Banner – gestaltet von uns, gedruckt bei Partnerdruckereien.',
     headline: null,
-    promise:
-      'Gestaltung und Druck von Flyern, Visitenkarten, Bannern und Textil. Schilder und Lasergravur entstehen in der eigenen Werkstatt in Satrup.',
+    promise: 'Wir gestalten Flyer, Visitenkarten, Banner und mehr. Gedruckt wird bei unseren Partnerdruckereien.',
     deliverables: {
       heading: 'Gestaltet, gedruckt, geliefert.',
       text: null,
-      items: [
-        'Gestaltung',
-        'Flyer und Visitenkarten',
-        'Banner und Roll-ups',
-        'Textil, z. B. Trikots und Warnwesten',
-        'Schilder und Lasergravur aus der eigenen Werkstatt',
-      ],
+      items: ['Gestaltung', 'Flyer und Visitenkarten', 'Banner und Roll-ups', 'Druck über Partnerdruckereien'],
     },
     packages: {},
     steps: [],
@@ -268,6 +263,9 @@ export type BlockSeed =
   | { blockType: 'trustBar'; heading?: string }
   | { blockType: 'cta'; heading: string; text?: string; button?: Link }
   | { blockType: 'contactForm'; heading: string; intro?: string }
+  | { blockType: 'caseGrid'; kicker?: string; heading?: string }
+  | { blockType: 'timeline'; kicker?: string; heading?: string; intro?: string; items: { label: string; title: string; text?: string }[] }
+  | { blockType: 'darkText'; kicker?: string; heading?: string; text?: string }
 
 export type PageSeed = {
   slug: string
@@ -322,7 +320,7 @@ export const PAGES: PageSeed[] = [
       },
       PACKAGES,
       SERVICE_TILES,
-      { blockType: 'caseTeaser', kicker: 'Referenzen', heading: 'Echte Betriebe, echte Seiten.' },
+      { blockType: 'caseTeaser', kicker: 'Referenzen', heading: 'Echte Betriebe, echte Projekte.' },
       {
         blockType: 'brandShowcase',
         kicker: 'Markenhaus',
@@ -377,6 +375,103 @@ export const PAGES: PageSeed[] = [
         blockType: 'contactForm',
         heading: 'Projekt *anfragen.*',
         intro: 'Erzähl kurz, worum es geht. Stephan meldet sich persönlich – mit einer ehrlichen Einschätzung und einem Preis.',
+      },
+    ],
+  },
+  {
+    slug: 'referenzen',
+    title: 'Referenzen',
+    meta: {
+      title: 'Referenzen – Websites, Shops und Druck für Betriebe',
+      description: 'Projekte von Beau Marketing: Websites, Shops und Werbemittel für Betriebe in Schleswig-Holstein und Ostwestfalen-Lippe.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        kicker: 'Referenzen',
+        heading: 'Echte Betriebe, echte Projekte.',
+        text: 'Eine Auswahl an Projekten – nach Leistung filterbar.',
+      },
+      { blockType: 'caseGrid' },
+      CLOSING_CTA,
+    ],
+  },
+  {
+    slug: 'marken',
+    title: 'Marken',
+    meta: {
+      title: 'Markenhaus – unsere eigenen Marken',
+      description: 'Beau Marketing ist auch ein Markenhaus: Tappi, Huusbook, Fjella und weitere eigene Marken.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        kicker: 'Markenhaus',
+        heading: 'Wir bauen das auch *für uns selbst.*',
+        text: 'Beau Marketing ist auch ein Markenhaus. Websites, Shops und Apps bauen wir auch für unsere eigenen Marken.',
+      },
+      { blockType: 'brandShowcase', kicker: 'Unsere Marken', heading: 'Live und in Entwicklung.' },
+      CLOSING_CTA,
+    ],
+  },
+  {
+    slug: 'ueber-uns',
+    title: 'Über uns',
+    meta: {
+      title: 'Über uns – Stephan Beau und Beau Marketing',
+      description: 'Beau Marketing aus Satrup: seit 2016 Websites und Shops, heute Agentur für Betriebe im Norden und Markenhaus.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        kicker: 'Über uns',
+        heading: 'Moin, ich bin *Stephan.*',
+        text: 'Ich führe Beau Marketing in Satrup. Wenn du anrufst, landest du bei mir – nicht bei einer Hotline und nicht bei einem Projektmanager, der erst nachfragen muss.\n\nSeit 2016 baue ich Websites und Shops. Angefangen hat das mit einem eigenen Onlineshop.',
+        captionName: 'Stephan Beau',
+      },
+      {
+        blockType: 'timeline',
+        kicker: 'Die Geschichte',
+        heading: 'Drei Namen, eine Sache.',
+        intro: 'Software habe ich schon immer entwickelt – vom C16 bis Swift. Der Rest hat sich ergeben.',
+        items: [
+          {
+            label: 'Früher',
+            title: 'C16, dann alles andere',
+            text: 'Die erste Zeile Code auf einem Commodore C16. Seitdem ist immer irgendwas in Arbeit – heute auch Apps in Swift.',
+          },
+          {
+            label: '2016',
+            title: 'Der eigene Onlineshop',
+            text: 'Ein eigener Shop, selbst gebaut, selbst vermarktet. Dabei gelernt, was ein Shop wirklich braucht – und was nicht.',
+          },
+          {
+            label: 'Danach',
+            title: 'the working Dad → Nerdlicht',
+            text: 'Aus dem eigenen Shop wurde eine Agentur – erst ‚the working Dad‘, dann ‚Nerdlicht‘, heute Beau Marketing.',
+          },
+          {
+            label: 'Heute',
+            title: 'Beau Marketing GmbH',
+            text: 'Agentur für Betriebe im Norden und Markenhaus für eigene Produkte wie Tappi, Huusbook und Fjella.',
+          },
+        ],
+      },
+      {
+        blockType: 'darkText',
+        kicker: 'Die Werkstatt',
+        heading: 'Nicht nur Pixel. Auch *Holz, Leder und Filament.*',
+        text: 'In Satrup stehen ein Laser und ein 3D-Drucker. Damit entstehen Deko, Gravuren und Prototypen.',
+      },
+      {
+        blockType: 'engagementBand',
+        kicker: 'Für die Region',
+        heading: 'Was wir in Satrup und Mittelangeln unterstützen',
+      },
+      {
+        blockType: 'cta',
+        heading: 'Lass uns schnacken.',
+        button: { label: 'Projekt anfragen', href: '/kontakt' },
       },
     ],
   },

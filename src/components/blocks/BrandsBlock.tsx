@@ -22,7 +22,7 @@ export async function BrandsBlock({ block, ctx }: { block: BlockOf<'brandShowcas
           const live = b.status === 'live'
           const link = live ? b.links?.find((l) => l.url)?.url : null
           return (
-            <li key={b.id} className="flex flex-col gap-3.5 rounded-[4px] border border-[#3A3A3A] p-6">
+            <li key={b.id} id={b.slug ?? undefined} className="flex scroll-mt-24 flex-col gap-3.5 rounded-[4px] border border-[#3A3A3A] p-6">
               <p className="flex h-14 items-center border-b border-text text-[26px] font-black text-white italic">{b.name}</p>
               <p className="flex items-center gap-2 text-[13px] font-extrabold tracking-[0.06em] uppercase">
                 <span
