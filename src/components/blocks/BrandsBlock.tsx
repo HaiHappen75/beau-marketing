@@ -1,6 +1,8 @@
 import { getTranslations } from 'next-intl/server'
 
+import { MediaImage } from '@/components/site/MediaImage'
 import { H2, Kicker, Section } from '@/components/site/primitives'
+import { brandScreenshot } from '@/lib/brands'
 import { getBrands } from '@/lib/queries/getBrands'
 
 import type { BlockContext, BlockOf } from './types'
@@ -21,8 +23,21 @@ export async function BrandsBlock({ block, ctx }: { block: BlockOf<'brandShowcas
         {brands.map((b) => {
           const live = b.status === 'live'
           const link = live ? b.links?.find((l) => l.url)?.url : null
+          const shot = brandScreenshot(b)
           return (
             <li key={b.id} id={b.slug ?? undefined} className="flex scroll-mt-24 flex-col gap-3.5 rounded-[4px] border border-[#3A3A3A] p-6">
+              {/* Screenshot on top, edge to edge; not a link — the card keeps its one link. */}
+              {shot && (
+                <div className="-mx-6 -mt-6 mb-1">
+                  <MediaImage
+                    media={shot.media}
+                    ratio="16/10"
+                    fit={shot.orientation === 'landscape' ? 'cover' : 'contain'}
+                    sizes="(min-width: 1280px) 212px, (min-width: 768px) 25vw, calc(100vw - 40px)"
+                    className="rounded-t-[3px]"
+                  />
+                </div>
+              )}
               <p className="flex h-14 items-center border-b border-text text-[26px] font-black text-white italic">{b.name}</p>
               <p className="flex items-center gap-2 text-[13px] font-extrabold tracking-[0.06em] uppercase">
                 <span

@@ -20,6 +20,7 @@ export function MediaImage({
   sizes,
   priority = false,
   dark = false,
+  fit = 'cover',
   className = '',
 }: {
   media: unknown
@@ -27,6 +28,8 @@ export function MediaImage({
   sizes: string
   priority?: boolean
   dark?: boolean
+  /** `contain` shows the whole image (portrait screens), no crop, no focal point. */
+  fit?: 'cover' | 'contain'
   className?: string
 }) {
   const m = asMedia(media)
@@ -39,8 +42,8 @@ export function MediaImage({
         fill
         sizes={sizes}
         priority={priority}
-        className="object-cover"
-        style={{ objectPosition: `${m.focalX ?? 50}% ${m.focalY ?? 50}%` }}
+        className={fit === 'contain' ? 'object-contain' : 'object-cover'}
+        style={fit === 'contain' ? undefined : { objectPosition: `${m.focalX ?? 50}% ${m.focalY ?? 50}%` }}
       />
     </div>
   )
