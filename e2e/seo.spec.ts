@@ -125,3 +125,18 @@ test('JSON-LD: Organization mit Logo (absolute URL, Datei vorhanden)', async ({ 
   expect(res.status()).toBe(200)
   expect(res.headers()['content-type']).toContain('image/png')
 })
+
+test('HEAD auf die REST-API: wie GET, nur ohne Body', async ({ request }) => {
+  const file = '/api/media/file/sh-partner-badge-der-echte-norden.png'
+  const get = await request.get(file)
+  const head = await request.head(file)
+  expect(get.status()).toBe(200)
+  expect(head.status()).toBe(200)
+  expect((await head.body()).length).toBe(0)
+  for (const h of ['content-type', 'content-length', 'etag', 'last-modified', 'cache-control']) {
+    expect(head.headers()[h], h).toBe(get.headers()[h])
+  }
+  expect((await request.head('/api/brands')).status()).toBe(200)
+  const missing = '/api/media/file/gibt-es-nicht.png'
+  expect((await request.head(missing)).status()).toBe((await request.get(missing)).status())
+})
