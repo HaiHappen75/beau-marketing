@@ -1,6 +1,8 @@
+import { asMedia } from '@/components/site/MediaImage'
+import { brandScreenshot } from '@/lib/brands'
 import type { Locale } from '@/lib/locale'
 import { SITE_URL } from '@/lib/seo'
-import type { Brand, Service, SiteSetting } from '@/payload-types'
+import type { Brand, Media, Service, SiteSetting } from '@/payload-types'
 
 // Building blocks for the JSON-LD of the public pages.
 //
@@ -16,7 +18,6 @@ import type { Brand, Service, SiteSetting } from '@/payload-types'
 // Deliberately NOT included, and why:
 //   - `sameAs`          → the footer carries no social profile link
 //   - `vatID`           → the VAT ID has not been issued
-//   - `Brand.logo`      → the brand assets are Payload uploads without a stable URL
 //   - `potentialAction` → the site has no search, so there is no `target`
 
 export type JsonLdNode = Record<string, unknown>
@@ -28,6 +29,8 @@ export const ORGANIZATION_ID = `${SITE_URL}/#organization`
 export const WEBSITE_ID = `${SITE_URL}/#website`
 /** Brand anchor on the brand house page (the old /marken/<slug> pages 308 there). */
 export const brandId = (slug: string) => `${SITE_URL}/de/marken#${slug}`
+/** Absolute URL of an upload on this site (Payload builds it from serverURL; normalise the origin). */
+const mediaUrl = (m: Media) => `${SITE_URL}${String(m.url).replace(/^https?:\/\/[^/]+/, '')}`
 export const webPageId = (canonical: string) => `${canonical}#webpage`
 
 /**
@@ -94,12 +97,19 @@ export function organizationNode(brands: Brand[], settings?: SiteSetting | null)
  * `name` is not localized, so the nodes are identical in every locale.
  */
 export function brandNodes(brands: Brand[]): JsonLdNode[] {
-  return anchorable(brands).map((b) => ({
-    '@type': 'Brand',
-    '@id': brandId(b.slug),
-    name: b.name,
-    url: b.links?.find((l) => l.type === 'website' && l.url)?.url ?? brandId(b.slug),
-  }))
+  return anchorable(brands).map((b) => {
+    // Only what is maintained: the logo upload and the screenshot the card shows.
+    const logo = asMedia(b.logo)
+    const shot = brandScreenshot(b)
+    return {
+      '@type': 'Brand',
+      '@id': brandId(b.slug),
+      name: b.name,
+      url: b.links?.find((l) => l.type === 'website' && l.url)?.url ?? brandId(b.slug),
+      ...(logo ? { logo: mediaUrl(logo) } : {}),
+      ...(shot ? { image: mediaUrl(shot.media) } : {}),
+    }
+  })
 }
 
 /**
