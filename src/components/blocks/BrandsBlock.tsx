@@ -25,7 +25,7 @@ export async function BrandsBlock({ block, ctx }: { block: BlockOf<'brandShowcas
           const link = live ? b.links?.find((l) => l.url)?.url : null
           const shot = brandScreenshot(b)
           return (
-            <li key={b.id} id={b.slug ?? undefined} className="flex scroll-mt-24 flex-col gap-3.5 rounded-[4px] border border-[#3A3A3A] p-6">
+            <li key={b.id} id={b.slug ?? undefined} className="@container flex scroll-mt-24 flex-col gap-3.5 rounded-[4px] border border-[#3A3A3A] p-6">
               {/* Screenshot on top, edge to edge; not a link — the card keeps its one link. */}
               {shot && (
                 <div className="-mx-6 -mt-6 mb-1">
@@ -38,7 +38,11 @@ export async function BrandsBlock({ block, ctx }: { block: BlockOf<'brandShowcas
                   />
                 </div>
               )}
-              <p className="flex h-14 items-center border-b border-text text-[26px] font-black text-white italic">{b.name}</p>
+              {/* Size follows the card width (container query) so long single-word names
+                  like "FamilyManager" fit instead of running past the border. */}
+              <p className="flex h-14 items-center border-b border-text text-[clamp(20px,13cqi,26px)] font-black text-white italic">
+                {b.name}
+              </p>
               <p className="flex items-center gap-2 text-[13px] font-extrabold tracking-[0.06em] uppercase">
                 <span
                   aria-hidden="true"

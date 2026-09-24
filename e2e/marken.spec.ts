@@ -88,3 +88,16 @@ test.describe.serial('Markenkarten mit Screenshot', () => {
     expect(bySlug('anwurf')).not.toHaveProperty('image')
   })
 })
+
+test('Markennamen laufen bei keiner Breite über den Kartenrand', async ({ page }) => {
+  for (const width of [390, 480, 640, 700, 768, 820, 900, 1024, 1100, 1180, 1280, 1366, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/de/marken')
+    const names = page.locator('#marken li > p:first-of-type')
+    await expect(page.locator('#marken li', { hasText: 'FamilyManager' })).toHaveCount(1) // the long name is rendered
+    for (const name of await names.all()) {
+      const { scroll, client, text } = await name.evaluate((el) => ({ scroll: el.scrollWidth, client: el.clientWidth, text: el.textContent }))
+      expect(scroll, `${text} @ ${width}px`).toBeLessThanOrEqual(client)
+    }
+  }
+})
