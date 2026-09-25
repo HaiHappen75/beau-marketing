@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect x="3" y="3" width="26" height="26" fill="none" stroke="#E3721B" stroke-width="3.6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.4 -0.55 24.65 24.65">
+  <!-- Geometry of the Check component (src/components/brand/Check.tsx), thicker strokes for 16 px.
+       viewBox = bounding box incl. the square cap of the tick. favicon.ico + apple-icon.png: pnpm generate:icons -->
+  <style>@media (prefers-color-scheme: dark) { .tick { stroke: #FFFFFF } }</style>
+  <rect x="2" y="2" width="20" height="20" fill="none" stroke="#E3721B" stroke-width="3.2"/>
+  <path class="tick" d="M6 11.5l4.5 4.5L22.5 2.5" fill="none" stroke="#111111" stroke-width="3.6" stroke-linecap="square"/>
+</svg>
