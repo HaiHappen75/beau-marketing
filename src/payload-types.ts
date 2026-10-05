@@ -264,6 +264,9 @@ export interface Page {
              * *Betonung* in Sternchen wird kursiv.
              */
             heading?: string | null;
+            /**
+             * Interne Links im Text: [Flensburg](/region/flensburg).
+             */
             text?: string | null;
             link?: {
               label?: string | null;
@@ -410,6 +413,40 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'caseGrid';
+          }
+        | {
+            style?: ('box' | 'columns' | 'plain') | null;
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv. Mit Preis zugleich der Angebotsname im JSON-LD.
+             */
+            heading: string;
+            /**
+             * Absätze durch eine Leerzeile trennen.
+             */
+            text?: string | null;
+            items?:
+              | {
+                  item: string;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Leer = kein Preis, kein Angebot im JSON-LD.
+             */
+            price?: number | null;
+            priceIsFrom?: boolean | null;
+            unit?: ('once' | 'month' | 'hour') | null;
+            link?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'offer';
           }
       )[]
     | null;
@@ -589,6 +626,19 @@ export interface Service {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Optionaler Kasten, der auf eine Angebotsseite verweist (z. B. Gastgeber-Paket auf „Websites“). Erscheint nur, wenn die Seite veröffentlicht ist, und nur in den Sprachen, in denen es sie gibt.
+   */
+  highlight?: {
+    page?: (number | null) | Page;
+    kicker?: string | null;
+    linkLabel?: string | null;
+    /**
+     * *Betonung* möglich.
+     */
+    heading?: string | null;
+    text?: string | null;
+  };
   /**
    * Optionaler Block mit einem eigenen Projekt (z. B. Fjella). Leer = entfällt.
    */
@@ -1466,6 +1516,31 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        offer?:
+          | T
+          | {
+              style?: T;
+              kicker?: T;
+              heading?: T;
+              text?: T;
+              items?:
+                | T
+                | {
+                    item?: T;
+                    id?: T;
+                  };
+              price?: T;
+              priceIsFrom?: T;
+              unit?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1541,6 +1616,15 @@ export interface ServicesSelect<T extends boolean = true> {
         question?: T;
         answer?: T;
         id?: T;
+      };
+  highlight?:
+    | T
+    | {
+        page?: T;
+        kicker?: T;
+        linkLabel?: T;
+        heading?: T;
+        text?: T;
       };
   inHouse?:
     | T

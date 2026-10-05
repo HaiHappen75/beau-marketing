@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { MediaImage } from '@/components/site/MediaImage'
 import { Wrap } from '@/components/site/primitives'
+import { contactTopic } from '@/lib/contact/topics'
 import { withEmphasis } from '@/lib/emphasis'
 import { getPayloadClient } from '@/lib/getPayload'
 import { telHref } from '@/lib/phone'
@@ -29,6 +30,13 @@ export async function ContactFormBlock({ block, ctx }: { block: BlockOf<'contact
   })
   const person = authors[0]
 
+  // ?anliegen=<key>: a known topic becomes the first, preselected option; it wins
+  // over ?leistung=. Unknown keys are ignored (src/lib/contact/topics.ts).
+  const topic = contactTopic(ctx.preselectTopic)
+  const services = ctx.services.map((s) => ({ value: s.title, label: s.title, slug: s.slug ?? '' }))
+  const options = topic && ctx.preselectTopic ? [{ value: topic, label: topic, slug: ctx.preselectTopic }, ...services] : services
+  const preselect = topic ? ctx.preselectTopic : ctx.preselectService
+
   return (
     <section className="bg-white pt-[clamp(32px,6vw,80px)] pb-[clamp(56px,8vw,104px)]">
       <Wrap>
@@ -41,8 +49,8 @@ export async function ContactFormBlock({ block, ctx }: { block: BlockOf<'contact
           <div className="max-w-[720px] flex-[2_1_520px]">
             <ContactForm
               locale={ctx.locale}
-              services={ctx.services.map((s) => ({ value: s.title, label: s.title, slug: s.slug ?? '' }))}
-              preselect={ctx.preselectService}
+              services={options}
+              preselect={preselect}
               phone={phone}
             />
           </div>

@@ -23,18 +23,20 @@ import {
   LEGACY_BRAND_NAMES,
   LEGACY_BRAND_ORDER,
   LEGACY_BLOCK_HEADINGS,
+  LEGACY_BLOCK_TEXTS,
   LEGACY_BRAND_TAGLINES,
   LEGACY_BRAND_TAGLINES_REDESIGN,
   LEGACY_CASE_CHIPS,
   LEGACY_PACKAGE_INCLUDES,
   LEGACY_PACKAGE_ITEMS,
+  LEGACY_PACKAGE_TERMS,
   LEGACY_PAGE_META,
   LEGACY_SERVICE_TEXTS,
   LEGACY_PLACEHOLDER_PARAGRAPH,
   LEGACY_SITE_NAME,
 } from './legacy'
 import { isRichText, nodeText, rt } from './richtext'
-import { PAGES, SERVICE_CONTENT, type BlockSeed } from './content'
+import { PAGES, SERVICE_CONTENT, SERVICE_HIGHLIGHTS, type BlockSeed } from './content'
 import { LOCATIONS } from './locations'
 import { fillTranslations } from './translations'
 import type { SeedLocale, SeedSummary } from './types'
@@ -169,18 +171,22 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
                   : v === value,
               ),
           ),
-        // Existing packages: fill new sub-fields per package (matched by name)
-        // and reword legacy items — prices and everything else stay untouched.
+        // Existing packages: fill new sub-fields per package (matched by name),
+        // replace legacy terms and reword legacy items — prices and everything
+        // else stay untouched.
         custom: (current, locale) =>
           locale !== 'de'
             ? emptyPlan()
             : fillRowsByKey(
                 current.packages,
-                packages.map(({ name, kicker, description, display }) => ({ name, kicker, description, display })),
+                packages.map(({ name, kicker, description, display, term }) => ({ name, kicker, description, display, term })),
                 'packages',
                 'name',
                 locale,
-                () => false,
+                (field, value) => {
+                  const name = /^packages\[(.+)\]\.term$/.exec(field)?.[1]
+                  return Boolean(name && (LEGACY_PACKAGE_TERMS[name] ?? []).includes(value as string))
+                },
                 (row, _want, plan, path) => {
                   const items = Array.isArray(row.includes) ? (row.includes as Obj[]) : []
                   // A whole item list that still equals an old seed list is replaced.
@@ -433,7 +439,7 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
     summary,
   )
 
-  // ── Pages (start, agentur, kontakt) ──────────────────────────────────────────
+  // ── Pages (start, agentur, kontakt, …, offer pages) ─────────────────────────
   const toBlock = (b: BlockSeed) => {
     if (b.blockType !== 'hero' || !b.checks) return b
     return {
@@ -443,8 +449,9 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         .filter((c) => c.kind === 'text' || (c as { service?: number }).service),
     }
   }
+  const pageIds: Record<string, number> = {}
   for (const page of PAGES) {
-    await upsertDoc(
+    const pageDoc = await upsertDoc(
       payload,
       'pages',
       {
@@ -455,17 +462,51 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
           de: { title: page.title, slug: page.slug, meta: page.meta, layout: page.layout.map(toBlock) },
         },
         legacy: (field, value, locale) => locale === 'de' && (LEGACY_PAGE_META[page.slug]?.[field] ?? []).includes(value as string),
-        // Reworded block headings of existing pages (matched by block type).
+        // Reworded block headings and texts of existing pages (matched by block type).
         custom: (current, locale) => {
-          const legacyHeadings = LEGACY_BLOCK_HEADINGS[page.slug]
-          if (locale !== 'de' || !legacyHeadings) return emptyPlan()
+          const legacyHeadings = LEGACY_BLOCK_HEADINGS[page.slug] ?? {}
+          const legacyTexts = LEGACY_BLOCK_TEXTS[page.slug] ?? {}
+          if (locale !== 'de') return emptyPlan()
           const desired = page.layout
-            .filter((b) => b.blockType in legacyHeadings && 'heading' in b)
-            .map((b) => ({ blockType: b.blockType, heading: (b as { heading?: string }).heading }))
-          return fillRowsByKey(current.layout, desired, 'layout', 'blockType', locale, (field, value) =>
-            Object.values(legacyHeadings).some((list) => field.endsWith('.heading') && list.includes(value as string)),
+            .filter((b) => b.blockType in legacyHeadings || b.blockType in legacyTexts)
+            .map((b) => {
+              const block = b as { blockType: string; heading?: string; text?: string }
+              return {
+                blockType: block.blockType,
+                ...(block.blockType in legacyHeadings ? { heading: block.heading } : {}),
+                ...(block.blockType in legacyTexts ? { text: block.text } : {}),
+              }
+            })
+          if (desired.length === 0) return emptyPlan()
+          const isLegacy = (field: string, value: unknown, legacy: Record<string, string[]>, suffix: string) =>
+            field.endsWith(suffix) && Object.values(legacy).some((list) => list.includes(value as string))
+          return fillRowsByKey(
+            current.layout,
+            desired,
+            'layout',
+            'blockType',
+            locale,
+            (field, value) => isLegacy(field, value, legacyHeadings, '.heading') || isLegacy(field, value, legacyTexts, '.text'),
           )
         },
+      },
+      summary,
+    )
+    if (pageDoc) pageIds[page.slug] = pageDoc.id as number
+  }
+
+  // ── Pointer boxes on services to offer pages (need the page ids) ─────────────
+  for (const [slug, h] of Object.entries(SERVICE_HIGHLIGHTS)) {
+    const pageId = pageIds[h.page]
+    if (!pageId) continue
+    await upsertDoc(
+      payload,
+      'services',
+      {
+        key: `${slug} (Hinweis-Kasten)`,
+        where: { slug: { equals: slug } },
+        createIfMissing: false,
+        data: { de: { highlight: { page: pageId, kicker: h.kicker, heading: h.heading, text: h.text, linkLabel: h.linkLabel } } },
       },
       summary,
     )

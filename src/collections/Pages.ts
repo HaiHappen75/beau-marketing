@@ -4,7 +4,10 @@ import { editorialAccess } from '../access'
 import { pageBlocks } from '../blocks'
 import { slugField } from '../fields/slug'
 
-/** Free pages built from layout blocks: start, agency overview, about, contact. */
+/**
+ * Free pages built from layout blocks: start, agency overview, about, contact —
+ * and offer pages with their own route (src/lib/offerPages.ts).
+ */
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: { singular: 'Seite', plural: 'Seiten' },

@@ -35,7 +35,8 @@
     "contact": "Kontakt",
     "legal": "Juridisk",
     "claim": "success simplified",
-    "reviews": "{rating} af 5 · {count} Google-anmeldelser"
+    "reviews": "{rating} af 5 · {count} Google-anmeldelser",
+    "regionLink": "Webdesign {place}"
   },
   "Site": {
     "_machineTranslated": "Maskinoversat – gennemlæses i pakke 5",

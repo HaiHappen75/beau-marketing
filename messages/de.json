@@ -34,7 +34,8 @@
     "contact": "Kontakt",
     "legal": "Rechtliches",
     "claim": "success simplified",
-    "reviews": "{rating} von 5 · {count} Google-Bewertungen"
+    "reviews": "{rating} von 5 · {count} Google-Bewertungen",
+    "regionLink": "Webdesign {place}"
   },
   "Site": {
     "priceNote": "zzgl. USt., Angebot für Unternehmen",

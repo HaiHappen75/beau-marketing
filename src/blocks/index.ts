@@ -1,6 +1,6 @@
 import type { Block, Field } from 'payload'
 
-// Layout blocks for free pages (start, agency overview, about, contact).
+// Layout blocks for free pages (start, agency overview, about, contact, offer pages).
 // Data-driven blocks (services, cases, brands, trust, engagements, posts) only
 // carry a heading — their content comes from the collections and they hide
 // themselves when nothing is published.
@@ -135,7 +135,18 @@ export const TrustBlock: Block = {
 export const EngagementBlock: Block = {
   slug: 'engagementBand',
   labels: { singular: 'Engagement-Band', plural: 'Engagement-Bänder' },
-  fields: [kicker, heading, { name: 'text', label: 'Text', type: 'textarea', localized: true }, link('link', 'Link')],
+  fields: [
+    kicker,
+    heading,
+    {
+      name: 'text',
+      label: 'Text',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Interne Links im Text: [Flensburg](/region/flensburg).' },
+    },
+    link('link', 'Link'),
+  ],
 }
 
 export const PostTeaserBlock: Block = {
@@ -250,6 +261,79 @@ export const CaseGridBlock: Block = {
   fields: [kicker, heading],
 }
 
+/**
+ * Offer pages (e.g. /de/website-ferienwohnung): a priced box, a two-column
+ * section (text | check list) or a plain section. Prices are numbers here, never
+ * free text — with a price the block also becomes an Offer in the page's
+ * JSON-LD (name = heading).
+ */
+export const OfferBlock: Block = {
+  slug: 'offer',
+  labels: { singular: 'Angebot', plural: 'Angebote' },
+  fields: [
+    {
+      name: 'style',
+      label: 'Darstellung',
+      type: 'select',
+      defaultValue: 'box',
+      options: [
+        { label: 'Kasten', value: 'box' },
+        { label: 'Zwei Spalten (Text | Häkchen)', value: 'columns' },
+        { label: 'Schlicht', value: 'plain' },
+      ],
+    },
+    kicker,
+    {
+      name: 'heading',
+      label: 'Überschrift',
+      type: 'text',
+      localized: true,
+      required: true,
+      admin: { description: '*Betonung* in Sternchen wird kursiv. Mit Preis zugleich der Angebotsname im JSON-LD.' },
+    },
+    {
+      name: 'text',
+      label: 'Text',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Absätze durch eine Leerzeile trennen.' },
+    },
+    {
+      name: 'items',
+      label: 'Häkchen',
+      type: 'array',
+      labels: { singular: 'Punkt', plural: 'Punkte' },
+      fields: [{ name: 'item', label: 'Punkt', type: 'text', localized: true, required: true }],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'price',
+          label: 'Preis (€, netto)',
+          type: 'number',
+          min: 0,
+          admin: { width: '40%', description: 'Leer = kein Preis, kein Angebot im JSON-LD.' },
+        },
+        { name: 'priceIsFrom', label: '„ab“-Preis', type: 'checkbox', defaultValue: false, admin: { width: '20%' } },
+        {
+          name: 'unit',
+          label: 'Einheit',
+          type: 'select',
+          defaultValue: 'once',
+          options: [
+            { label: 'einmalig', value: 'once' },
+            { label: 'pro Monat', value: 'month' },
+            { label: 'pro Stunde', value: 'hour' },
+          ],
+          admin: { width: '40%' },
+        },
+      ],
+    },
+    link('link', 'Button'),
+  ],
+}
+
 export const pageBlocks: Block[] = [
   HeroBlock,
   ServiceTilesBlock,
@@ -267,4 +351,5 @@ export const pageBlocks: Block[] = [
   TimelineBlock,
   DarkTextBlock,
   CaseGridBlock,
+  OfferBlock,
 ]

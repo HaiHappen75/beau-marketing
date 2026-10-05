@@ -153,7 +153,7 @@ export const SERVICES: ServiceSeed[] = [
         price: 490,
         priceIsFrom: true,
         unit: 'month',
-        term: 'Mindestlaufzeit 6 Monate',
+        term: 'Mindestlaufzeit drei Monate, danach monatlich kündbar.',
         includes: [
           'Google-Unternehmensprofil',
           'Bewertungen',

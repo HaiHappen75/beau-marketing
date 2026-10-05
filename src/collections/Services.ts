@@ -201,6 +201,27 @@ export const Services: CollectionConfig = {
     },
     faqField(),
     {
+      name: 'highlight',
+      label: 'Hinweis-Kasten',
+      type: 'group',
+      admin: {
+        description:
+          'Optionaler Kasten, der auf eine Angebotsseite verweist (z. B. Gastgeber-Paket auf „Websites“). Erscheint nur, wenn die Seite veröffentlicht ist, und nur in den Sprachen, in denen es sie gibt.',
+      },
+      fields: [
+        { name: 'page', label: 'Angebotsseite', type: 'relationship', relationTo: 'pages' },
+        {
+          type: 'row',
+          fields: [
+            { name: 'kicker', label: 'Kicker', type: 'text', localized: true, admin: { width: '50%' } },
+            { name: 'linkLabel', label: 'Link-Text', type: 'text', localized: true, admin: { width: '50%' } },
+          ],
+        },
+        { name: 'heading', label: 'Überschrift', type: 'text', localized: true, admin: { description: '*Betonung* möglich.' } },
+        { name: 'text', label: 'Text', type: 'textarea', localized: true },
+      ],
+    },
+    {
       name: 'inHouse',
       label: 'Aus dem eigenen Haus',
       type: 'group',

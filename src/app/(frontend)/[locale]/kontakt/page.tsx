@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 
 import { CmsPage, cmsPageMetadata } from '@/lib/cmsPage'
 
-// Contact = CMS page "kontakt"; ?leistung=<slug> preselects the service.
+// Contact = CMS page "kontakt"; ?leistung=<slug> preselects the service,
+// ?anliegen=<key> a fixed topic (src/lib/contact/topics.ts).
 
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await props.params
@@ -11,9 +12,17 @@ export async function generateMetadata(props: { params: Promise<{ locale: string
 
 export default async function Page(props: {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ leistung?: string | string[] }>
+  searchParams: Promise<{ leistung?: string | string[]; anliegen?: string | string[] }>
 }) {
   const { locale } = await props.params
-  const { leistung } = await props.searchParams
-  return <CmsPage slug="kontakt" path="/kontakt" locale={locale} service={typeof leistung === 'string' ? leistung : null} />
+  const { leistung, anliegen } = await props.searchParams
+  return (
+    <CmsPage
+      slug="kontakt"
+      path="/kontakt"
+      locale={locale}
+      service={typeof leistung === 'string' ? leistung : null}
+      topic={typeof anliegen === 'string' ? anliegen : null}
+    />
+  )
 }

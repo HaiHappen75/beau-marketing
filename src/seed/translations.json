@@ -471,7 +471,7 @@
     "en": "Satrup is more than our address."
    },
    "layout.5.text": {
-    "de": "Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.",
+    "de": "Wir sitzen in Satrup bei [Flensburg](/region/flensburg) und arbeiten für Betriebe in ganz Schleswig-Holstein. Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.",
     "da": "Når sportsklubben har brug for trøjer eller 1.-klasserne for refleksveste, så klarer vi det. Uden stort postyr – det står her kun, så du ved, hvem vi er.",
     "en": "When the sports club needs shirts or the first-graders need hi-vis vests, we take care of it. No fuss – it's only here so you know who we are."
    },
@@ -1430,9 +1430,17 @@
     "da": "Til virksomheder, der vil findes i deres område."
    },
    "packages.0.term": {
-    "de": "Mindestlaufzeit 6 Monate",
-    "da": "Mindste løbetid 6 måneder",
-    "en": "Minimum term 6 months"
+    "de": "Mindestlaufzeit drei Monate, danach monatlich kündbar.",
+    "da": "Mindste løbetid tre måneder, derefter opsigelig fra måned til måned.",
+    "en": "Minimum term three months, then cancellable monthly.",
+    "legacy": {
+     "da": [
+      "Mindste løbetid 6 måneder"
+     ],
+     "en": [
+      "Minimum term 6 months"
+     ]
+    }
    },
    "cta.heading": {
     "de": "Lass uns über deine Sichtbarkeit reden.",

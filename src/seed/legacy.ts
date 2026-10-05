@@ -102,6 +102,14 @@ export const LEGACY_PACKAGE_ITEMS: Record<string, string> = {
   'CCD-II-Check der Zahlarten': 'Zahlarten nach CCD II einrichten',
 }
 
+/**
+ * Package terms of the redesign seed (Paket 1), by package name.
+ * Sichtbarkeit, decision 04.10.2026: three months minimum, then monthly.
+ */
+export const LEGACY_PACKAGE_TERMS: Record<string, string[]> = {
+  Sichtbarkeit: ['Mindestlaufzeit 6 Monate'],
+}
+
 /** Brand claims of the redesign seed (Paket 1) that were replaced later. */
 export const LEGACY_BRAND_TAGLINES_REDESIGN: Record<string, string[]> = {
   fjella: ['Nordisches Interior – „Zuhause, nordisch gedacht.“ Unser eigener Shopify-Shop.'],
@@ -147,6 +155,18 @@ export const LEGACY_SERVICE_TEXTS: Record<string, { field: string; values: (stri
 /** Block headings of the Paket-2 page seed that were reworded (page slug → block type). */
 export const LEGACY_BLOCK_HEADINGS: Record<string, Record<string, string[]>> = {
   start: { caseTeaser: ['Echte Betriebe, echte Seiten.'] },
+}
+
+/**
+ * Block texts of the Paket-2 page seed that were reworded (page slug → block type).
+ * Start page, 05.10.2026: the region band links the Flensburg landing page.
+ */
+export const LEGACY_BLOCK_TEXTS: Record<string, Record<string, string[]>> = {
+  start: {
+    engagementBand: [
+      'Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.',
+    ],
+  },
 }
 
 /** Case chips replaced later (Hüpfburgen OWL: online booking is not released). */

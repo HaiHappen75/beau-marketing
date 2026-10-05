@@ -40,6 +40,7 @@ export async function CmsPage({
   path,
   locale,
   service,
+  topic,
   extraGraph = [],
 }: {
   slug: string
@@ -47,13 +48,15 @@ export async function CmsPage({
   locale: string
   /** ?leistung=<slug> (filter / preselection). */
   service?: string | null
+  /** ?anliegen=<key> (contact topic preselection). */
+  topic?: string | null
   extraGraph?: JsonLdNode[]
 }) {
   setRequestLocale(locale)
   const page = await getPageBySlug(slug, locale as Locale)
   if (!page) notFound()
   const [ctx, available] = await Promise.all([
-    getBlockContext(locale as Locale, service ?? null),
+    getBlockContext(locale as Locale, service ?? null, topic ?? null),
     translatedLocales('pages', page.id),
   ])
   const { servedLang } = localeAlternates(path, available, locale)
