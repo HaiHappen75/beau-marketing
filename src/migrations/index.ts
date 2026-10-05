@@ -5,6 +5,7 @@ import * as migration_20260923_155007_agentur_seiten from './20260923_155007_age
 import * as migration_20260923_163024_referenzen_ueber_uns from './20260923_163024_referenzen_ueber_uns';
 import * as migration_20260923_165405_ratgeber from './20260923_165405_ratgeber';
 import * as migration_20260923_174217_landingpages from './20260923_174217_landingpages';
+import * as migration_20261005_112729_gastgeber_angebot from './20261005_112729_gastgeber_angebot';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260923_174217_landingpages.up,
     down: migration_20260923_174217_landingpages.down,
-    name: '20260923_174217_landingpages'
+    name: '20260923_174217_landingpages',
+  },
+  {
+    up: migration_20261005_112729_gastgeber_angebot.up,
+    down: migration_20261005_112729_gastgeber_angebot.down,
+    name: '20261005_112729_gastgeber_angebot'
   },
 ];

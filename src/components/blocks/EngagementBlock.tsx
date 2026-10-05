@@ -1,6 +1,7 @@
 import { H2, Kicker, Section } from '@/components/site/primitives'
 import { MediaImage } from '@/components/site/MediaImage'
 import { Link } from '@/i18n/navigation'
+import { withInlineLinks } from '@/lib/inlineLinks'
 import { getVisibleEngagements } from '@/lib/queries/content'
 
 import type { BlockContext, BlockOf } from './types'
@@ -16,7 +17,7 @@ export async function EngagementBlock({ block, ctx }: { block: BlockOf<'engageme
           <Kicker>{block.kicker}</Kicker>
           <H2 className="text-[clamp(28px,3vw,38px)] leading-[1.12]">{block.heading}</H2>
         </div>
-        {block.text && <p className="max-w-[34em] text-lg">{block.text}</p>}
+        {block.text && <p className="max-w-[34em] text-lg">{withInlineLinks(block.text)}</p>}
       </div>
       <ul className="mt-10 grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-6">
         {items.map((e) => (

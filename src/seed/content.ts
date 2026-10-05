@@ -266,6 +266,19 @@ export type BlockSeed =
   | { blockType: 'caseGrid'; kicker?: string; heading?: string }
   | { blockType: 'timeline'; kicker?: string; heading?: string; intro?: string; items: { label: string; title: string; text?: string }[] }
   | { blockType: 'darkText'; kicker?: string; heading?: string; text?: string }
+  | { blockType: 'faq'; heading?: string; items: Faq[] }
+  | {
+      blockType: 'offer'
+      style: 'box' | 'columns' | 'plain'
+      kicker?: string
+      heading: string
+      text?: string
+      items?: { item: string }[]
+      price?: number
+      priceIsFrom?: boolean
+      unit?: 'once' | 'month' | 'hour'
+      link?: Link
+    }
 
 export type PageSeed = {
   slug: string
@@ -273,6 +286,9 @@ export type PageSeed = {
   meta: { title: string; description: string }
   layout: BlockSeed[]
 }
+
+/** Contact form with the fixed topic of the offer page (src/lib/contact/topics.ts). */
+const WEBSITE_CHECK_REQUEST = '/kontakt?anliegen=website-check-fewo'
 
 const CLOSING_CTA: BlockSeed = {
   blockType: 'cta',
@@ -332,7 +348,7 @@ export const PAGES: PageSeed[] = [
         blockType: 'engagementBand',
         kicker: 'Für die Region',
         heading: 'Satrup ist nicht nur unsere Adresse.',
-        text: 'Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.',
+        text: 'Wir sitzen in Satrup bei [Flensburg](/region/flensburg) und arbeiten für Betriebe in ganz Schleswig-Holstein. Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.',
         link: { label: 'Mehr über uns und die Region', href: '/ueber-uns#region' },
       },
       { blockType: 'trustBar' },
@@ -476,4 +492,135 @@ export const PAGES: PageSeed[] = [
       },
     ],
   },
+  // Offer page, German only (src/lib/offerPages.ts). Copy: Cowork draft of
+  // 05.10.2026 (Marketingplan Gastgeber, M5), turned into "du" like the rest of
+  // the site (decision Stephan). Deviations from the draft: prices sit in the
+  // price line instead of the box headings; the reference sentence claims only
+  // what the case backs (online booking for customers is not released).
+  {
+    slug: 'website-ferienwohnung',
+    title: 'Website für Ferienwohnung und Ferienhaus',
+    meta: {
+      title: 'Website für Ferienwohnung und Ferienhaus – Festpreis 2.900 € | Beau Marketing',
+      description:
+        'Eigene Website für deine Ferienwohnung: Belegungskalender, Buchungsanfrage, Rechtstexte, fertig in 4 Wochen. Festpreis 2.900 € netto, aus Satrup bei Flensburg.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        heading: 'Website für Ferienwohnung und Ferienhaus',
+        text: [
+          'Deine eigene Seite statt nur Portal. Festpreis 2.900 € netto, fertig in vier Wochen.',
+          'Jede Buchung über deine eigene Website spart die Provision des Portals. Wie viel das bei dir im Jahr ausmacht, rechnen wir mit deinen Zahlen aus – nicht mit Durchschnittswerten. Wir sitzen in Satrup bei Flensburg und bauen Websites für Vermieter an Schlei, Ostsee, Förde und Nordsee.',
+        ].join('\n\n'),
+        primary: { label: 'Website-Check anfragen', href: WEBSITE_CHECK_REQUEST },
+      },
+      {
+        blockType: 'offer',
+        style: 'box',
+        kicker: 'Der Einstieg',
+        heading: 'Website-Check',
+        text: [
+          'Bevor du dich für eine neue Seite entscheidest, sehen wir uns deinen heutigen Auftritt an: Website, Google-Profil, Portale. 90 Minuten bei dir vor Ort oder per Video. Danach bekommst du eine schriftliche Liste mit zehn Punkten und einer Zahl, zum Beispiel was dich die Portale pro Saison kosten.',
+          'Die 290 € netto werden voll angerechnet, wenn du danach die Gastgeber-Website beauftragst.',
+        ].join('\n\n'),
+        price: 290,
+        priceIsFrom: false,
+        unit: 'once',
+        link: { label: 'Website-Check anfragen', href: WEBSITE_CHECK_REQUEST },
+      },
+      {
+        blockType: 'offer',
+        style: 'columns',
+        kicker: 'Das Paket',
+        heading: 'Gastgeber-Website',
+        items: [
+          'Startseite, je Wohnung oder Haus eine eigene Seite, Lage und Umgebung, Kontakt – für bis zu drei Einheiten',
+          'Belegungskalender, abgeglichen mit deinen Portalen, und eine Buchungsanfrage direkt auf der Seite',
+          'Impressum und Datenschutzerklärung, die sich automatisch aktuell halten',
+          'Dein Google-Unternehmensprofil eingerichtet oder überarbeitet',
+          'Grunddaten für Suchmaschinen, damit Google deine Unterkünfte richtig versteht',
+          'Fertig in vier Wochen, sobald Fotos und Texte vollständig da sind',
+        ].map((item) => ({ item })),
+        price: 2900,
+        priceIsFrom: false,
+        unit: 'once',
+      },
+      {
+        blockType: 'offer',
+        style: 'columns',
+        heading: 'Erweiterungen',
+        items: [
+          'Jede weitere Einheit: 200 € netto',
+          'Online-Buchung mit Bezahlung direkt auf der Seite: +500 € netto. Wir binden ein bewährtes Buchungswerkzeug ein; dessen monatliche Gebühr zahlst du direkt an den Anbieter.',
+          'Pflege Basis: 49 € netto im Monat – Hosting, Backups, Updates, Rechtstexte immer aktuell',
+        ].map((item) => ({ item })),
+      },
+      {
+        blockType: 'darkText',
+        heading: 'Was du nicht brauchst',
+        text: 'Keine teure Werbekampagne, kein Social-Media-Paket, keine monatliche Agenturpauschale, um die Seite zu behalten. Wenn dein Haus über die Portale gut läuft und du zufrieden bist, sagen wir dir das im Check auch.',
+      },
+      {
+        blockType: 'offer',
+        style: 'plain',
+        kicker: 'Referenz',
+        heading: 'Buchungssysteme bauen wir nicht nur auf dem Papier.',
+        text: 'Für Hüpfburgen OWL läuft eine Seite mit Verfügbarkeitsprüfung und Buchungslogik.',
+        link: { label: 'Referenz Hüpfburgen OWL ansehen', href: '/referenzen/huepfburgen-owl' },
+      },
+      {
+        blockType: 'faq',
+        heading: 'Was du vorher wissen willst.',
+        items: [
+          {
+            question: 'Gehört die Website mir?',
+            answer: 'Ja. Die Seite, die Inhalte und die Domain gehören dir. Zugänge und Daten übergeben wir jederzeit.',
+          },
+          {
+            question: 'Was passiert, wenn ihr ausfallt?',
+            answer:
+              'Die Seite läuft auf üblicher Technik und ist dokumentiert. Du bekommst alle Zugänge; ein anderer Dienstleister kann sie übernehmen.',
+          },
+          {
+            question: 'Muss ich die Portale verlassen?',
+            answer:
+              'Nein. Du kannst bei den Portalen bleiben und dir zusätzlich direkte Buchungen holen, zum Beispiel von Stammgästen.',
+          },
+          {
+            question: 'Was braucht ihr von mir?',
+            answer:
+              'Fotos, ein paar Sätze zu jeder Unterkunft, Preise und deine Zugänge zu den Portalen für den Kalenderabgleich. Bei den Texten helfen wir.',
+          },
+          {
+            question: 'Sind die Preise netto?',
+            answer: 'Ja, alle Preise zuzüglich Umsatzsteuer. Das Angebot richtet sich an Vermieter, die gewerblich vermieten.',
+          },
+        ],
+      },
+      {
+        blockType: 'cta',
+        heading: 'Lass uns mit dem Check anfangen.',
+        button: { label: 'Website-Check anfragen', href: WEBSITE_CHECK_REQUEST },
+      },
+    ],
+  },
 ]
+
+/**
+ * Pointer box on a service page to an offer page (service slug → box). Shown only
+ * where the offer page exists and is published. Own copy, no prices — those live
+ * on the offer page.
+ */
+export const SERVICE_HIGHLIGHTS: Record<
+  string,
+  { page: string; kicker: string; heading: string; text: string; linkLabel: string }
+> = {
+  websites: {
+    page: 'website-ferienwohnung',
+    kicker: 'Für Gastgeber',
+    heading: 'Festpreis-Paket für Ferienwohnung und Ferienhaus',
+    text: 'Eigene Website mit Belegungskalender, Buchungsanfrage und Rechtstexten – fertig in vier Wochen.',
+    linkLabel: 'Zum Gastgeber-Paket',
+  },
+}

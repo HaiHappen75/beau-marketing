@@ -45,7 +45,10 @@ export async function PriceTableBlock({ block, ctx }: { block: BlockOf<'priceTab
                     </th>
                   ) : null}
                   <td className="py-3 pr-4">{p.name}</td>
-                  <td className="py-3 text-right font-bold whitespace-nowrap">{formatPackagePrice(p, ctx.locale)}</td>
+                  <td className="py-3 text-right font-bold whitespace-nowrap">
+                    {formatPackagePrice(p, ctx.locale)}
+                    {p.term && <span className="block text-sm font-normal whitespace-normal text-muted">{p.term}</span>}
+                  </td>
                 </tr>
               ))
             })}

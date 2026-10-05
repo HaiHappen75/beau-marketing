@@ -10,7 +10,7 @@ import { ButtonLink, H2, Kicker, Section, Wrap } from '@/components/site/primiti
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
 import { stripEmphasis, withEmphasis } from '@/lib/emphasis'
-import { breadcrumbNode, faqPageNode, webPageNode } from '@/lib/json-ld'
+import { breadcrumbNode, faqPageNode, professionalServiceNode, webPageNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { cmsMetadata } from '@/lib/pageMeta'
 import { telHref } from '@/lib/phone'
@@ -79,6 +79,7 @@ export default async function LocationPage(props: { params: Promise<{ locale: st
             { name: ts('home'), url: `${SITE_URL}/${servedLang}` },
             { name: place, url: canonical },
           ]),
+          professionalServiceNode(ctx.settings),
           ...[faqPageNode(canonical, faq)].filter((n): n is NonNullable<typeof n> => n !== null),
         ]}
       />

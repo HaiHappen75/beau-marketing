@@ -3,6 +3,7 @@ import { cache } from 'react'
 import type { Case, Category, Engagement, Location, Page, Post, Service } from '@/payload-types'
 import { getPayloadClient } from '@/lib/getPayload'
 import { toPayloadLocale, type Locale } from '@/lib/locale'
+import { isOfferPageSlug, OFFER_PAGES, offerPageAvailable, type OfferPageSlug } from '@/lib/offerPages'
 
 // Page/section data. The Local API bypasses access control, so every query
 // filters on published state itself — drafts never reach the frontend.
@@ -155,6 +156,53 @@ export const getCaseDetail = cache(async (slug: string, locale: Locale): Promise
 const livePost = () => ({ and: [published, { publishedAt: { less_than_equal: new Date().toISOString() } }] })
 
 /** Drives the guide's visibility: menu items, teaser, sitemap entry, indexing. */
+/**
+ * Offer pages (src/lib/offerPages.ts) that may be linked in this locale: the
+ * locale is one of the page's languages and the CMS page is published — before
+ * the seed has created it, nothing links to a 404.
+ */
+export const getOfferPageLinks = cache(
+  async (locale: Locale): Promise<{ slug: OfferPageSlug; href: string; label: string }[]> => {
+    const slugs = (Object.keys(OFFER_PAGES) as OfferPageSlug[]).filter((s) => offerPageAvailable(s, locale))
+    if (slugs.length === 0) return []
+    const payload = await getPayloadClient()
+    const { docs } = await payload.find({
+      collection: 'pages',
+      where: { and: [{ slug: { in: slugs } }, published] },
+      select: { slug: true, title: true },
+      depth: 0,
+      limit: slugs.length,
+      ...opts(locale),
+    })
+    return docs
+      .filter((d): d is typeof d & { slug: OfferPageSlug } => isOfferPageSlug(d.slug))
+      .map((d) => ({ slug: d.slug, href: OFFER_PAGES[d.slug].path, label: d.title }))
+  },
+)
+
+/**
+ * Local landing pages linked in the footer: published AND translated into this
+ * locale (marker field `intro`, read without fallback) — the footer never links a
+ * German fallback page under another language.
+ */
+export const getFooterLocations = cache(async (locale: Locale): Promise<{ slug: string; place: string }[]> => {
+  const payload = await getPayloadClient()
+  const { docs } = await payload.find({
+    collection: 'locations',
+    where: published,
+    locale: toPayloadLocale(locale),
+    fallbackLocale: false,
+    select: { slug: true, place: true, intro: true },
+    sort: 'place',
+    depth: 0,
+    limit: 50,
+    pagination: false,
+  })
+  return docs
+    .filter((d): d is typeof d & { slug: string } => Boolean(d.slug && d.intro?.trim()))
+    .map((d) => ({ slug: d.slug, place: d.place }))
+})
+
 export const hasPublishedPosts = cache(async (): Promise<boolean> => {
   const payload = await getPayloadClient()
   const { totalDocs } = await payload.count({ collection: 'posts', where: livePost() })

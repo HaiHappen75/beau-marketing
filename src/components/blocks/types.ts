@@ -12,4 +12,6 @@ export type BlockContext = {
   trust: Trust
   /** ?leistung=<slug>: preselection on the contact page, filter on the references page. */
   preselectService?: string | null
+  /** ?anliegen=<key>: fixed contact topic (src/lib/contact/topics.ts), contact page only. */
+  preselectTopic?: string | null
 }

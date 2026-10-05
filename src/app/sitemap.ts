@@ -3,6 +3,8 @@ import type { MetadataRoute } from 'next'
 import { routing } from '@/i18n/routing'
 import { getWebsiteLegalText } from '@/lib/erecht24'
 import { getPayloadClient } from '@/lib/getPayload'
+import type { Locale } from '@/lib/locale'
+import { isOfferPageSlug, OFFER_PAGES, offerPageAvailable } from '@/lib/offerPages'
 import { CATEGORY_MIN_POSTS } from '@/lib/queries/content'
 import { canonicalUrl } from '@/lib/seo'
 import { translatedGlobalLocales, translatedLocalesBySlug } from '@/lib/translations'
@@ -13,7 +15,7 @@ import { translatedGlobalLocales, translatedLocalesBySlug } from '@/lib/translat
 // fallback URL whose canonical points elsewhere. The root "/" is a redirect.
 export const dynamic = 'force-dynamic'
 
-// CMS page slug → path.
+// CMS page slug → path. Offer pages carry their path in src/lib/offerPages.ts.
 const PAGE_PATHS: Record<string, string> = {
   start: '',
   agentur: '/agentur',
@@ -21,7 +23,12 @@ const PAGE_PATHS: Record<string, string> = {
   marken: '/marken',
   'ueber-uns': '/ueber-uns',
   kontakt: '/kontakt',
+  ...Object.fromEntries(Object.entries(OFFER_PAGES).map(([slug, o]) => [slug, o.path])),
 }
+
+/** Offer pages exist in their own languages only, whatever the CMS holds elsewhere. */
+const pageLocales = (slug: string, locales: Locale[]) =>
+  isOfferPageSlug(slug) ? locales.filter((l) => offerPageAvailable(slug, l)) : locales
 
 // The legal pages exist only in the languages eRecht24 delivers (German, plus
 // English if maintained) — listing all three locales would advertise three
@@ -71,7 +78,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   )
 
   const entries: MetadataRoute.Sitemap = []
-  for (const p of pages) if (p.slug in PAGE_PATHS) entries.push(...localized(PAGE_PATHS[p.slug], p.locales))
+  for (const p of pages) {
+    const locales = pageLocales(p.slug, p.locales)
+    if (p.slug in PAGE_PATHS && locales.length > 0) entries.push(...localized(PAGE_PATHS[p.slug], locales))
+  }
   for (const s of services) entries.push(...localized(`/agentur/${s.slug}`, s.locales))
   for (const c of cases) entries.push(...localized(`/referenzen/${c.slug}`, c.locales))
   for (const l of locations) entries.push(...localized(`/region/${l.slug}`, l.locales))

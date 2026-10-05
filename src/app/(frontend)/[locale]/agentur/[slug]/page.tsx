@@ -7,7 +7,8 @@ import { CaseCard } from '@/components/blocks/CasesBlock'
 import { DeviceFrame, MediaImage } from '@/components/site/MediaImage'
 import { Faq } from '@/components/site/Faq'
 import { ButtonLink, H2, Kicker, PriceNote, Section, Wrap } from '@/components/site/primitives'
-import { PackageCard, PriceLine, type Pkg, type PriceLabels } from '@/components/service/PackageCard'
+import { CheckList, OfferBox } from '@/components/service/OfferBox'
+import { PackageCard, PriceLine, TermNote, type Pkg, type PriceLabels } from '@/components/service/PackageCard'
 import { JsonLd } from '@/components/seo/JsonLd'
 import { Link } from '@/i18n/navigation'
 import { stripEmphasis, withEmphasis } from '@/lib/emphasis'
@@ -17,7 +18,14 @@ import { cmsMetadata } from '@/lib/pageMeta'
 import { telHref } from '@/lib/phone'
 import { formatPackagePrice, serviceTeaserPrice } from '@/lib/price'
 import { getBlockContext } from '@/lib/queries/blockContext'
-import { getCasesByIds, getCasesForService, getPostsByIds, getServiceBySlug, idOf } from '@/lib/queries/content'
+import {
+  getCasesByIds,
+  getCasesForService,
+  getOfferPageLinks,
+  getPostsByIds,
+  getServiceBySlug,
+  idOf,
+} from '@/lib/queries/content'
 import { SITE_URL, canonicalUrl, localeAlternates } from '@/lib/seo'
 import { findRedirect } from '@/lib/redirects'
 import { translatedLocales } from '@/lib/translations'
@@ -105,6 +113,12 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
   const inHouse = service.inHouse
   const inHouseItems = (inHouse?.items ?? []).map((i) => i.item).filter(Boolean)
   const faq = (service.faq ?? []).map((f) => ({ question: f.question, answer: f.answer }))
+
+  // Pointer box to an offer page — only while that page is published and exists in this locale.
+  const highlightPage = service.highlight?.page
+  const highlightSlug = typeof highlightPage === 'object' ? highlightPage?.slug : null
+  const highlightLink = highlightSlug ? (await getOfferPageLinks(loc)).find((o) => o.slug === highlightSlug) : undefined
+  const highlight = highlightLink && service.highlight?.heading ? { ...service.highlight, href: highlightLink.href } : null
 
   const manualCaseIds = (service.cases ?? []).map(idOf).filter((id): id is number => id !== null)
   const cases = manualCaseIds.length > 0 ? await getCasesByIds(manualCaseIds, loc) : await getCasesForService(service.id, loc)
@@ -212,32 +226,35 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
         </Section>
       )}
 
+      {/* Hinweis-Kasten auf eine Angebotsseite, z. B. Gastgeber-Paket auf „Websites“ */}
+      {highlight && (
+        <section className="bg-white pb-[clamp(56px,8vw,104px)]">
+          <Wrap>
+            <OfferBox kicker={highlight.kicker} title={withEmphasis(highlight.heading)}>
+              {highlight.text && <p className="mt-3 max-w-[40em] text-lg">{highlight.text}</p>}
+              <ButtonLink href={highlight.href} variant="secondary" className="mt-6 text-base">
+                {highlight.linkLabel || highlightLink?.label}
+              </ButtonLink>
+            </OfferBox>
+          </Wrap>
+        </section>
+      )}
+
       {/* Eigener Kasten, z. B. Pflichtangaben-Update für bestehende Shops */}
       {boxes.map((p) => (
         <section key={p.id ?? p.name} className="bg-white pb-[clamp(56px,8vw,104px)]">
           <Wrap>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-x-14 gap-y-7 rounded-[4px] border-2 border-ink p-[clamp(24px,4vw,48px)]">
-              <div>
-                {p.kicker && <p className="text-sm font-extrabold tracking-[0.08em] uppercase">{p.kicker}</p>}
-                <h2 className="mt-2.5 text-[clamp(26px,2.6vw,34px)] font-extrabold">{p.name}</h2>
-                {p.description && <p className="mt-3 text-lg">{p.description}</p>}
-                <PriceLine pkg={p} locale={loc} labels={labels} />
-                {p.price != null && <PriceNote text={t('priceNote')} className="mt-2" />}
-              </div>
-              <div>
-                <ul className="grid gap-3.5 text-[17px]">
-                  {includes(p).map((item, i) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <Check size={22} index={i} className="mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <ButtonLink href={requestHref} variant="secondary" className="mt-6 text-base">
-                  {t('service.request', { name: p.name })}
-                </ButtonLink>
-              </div>
-            </div>
+            <OfferBox
+              kicker={p.kicker}
+              title={p.name}
+              aside={<CheckList items={includes(p)} />}
+              cta={{ href: requestHref, label: t('service.request', { name: p.name }) }}
+            >
+              {p.description && <p className="mt-3 text-lg">{p.description}</p>}
+              <PriceLine pkg={p} locale={loc} labels={labels} />
+              {p.price != null && <PriceNote text={t('priceNote')} className="mt-2" />}
+              <TermNote term={p.term} />
+            </OfferBox>
           </Wrap>
         </section>
       ))}

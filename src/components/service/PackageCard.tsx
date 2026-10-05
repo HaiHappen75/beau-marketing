@@ -18,7 +18,15 @@ export type PriceLabels = {
 }
 
 /** Price line of the design: small "ab", big amount, unit. */
-export function PriceLine({ pkg, locale, labels }: { pkg: Pkg; locale: Locale; labels: PriceLabels }) {
+export function PriceLine({
+  pkg,
+  locale,
+  labels,
+}: {
+  pkg: Pick<Pkg, 'price' | 'priceIsFrom' | 'unit'>
+  locale: Locale
+  labels: PriceLabels
+}) {
   if (pkg.price == null) return <p className="mt-5 text-[26px] font-black text-ink">{labels.onRequest}</p>
   const unit = pkg.unit === 'month' ? labels.perMonth : pkg.unit === 'hour' ? labels.perHour : labels.once
   return (
@@ -28,6 +36,12 @@ export function PriceLine({ pkg, locale, labels }: { pkg: Pkg; locale: Locale; l
       <span className="text-base font-bold">{unit}</span>
     </p>
   )
+}
+
+/** Contract term of a package, e.g. "Mindestlaufzeit drei Monate, …". Nothing when empty. */
+export function TermNote({ term, className = 'mt-1' }: { term?: string | null; className?: string }) {
+  if (!term) return null
+  return <p className={`text-sm font-bold text-ink ${className}`}>{term}</p>
 }
 
 export function PackageCard({
@@ -57,6 +71,7 @@ export function PackageCard({
       <h3 className="mt-1 text-[26px] font-black italic">{title}</h3>
       <PriceLine pkg={pkg} locale={locale} labels={labels} />
       {pkg.price != null && <PriceNote text={labels.priceNote} className="mt-2" />}
+      <TermNote term={pkg.term} />
       {description && <p className="mt-[18px] text-[17px]">{description}</p>}
       {items.length > 0 && (
         <ul className="mt-5 grid flex-1 content-start gap-3 border-t border-line pt-5 text-[17px]">

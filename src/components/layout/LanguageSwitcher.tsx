@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl'
 
 import { Link, usePathname } from '@/i18n/navigation'
 import { localeLabels, type Locale } from '@/lib/locale'
+import { offerPageAt } from '@/lib/offerPages'
 
 // Display order of the design: de · da · en.
 const ORDER: Locale[] = ['de', 'da', 'en']
@@ -13,6 +14,9 @@ export function LanguageSwitcher({ variant = 'inline' }: { variant?: 'inline' | 
   const t = useTranslations('Layout')
   const current = useLocale() as Locale
   const pathname = usePathname()
+  // An offer page exists in some languages only — the others lead to their start page, not to a 404.
+  const offer = offerPageAt(pathname)
+  const hrefFor = (code: Locale) => (offer && !offer.locales.includes(code) ? '/' : pathname)
 
   return (
     <div role="group" aria-label={t('language')} className="flex items-center">
@@ -22,7 +26,7 @@ export function LanguageSwitcher({ variant = 'inline' }: { variant?: 'inline' | 
           return (
             <Link
               key={code}
-              href={pathname}
+              href={hrefFor(code)}
               locale={code}
               hrefLang={code}
               lang={code}
@@ -44,7 +48,7 @@ export function LanguageSwitcher({ variant = 'inline' }: { variant?: 'inline' | 
               </span>
             )}
             <Link
-              href={pathname}
+              href={hrefFor(code)}
               locale={code}
               hrefLang={code}
               lang={code}

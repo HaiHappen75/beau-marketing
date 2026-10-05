@@ -5,7 +5,7 @@ import { Check } from '@/components/brand/Check'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/locale'
 import { telHref } from '@/lib/phone'
-import { hasPublishedPosts } from '@/lib/queries/content'
+import { getFooterLocations, getOfferPageLinks, hasPublishedPosts } from '@/lib/queries/content'
 import { getNavigation, getPublishedServices, getSettings, getTrust } from '@/lib/queries/getLayoutData'
 import type { Media } from '@/payload-types'
 
@@ -32,12 +32,14 @@ const badgeSource = (m: Media) => {
  */
 export async function Footer({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'Layout' })
-  const [settings, services, navigation, trust, guideLive] = await Promise.all([
+  const [settings, services, navigation, trust, guideLive, regions, offerPages] = await Promise.all([
     getSettings(locale),
     getPublishedServices(locale),
     getNavigation(locale),
     getTrust(locale),
     hasPublishedPosts(),
+    getFooterLocations(locale),
+    getOfferPageLinks(locale),
   ])
   const guideLabel = (navigation.header ?? []).find((n) => n.href === '/ratgeber')?.label
 
@@ -110,6 +112,14 @@ export async function Footer({ locale }: { locale: Locale }) {
                     </Link>
                   </li>
                 ))}
+                {/* Offer pages: only in their languages and once published. */}
+                {offerPages.map((o) => (
+                  <li key={o.slug}>
+                    <Link href={o.href} className="nav-link hover:underline">
+                      {o.label}
+                    </Link>
+                  </li>
+                ))}
                 {/* Blog standard: the guide hub is linked in header AND footer — once it has an article. */}
                 {guideLive && guideLabel && (
                   <li className="mt-3">
@@ -118,6 +128,14 @@ export async function Footer({ locale }: { locale: Locale }) {
                     </Link>
                   </li>
                 )}
+                {/* Local landing pages, only where translated (no fallback links). */}
+                {regions.map((r, i) => (
+                  <li key={r.slug} className={i === 0 ? 'mt-3' : undefined}>
+                    <Link href={`/region/${r.slug}`} className="nav-link hover:underline">
+                      {t('regionLink', { place: r.place })}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           )}

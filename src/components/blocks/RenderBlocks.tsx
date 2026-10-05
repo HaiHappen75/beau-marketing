@@ -8,6 +8,7 @@ import { CtaBlock } from './CtaBlock'
 import { DarkTextBlock } from './DarkTextBlock'
 import { EngagementBlock } from './EngagementBlock'
 import { HeroBlock } from './HeroBlock'
+import { OfferBlock } from './OfferBlock'
 import { PackagesBlock } from './PackagesBlock'
 import { PostTeaserBlock } from './PostTeaserBlock'
 import { PriceTableBlock } from './PriceTableBlock'
@@ -62,6 +63,8 @@ export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | u
             return <DarkTextBlock key={key} block={block} />
           case 'caseGrid':
             return <CaseGridBlock key={key} block={block} ctx={ctx} />
+          case 'offer':
+            return <OfferBlock key={key} block={block} ctx={ctx} />
           default:
             return null
         }

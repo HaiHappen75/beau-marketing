@@ -35,7 +35,8 @@
     "contact": "Contact",
     "legal": "Legal",
     "claim": "success simplified",
-    "reviews": "{rating} of 5 · {count} Google reviews"
+    "reviews": "{rating} of 5 · {count} Google reviews",
+    "regionLink": "Web design {place}"
   },
   "Site": {
     "_machineTranslated": "Machine-translated – proofread in package 5",
