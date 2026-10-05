@@ -10,6 +10,8 @@ const fixture = (action: 'up' | 'rename' | 'down') =>
   execFileSync('pnpm', ['-s', 'payload', 'run', 'e2e/fixtures/posts.ts'], {
     env: { ...process.env, FIXTURE_ACTION: action },
     stdio: 'pipe',
+    // Windows: pnpm is a .cmd shim, which only a shell resolves.
+    shell: process.platform === 'win32',
   })
 
 const robotsOf = async (page: Page) => {
