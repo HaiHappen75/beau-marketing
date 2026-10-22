@@ -17,7 +17,8 @@ const graphOf = async (page: Page) => {
 test('Angebotsseite: 200, Title, Description, H1, beide Preise, Button-Ziel', async ({ page }) => {
   const res = await page.goto(PATH)
   expect(res?.status()).toBe(200)
-  await expect(page).toHaveTitle('Website für Ferienwohnung und Ferienhaus – Festpreis 2.900 € | Beau Marketing')
+  // 22.10.2026: shorter (≤ 65 characters), brand through the layout template.
+  await expect(page).toHaveTitle('Website für Ferienwohnung – Festpreis 2.900 € | beau marketing')
   await expect(page.locator('meta[name="description"]')).toHaveAttribute(
     'content',
     'Eigene Website für deine Ferienwohnung: Belegungskalender, Buchungsanfrage, Rechtstexte, fertig in 4 Wochen. Festpreis 2.900 € netto, aus Satrup bei Flensburg.',

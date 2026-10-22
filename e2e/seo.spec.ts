@@ -102,6 +102,44 @@ test('Landingpage Flensburg: Inhalt, Entfernung, keine gestrichenen Aussagen', a
   expect((await request.get('/de/region/kiel')).status()).toBe(404)
 })
 
+test('Landingpage Flensburg: sechs FAQ-Fragen, FAQPage genau einmal mit allen sechs', async ({ page }) => {
+  await page.goto('/de/region/flensburg')
+  const added = [
+    'Was kostet eine Website für einen Betrieb in Flensburg?',
+    'Wie lange dauert es, bis meine Website online ist?',
+    'Macht ihr auch Visitenkarten, Flyer und Logos?',
+  ]
+  await expect(page.locator('main details summary')).toHaveCount(6)
+  for (const q of added) await expect(page.locator('main summary', { hasText: q })).toHaveCount(1)
+  const faqs = (await graphOf(page)).filter((n) => n['@type'] === 'FAQPage') as { mainEntity: { name: string }[] }[]
+  expect(faqs).toHaveLength(1)
+  expect(faqs[0].mainEntity).toHaveLength(6)
+  expect(faqs[0].mainEntity.map((q) => q.name)).toEqual(expect.arrayContaining(added))
+})
+
+test('Leistungsseiten: Meta-Title aus dem CMS, Marke einmal, da/en unverändert', async ({ page }) => {
+  const titles: [string, string][] = [
+    ['/de/agentur/websites', 'Homepage erstellen lassen ab 1.900 €'],
+    ['/de/agentur/shopify-shops', 'Shopify-Shop erstellen lassen ab 3.900 €'],
+    ['/de/agentur/betreuung-pflege', 'Website-Betreuung und Wartung ab 49 € im Monat'],
+    ['/de/agentur/lokale-sichtbarkeit', 'Google-Unternehmensprofil und lokales SEO'],
+    ['/de/agentur/apps-software', 'App- und Softwareentwicklung für Betriebe'],
+    ['/de/agentur/druck-werbemittel', 'Druck und Werbemittel mit Gestaltung'],
+    // An empty da/en meta title would show the German one through the fallback locale.
+    ['/da/agentur/websites', 'Hjemmesider'],
+    ['/en/agentur/websites', 'Websites'],
+    ['/da/agentur/druck-werbemittel', 'Tryk og reklamemateriale'],
+  ]
+  for (const [path, title] of titles) {
+    await page.goto(path)
+    await expect(page, path).toHaveTitle(`${title} | beau marketing`)
+    expect([...(await page.title())].length, path).toBeLessThanOrEqual(65)
+  }
+  // The H1 stays the service headline, not the meta title.
+  await page.goto('/de/agentur/websites')
+  await expect(page.getByRole('heading', { level: 1 })).not.toContainText('Homepage erstellen lassen')
+})
+
 test('Startseite: Title nach Konvention, Markenname nur einmal, neue Description', async ({ page }) => {
   await page.goto('/de')
   await expect(page).toHaveTitle('Webdesign & Shopify in Schleswig-Holstein | beau marketing')

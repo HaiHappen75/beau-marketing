@@ -14,6 +14,10 @@ const nextConfig = {
   turbopack: { root: dirname },
   outputFileTracingRoot: dirname,
   reactStrictMode: true,
+  // Next's own /x/ → /x redirect runs before redirects() and the proxy, so an old
+  // WordPress URL with a slash would cost an extra hop. src/proxy.ts strips the
+  // slash itself (after the legacy URLs in src/lib/legacyUrls.ts).
+  skipTrailingSlashRedirect: true,
   // Relaunch redirects (Paket 5): every URL of the old site keeps working.
   // permanent: true answers 308 (the permanent twin of 301 that keeps the method).
   async redirects() {

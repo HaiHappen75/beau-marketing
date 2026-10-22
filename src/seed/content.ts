@@ -9,6 +9,14 @@ type Step = { title: string; text: string }
 
 export type ServiceContent = {
   shortLabel: string
+  /**
+   * German meta title without the brand (the layout template appends it). The
+   * exception to "no prices in copy" (SEO, 22.10.2026): a price change of the
+   * entry package has to be made here as well. da/en carry today's service name
+   * as meta title (translations.json) — an empty one would show the German title
+   * through the fallback locale.
+   */
+  meta?: { title: string }
   teaser: string
   headline: string | null
   promise: string
@@ -33,6 +41,7 @@ const STEPS: Step[] = [
 export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   websites: {
     shortLabel: 'Website',
+    meta: { title: 'Homepage erstellen lassen ab 1.900 €' },
     teaser: 'Klar aufgebaut, schnell auf dem Handy, von dir selbst pflegbar.',
     headline: 'Eine Website, die für deinen Betrieb *arbeitet.*',
     promise:
@@ -84,6 +93,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'shopify-shops': {
     shortLabel: 'Shop',
+    meta: { title: 'Shopify-Shop erstellen lassen ab 3.900 €' },
     teaser: 'Verkaufen ohne Technikfrust – inklusive aller Pflichtangaben.',
     headline: 'Ein Shopify-Shop, der *verkauft.*',
     promise:
@@ -150,6 +160,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'betreuung-pflege': {
     shortLabel: 'Betreuung',
+    meta: { title: 'Website-Betreuung und Wartung ab 49 € im Monat' },
     teaser: 'Updates, Backups, Rechtstexte über eRecht24. Du merkst nichts davon.',
     headline: 'Damit deine Website *am Laufen bleibt.*',
     promise:
@@ -182,6 +193,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'lokale-sichtbarkeit': {
     shortLabel: 'Sichtbarkeit',
+    meta: { title: 'Google-Unternehmensprofil und lokales SEO' },
     teaser: 'Google-Unternehmensprofil und lokales SEO, damit man dich im Ort findet.',
     headline: 'Lokale Sichtbarkeit für Betriebe *in Schleswig-Holstein.*',
     promise: 'Google-Unternehmensprofil, Bewertungen und lokales SEO – monatlich betreut, mit einem kurzen Bericht.',
@@ -206,6 +218,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'apps-software': {
     shortLabel: 'Apps',
+    meta: { title: 'App- und Softwareentwicklung für Betriebe' },
     teaser: 'Wenn dein Betrieb ein eigenes Werkzeug braucht. Von der Idee bis zur App.',
     headline: 'Wenn es ein eigenes *Werkzeug* sein muss.',
     promise: 'Wir übernehmen ausgewählte Auftragsarbeiten in Software- und App-Entwicklung. Der Preis richtet sich nach dem Vorhaben.',
@@ -225,6 +238,7 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
   },
   'druck-werbemittel': {
     shortLabel: 'Druck',
+    meta: { title: 'Druck und Werbemittel mit Gestaltung' },
     // Decision Stephan 23.09.2026: design + print via partner printers; the
     // workshop is not offered as a service (it only appears on "Über uns").
     teaser: 'Flyer, Visitenkarten, Banner – gestaltet von uns, gedruckt bei Partnerdruckereien.',
@@ -501,7 +515,7 @@ export const PAGES: PageSeed[] = [
     slug: 'website-ferienwohnung',
     title: 'Website für Ferienwohnung und Ferienhaus',
     meta: {
-      title: 'Website für Ferienwohnung und Ferienhaus – Festpreis 2.900 € | Beau Marketing',
+      title: 'Website für Ferienwohnung – Festpreis 2.900 €',
       description:
         'Eigene Website für deine Ferienwohnung: Belegungskalender, Buchungsanfrage, Rechtstexte, fertig in 4 Wochen. Festpreis 2.900 € netto, aus Satrup bei Flensburg.',
     },
