@@ -174,7 +174,10 @@ export const LEGACY_CASE_CHIPS: Record<string, Record<string, string>> = {
   'huepfburgen-owl': { Buchungssystem: 'Verleih-Dashboard' },
 }
 
-/** Start page meta from Paket 2 and the Paket-5 proposal, replaced by the Xovi-checked title. */
+/**
+ * Start page meta from Paket 2 and the Paket-5 proposal, replaced by the Xovi-checked title.
+ * Offer page, 22.10.2026: shorter title through the layout template (brand in lower case).
+ */
 export const LEGACY_PAGE_META: Record<string, Record<string, string[]>> = {
   start: {
     'meta.title': ['Beau Marketing – Websites, Shops und Sichtbarkeit für Betriebe im Norden', 'Webdesign & Shops in Schleswig-Holstein – Beau Marketing'],
@@ -183,4 +186,32 @@ export const LEGACY_PAGE_META: Record<string, Record<string, string[]>> = {
       'Websites, Shopify-Shops und lokale Sichtbarkeit für Betriebe in Schleswig-Holstein, Hamburg und Dänemark – feste Preise, Betreuung aus Satrup in Angeln.',
     ],
   },
+  'website-ferienwohnung': {
+    'meta.title': ['Website für Ferienwohnung und Ferienhaus – Festpreis 2.900 € | Beau Marketing'],
+  },
+}
+
+/**
+ * FAQ lists of the landing-page seed (Paket 5), replaced as a whole — only when
+ * the list is exactly this (questions and answers), i.e. nobody has touched it.
+ * Flensburg, 22.10.2026: three more questions (prices, timeline, print).
+ */
+export const LEGACY_LOCATION_FAQ: Record<string, { question: string; answer: string }[][]> = {
+  flensburg: [
+    [
+      {
+        question: 'Kommt ihr wirklich nach Flensburg in den Betrieb?',
+        answer: 'Ja. Das Erstgespräch machen wir gern bei dir vor Ort. Von Satrup nach Flensburg sind es gut 20 km.',
+      },
+      {
+        question: 'Könnt ihr die Website auch auf Dänisch machen?',
+        answer: 'Ja. Wir bauen die Seite zweisprachig und kümmern uns darum, dass Google beide Sprachen richtig zuordnet.',
+      },
+      {
+        question: 'Mein Laden ist in der Innenstadt. Lohnt sich das Google-Profil?',
+        answer:
+          'Ein gepflegtes Google-Profil zeigt Adresse, Öffnungszeiten und Fotos dort, wo Menschen in der Nähe suchen – in der Google-Suche und in Google Maps. Wir richten es ein und halten es aktuell.',
+      },
+    ],
+  ],
 }

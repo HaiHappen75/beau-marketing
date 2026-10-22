@@ -27,6 +27,7 @@ import {
   LEGACY_BRAND_TAGLINES,
   LEGACY_BRAND_TAGLINES_REDESIGN,
   LEGACY_CASE_CHIPS,
+  LEGACY_LOCATION_FAQ,
   LEGACY_PACKAGE_INCLUDES,
   LEGACY_PACKAGE_ITEMS,
   LEGACY_PACKAGE_TERMS,
@@ -139,6 +140,7 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
             ...(content
               ? {
                   shortLabel: content.shortLabel,
+                  meta: content.meta,
                   teaser: content.teaser,
                   headline: content.headline,
                   promise: content.promise,
@@ -352,6 +354,15 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
             faq: l.faq,
           },
         },
+        // FAQ list of an earlier seed: replaced only while it is exactly that list.
+        legacy: (field, value) =>
+          field === 'faq' &&
+          Array.isArray(value) &&
+          (LEGACY_LOCATION_FAQ[l.slug] ?? []).some(
+            (old) =>
+              JSON.stringify((value as Obj[]).map((r) => [r.question, r.answer])) ===
+              JSON.stringify(old.map((r) => [r.question, r.answer])),
+          ),
       },
       summary,
     )

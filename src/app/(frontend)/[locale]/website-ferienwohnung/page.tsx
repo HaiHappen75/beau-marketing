@@ -26,7 +26,7 @@ const OFFER = OFFER_PAGES[SLUG]
 export async function generateMetadata(props: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await props.params
   if (!offerPageAvailable(SLUG, locale)) return {}
-  return cmsPageMetadata(SLUG, OFFER.path, locale, 'Website für Ferienwohnung und Ferienhaus', { absoluteTitle: true })
+  return cmsPageMetadata(SLUG, OFFER.path, locale, 'Website für Ferienwohnung und Ferienhaus')
 }
 
 export default async function Page(props: { params: Promise<{ locale: string }> }) {

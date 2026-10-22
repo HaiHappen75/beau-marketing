@@ -544,6 +544,11 @@
     "da": "Hjemmesider",
     "en": "Websites"
    },
+   "meta.title": {
+    "de": "Homepage erstellen lassen ab 1.900 €",
+    "da": "Hjemmesider",
+    "en": "Websites"
+   },
    "shortLabel": {
     "de": "Website",
     "da": "Hjemmeside",
@@ -804,6 +809,11 @@
   "fields": {
    "title": {
     "de": "Shopify-Shops",
+    "da": "Shopify-shops",
+    "en": "Shopify shops"
+   },
+   "meta.title": {
+    "de": "Shopify-Shop erstellen lassen ab 3.900 €",
     "da": "Shopify-shops",
     "en": "Shopify shops"
    },
@@ -1145,6 +1155,11 @@
     "da": "Support og vedligeholdelse",
     "en": "Support & maintenance"
    },
+   "meta.title": {
+    "de": "Website-Betreuung und Wartung ab 49 € im Monat",
+    "da": "Support og vedligeholdelse",
+    "en": "Support & maintenance"
+   },
    "shortLabel": {
     "de": "Betreuung",
     "da": "Support",
@@ -1338,6 +1353,11 @@
     "da": "Lokal synlighed",
     "en": "Local visibility"
    },
+   "meta.title": {
+    "de": "Google-Unternehmensprofil und lokales SEO",
+    "da": "Lokal synlighed",
+    "en": "Local visibility"
+   },
    "shortLabel": {
     "de": "Sichtbarkeit",
     "da": "Synlighed",
@@ -1459,6 +1479,11 @@
     "da": "Apps og software",
     "en": "Apps & software"
    },
+   "meta.title": {
+    "de": "App- und Softwareentwicklung für Betriebe",
+    "da": "Apps og software",
+    "en": "Apps & software"
+   },
    "shortLabel": {
     "de": "Apps",
     "da": "Apps",
@@ -1519,6 +1544,11 @@
   "fields": {
    "title": {
     "de": "Druck & Werbemittel",
+    "da": "Tryk og reklamemateriale",
+    "en": "Print & promotional items"
+   },
+   "meta.title": {
+    "de": "Druck und Werbemittel mit Gestaltung",
     "da": "Tryk og reklamemateriale",
     "en": "Print & promotional items"
    },

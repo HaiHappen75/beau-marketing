@@ -64,6 +64,21 @@ export const LOCATIONS: LocationSeed[] = [
         answer:
           'Ein gepflegtes Google-Profil zeigt Adresse, Öffnungszeiten und Fotos dort, wo Menschen in der Nähe suchen – in der Google-Suche und in Google Maps. Wir richten es ein und halten es aktuell.',
       },
+      // 22.10.2026. Prices as on the service pages (src/seed/data.ts) — change together.
+      {
+        question: 'Was kostet eine Website für einen Betrieb in Flensburg?',
+        answer:
+          'Unsere Preise stehen offen auf der Seite: Website Start ab 1.900 €, Website Standard ab 4.900 €, Betreuung ab 49 € im Monat, alles netto. Nach dem Erstgespräch bekommst du ein schriftliches Angebot mit Festpreis.',
+      },
+      {
+        question: 'Wie lange dauert es, bis meine Website online ist?',
+        answer: 'Das hängt vor allem davon ab, wie schnell Texte und Fotos da sind. Den Zeitplan schreiben wir ins Angebot.',
+      },
+      {
+        question: 'Macht ihr auch Visitenkarten, Flyer und Logos?',
+        answer:
+          'Ja. Wir gestalten Drucksachen und Logos und lassen sie über Partnerdruckereien drucken – passend zur Website, damit alles nach einem Betrieb aussieht.',
+      },
     ],
   },
   // Drafts: no local content yet — publishing is blocked until there is some.
