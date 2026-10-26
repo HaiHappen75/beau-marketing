@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { editorialAccess } from '../access'
 import { pageBlocks } from '../blocks'
 import { slugField } from '../fields/slug'
+import { previewLinkGuard, restoreFieldErrors } from '../hooks/previewLinkGuard'
 
 /**
  * Free pages built from layout blocks: start, agency overview, about, contact —
@@ -14,6 +15,7 @@ export const Pages: CollectionConfig = {
   admin: { useAsTitle: 'title', defaultColumns: ['title', 'slug', '_status'], group: 'Inhalte' },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 25 },
+  hooks: { beforeValidate: [previewLinkGuard], afterError: [restoreFieldErrors] },
   fields: [
     { name: 'title', label: 'Titel', type: 'text', localized: true, required: true },
     slugField('title'),

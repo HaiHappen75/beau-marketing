@@ -197,14 +197,41 @@ export function webPageNode(input: {
 
 export const personId = (slug: string) => `${SITE_URL}/#person-${slug}`
 
-/** Author of guide articles (E-E-A-T). Only fields the visible author box backs. */
+/**
+ * Portrait per author slug (public/team). The one deliberate exception to "only what
+ * the author box backs" (decision 26.10.2026): the box keeps its own photo from the
+ * authors collection, the schema gets a clear portrait so AI systems can identify the
+ * author. The caption stays German in every locale — one @id, one set of values.
+ */
+const PORTRAITS: Record<string, { path: string; width: number; height: number; caption: string }> = {
+  'stephan-beau': {
+    path: '/team/stephan-beau.webp',
+    width: 800,
+    height: 800,
+    caption: 'Stephan Beau, Geschäftsführer der Beau Marketing GmbH',
+  },
+}
+
+/** Author of guide articles (E-E-A-T). Only fields the visible author box backs, plus the portrait above. */
 export function personNode(p: { slug: string; name: string; jobTitle?: string | null; url?: string | null; sameAs?: string[] }): JsonLdNode {
+  const portrait = PORTRAITS[p.slug]
   return {
     '@type': 'Person',
     '@id': personId(p.slug),
     name: p.name,
     ...(p.jobTitle ? { jobTitle: p.jobTitle } : {}),
     ...(p.url ? { url: p.url } : {}),
+    ...(portrait
+      ? {
+          image: {
+            '@type': 'ImageObject',
+            url: `${SITE_URL}${portrait.path}`,
+            width: portrait.width,
+            height: portrait.height,
+            caption: portrait.caption,
+          },
+        }
+      : {}),
     ...(p.sameAs && p.sameAs.length > 0 ? { sameAs: p.sameAs } : {}),
     worksFor: ref(ORGANIZATION_ID),
   }

@@ -19,14 +19,17 @@ const robotsOf = async (page: Page) => {
   return (await meta.count()) > 0 ? meta.first().getAttribute('content') : null
 }
 
-const jsonLdTypes = async (page: Page) => {
+type LdNode = { '@type': string; '@id'?: string; [key: string]: unknown }
+
+const jsonLdNodes = async (page: Page): Promise<LdNode[]> => {
   const blocks = await page.locator('script[type="application/ld+json"]').allTextContents()
   return blocks.flatMap((b) => {
     const data = JSON.parse(b)
-    const graph = Array.isArray(data['@graph']) ? data['@graph'] : [data]
-    return graph.map((n: { '@type': string }) => n['@type'])
+    return Array.isArray(data['@graph']) ? data['@graph'] : [data]
   })
 }
+
+const jsonLdTypes = async (page: Page) => (await jsonLdNodes(page)).map((n) => n['@type'])
 
 test.describe.serial('Ratgeber ohne Beiträge', () => {
   test.beforeAll(() => {
@@ -109,6 +112,50 @@ test.describe.serial('Ratgeber mit Beitrag', () => {
     expect(html).toContain('Kurzantwort für den automatischen Test')
     expect(html).toContain('id="vierter-abschnitt"')
     expect(html).toContain('"@type":"BlogPosting"')
+  })
+
+  test('Artikel: Person genau einmal, mit Porträt (absolute URL, WebP), author als @id', async ({ page, request }) => {
+    await page.goto('/de/ratgeber/e2e-testartikel')
+    const graph = await jsonLdNodes(page)
+    const persons = graph.filter((n) => n['@type'] === 'Person')
+    expect(persons).toHaveLength(1)
+    const person = persons[0]
+    expect(person['@id']).toMatch(/\/#person-stephan-beau$/)
+    expect(person.image).toMatchObject({
+      '@type': 'ImageObject',
+      width: 800,
+      height: 800,
+      caption: 'Stephan Beau, Geschäftsführer der Beau Marketing GmbH',
+    })
+    const url = new URL((person.image as { url: string }).url) // throws when not absolute
+    expect(url.pathname).toBe('/team/stephan-beau.webp')
+    expect(graph.find((n) => n['@type'] === 'BlogPosting')?.author).toEqual({ '@id': person['@id'] })
+
+    const img = await request.get(url.pathname)
+    expect(img.status()).toBe(200)
+    expect(img.headers()['content-type']).toBe('image/webp')
+  })
+
+  test('Tabelle: echtes table mit thead/th, ohne Inline-Styles, 390 px ohne Seitenscrollbar', async ({ page, request }) => {
+    const html = await (await request.get('/de/ratgeber/e2e-tabelle')).text()
+    const markup = html.match(/<div class="article-table"[\s\S]*?<\/table>/)?.[0] ?? ''
+    expect(markup).toContain('<thead><tr><th scope="col">')
+    expect(markup.match(/<th scope="col">/g)).toHaveLength(5)
+    expect(markup).toContain('<th scope="row"><p>Einrichtung</p></th>')
+    // Payload's built-in converter hard-codes border/padding — an update must not bring it back.
+    expect(markup).not.toMatch(/<t[hd][^>]*style=/)
+    expect(markup).not.toContain('#ccc')
+
+    await page.setViewportSize({ width: 390, height: 844 })
+    await page.goto('/de/ratgeber/e2e-tabelle')
+    await expect(page.locator('.article-table table')).toBeVisible()
+    const overflow = await page.evaluate(() => {
+      const doc = document.documentElement
+      const wrap = document.querySelector('.article-table')!
+      return { page: doc.scrollWidth - doc.clientWidth, wrap: wrap.scrollWidth - wrap.clientWidth }
+    })
+    expect(overflow.page).toBeLessThanOrEqual(0)
+    expect(overflow.wrap).toBeGreaterThan(0) // the table scrolls inside its own box instead
   })
 
   test('Sichtbarkeit: Menü, Teaser, Sitemap, Entwurf, Kategorie', async ({ page, request }) => {
