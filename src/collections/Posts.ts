@@ -1,13 +1,16 @@
-import { HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import { EXPERIMENTAL_TableFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import type { CollectionConfig, TextareaFieldValidation } from 'payload'
 
 import { editorialAccess, loggedInField } from '../access'
+import { previewLinkGuard, restoreFieldErrors } from '../hooks/previewLinkGuard'
 import { slugRedirectHook } from '../hooks/slugRedirect'
 import { faqField } from '../fields/faq'
 import { slugField } from '../fields/slug'
 
 // Guide articles ("Ratgeber"), built to the blog standard of all Beau projects.
-// The title is the only H1 — the editor offers H2–H4 only.
+// The title is the only H1 — the editor offers H2–H4 only. Tables only here: the
+// frontend renders them via src/components/richtext/tableConverters.tsx.
+// Payload update: check whether the export was renamed to `TableFeature`.
 
 const SHORT_ANSWER_WORDS = { min: 40, max: 60 }
 
@@ -29,7 +32,11 @@ export const Posts: CollectionConfig = {
   },
   access: editorialAccess,
   versions: { drafts: true, maxPerDoc: 50 },
-  hooks: { afterChange: [slugRedirectHook('/ratgeber')] },
+  hooks: {
+    beforeValidate: [previewLinkGuard],
+    afterChange: [slugRedirectHook('/ratgeber')],
+    afterError: [restoreFieldErrors],
+  },
   defaultSort: '-publishedAt',
   fields: [
     { name: 'title', label: 'Titel', type: 'text', localized: true, required: true },
@@ -61,6 +68,7 @@ export const Posts: CollectionConfig = {
         features: ({ defaultFeatures }) => [
           ...defaultFeatures.filter((f) => f.key !== 'heading'),
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+          EXPERIMENTAL_TableFeature(),
         ],
       }),
     },
