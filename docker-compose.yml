@@ -9,7 +9,10 @@ services:
       POSTGRES_PASSWORD: beau
       POSTGRES_DB: beau_marketing
     ports:
-      - '5432:5432'
+      # Host port 5436 on purpose, not a typo: every project has its own fixed local
+      # Postgres port so the containers can run side by side (5432 = djvermietungen).
+      # Only the host side changes; the container port stays 5432.
+      - '5436:5432'
     volumes:
       - beau_pgdata:/var/lib/postgresql/data
     healthcheck:
