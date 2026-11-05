@@ -11,11 +11,17 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 
 export type HeaderService = { slug: string; title: string; description: string; price: string }
 export type HeaderPackage = { title: string; note: string; price: string }
+/** Host menu: the pages below the hub, and the hub itself as "all offers". */
+export type HeaderHosts = { href: string; allLabel: string; items: { href: string; label: string; note: string }[] }
+
+type Menu = 'agency' | 'hosts'
 
 type Props = {
   services: HeaderService[]
   packages: HeaderPackage[]
   links: { label: string; href: string }[]
+  /** null where the host area does not exist: other languages, or before its pages are published. */
+  hosts: HeaderHosts | null
   phone: { display: string; href: string | null } | null
 }
 
@@ -23,29 +29,41 @@ const LOGO = { src: '/brand/beau-marketing-logo.png', width: 1200, height: 358 }
 
 const isActive = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`)
 
-export function HeaderNav({ services, packages, links, phone }: Props) {
+export function HeaderNav({ services, packages, links, hosts, phone }: Props) {
   const t = useTranslations('Layout')
   const pathname = usePathname()
   const megaId = useId()
+  const hostsId = useId()
   const mobileId = useId()
-  const [megaOpen, setMegaOpen] = useState(false)
+  // One panel at a time: the "Agentur" mega menu or the host menu.
+  const [open, setOpen] = useState<Menu | null>(null)
+  const megaOpen = open === 'agency'
+  const hostsOpen = open === 'hosts'
   const [mobileOpen, setMobileOpen] = useState(false)
-  // Hover opens the mega menu; a mouse click right after that must not close it
-  // again (hover + click is one gesture). Keyboard activation toggles normally.
+  // Hover opens a menu; a mouse click right after that must not close it again
+  // (hover + click is one gesture). Keyboard activation toggles normally.
   const hoverOpenedAt = useRef(0)
+  const menuButton = (menu: Menu) => ({
+    'aria-expanded': open === menu,
+    onClick: () => setOpen((o) => (o !== menu ? menu : Date.now() - hoverOpenedAt.current < 600 ? menu : null)),
+    onMouseEnter: () => {
+      if (open !== menu) hoverOpenedAt.current = Date.now()
+      setOpen(menu)
+    },
+  })
 
   // Close menus on navigation — adjusted during render, not in an effect.
   const [lastPathname, setLastPathname] = useState(pathname)
   if (pathname !== lastPathname) {
     setLastPathname(pathname)
-    setMegaOpen(false)
+    setOpen(null)
     setMobileOpen(false)
   }
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setMegaOpen(false)
+        setOpen(null)
         setMobileOpen(false)
       }
     }
@@ -61,9 +79,25 @@ export function HeaderNav({ services, packages, links, phone }: Props) {
   }, [mobileOpen])
 
   const agencyActive = pathname.startsWith('/agentur') || megaOpen
+  const hostsActive = Boolean(hosts && (isActive(pathname, hosts.href) || hostsOpen))
+  const menuButtonClass = (active: boolean) =>
+    `flex cursor-pointer items-center gap-[7px] border-b-2 py-2 text-base font-bold text-ink ${
+      active ? 'border-accent' : 'border-transparent'
+    }`
+  const chevron = (isOpen: boolean) => (
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      aria-hidden="true"
+      className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+    >
+      <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    </svg>
+  )
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white" onMouseLeave={() => setMegaOpen(false)}>
+    <header className="sticky top-0 z-50 border-b border-line bg-white" onMouseLeave={() => setOpen(null)}>
       {/* ── Desktop (≥ 1100 px) ─────────────────────────────────────────── */}
       <div className="mx-auto hidden h-[84px] max-w-(--container-page) items-center gap-10 px-10 min-[1100px]:flex">
         <Link href="/" aria-label={t('homeLabel')} className="flex flex-none no-underline">
@@ -72,40 +106,26 @@ export function HeaderNav({ services, packages, links, phone }: Props) {
         <nav aria-label={t('mainNav')} className="min-w-0 flex-1">
           <ul className="flex items-center gap-[26px]">
             <li>
-              <button
-                type="button"
-                aria-expanded={megaOpen}
-                aria-controls={megaId}
-                onClick={() =>
-                  setMegaOpen((o) => (o && Date.now() - hoverOpenedAt.current < 600 ? true : !o))
-                }
-                onMouseEnter={() => {
-                  if (!megaOpen) hoverOpenedAt.current = Date.now()
-                  setMegaOpen(true)
-                }}
-                className={`flex cursor-pointer items-center gap-[7px] border-b-2 py-2 text-base font-bold text-ink ${
-                  agencyActive ? 'border-accent' : 'border-transparent'
-                }`}
-              >
+              <button type="button" aria-controls={megaId} {...menuButton('agency')} className={menuButtonClass(agencyActive)}>
                 {t('agency')}
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  aria-hidden="true"
-                  className={`transition-transform duration-200 ${megaOpen ? 'rotate-180' : ''}`}
-                >
-                  <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.8" fill="none" />
-                </svg>
+                {chevron(megaOpen)}
               </button>
             </li>
+            {hosts && (
+              <li>
+                <button type="button" aria-controls={hostsId} {...menuButton('hosts')} className={menuButtonClass(hostsActive)}>
+                  {t('hosts')}
+                  {chevron(hostsOpen)}
+                </button>
+              </li>
+            )}
             {links.map((l) => {
               const active = isActive(pathname, l.href)
               return (
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    onMouseEnter={() => setMegaOpen(false)}
+                    onMouseEnter={() => setOpen(null)}
                     aria-current={active ? 'page' : undefined}
                     className={`nav-link block whitespace-nowrap border-b-2 py-2 text-base font-bold hover:border-ink ${
                       active ? 'border-accent' : 'border-transparent'
@@ -175,6 +195,36 @@ export function HeaderNav({ services, packages, links, phone }: Props) {
         </div>
       )}
 
+      {hostsOpen && hosts && (
+        <div
+          id={hostsId}
+          className="absolute inset-x-0 top-full hidden border-b border-line bg-white shadow-[0_30px_40px_-30px_rgba(17,17,17,.25)] min-[1100px]:block"
+        >
+          <div className="mx-auto max-w-(--container-page) px-10 pt-7 pb-10">
+            <p className="kicker mb-3">{t('hostsKicker')}</p>
+            <ul className="-ml-4 grid grid-cols-3 gap-1">
+              {hosts.items.map((h) => (
+                <li key={h.href}>
+                  <Link
+                    href={h.href}
+                    aria-current={pathname === h.href ? 'page' : undefined}
+                    className="block h-full rounded-[4px] border border-transparent px-4 py-3.5 no-underline hover:border-line"
+                  >
+                    <span className="block text-[17px] font-extrabold text-ink">{h.label}</span>
+                    {h.note && <span className="mt-0.5 block text-[15px] leading-snug text-muted">{h.note}</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 text-base">
+              <Link href={hosts.href} aria-current={pathname === hosts.href ? 'page' : undefined}>
+                {hosts.allLabel}
+              </Link>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ── Mobile (< 1100 px) ──────────────────────────────────────────── */}
       <div className="flex h-[68px] items-center gap-2.5 pr-4 pl-5 min-[1100px]:hidden">
         <Link href="/" aria-label={t('homeLabel')} className="flex flex-none no-underline">
@@ -219,6 +269,24 @@ export function HeaderNav({ services, packages, links, phone }: Props) {
               </li>
             ))}
           </ul>
+          {hosts && (
+            <>
+              <p className="kicker mt-5 mb-1">{t('hosts')}</p>
+              <ul className="mb-3">
+                {[...hosts.items, { href: hosts.href, label: hosts.allLabel }].map((h) => (
+                  <li key={h.href} className="border-b border-line">
+                    <Link
+                      href={h.href}
+                      aria-current={pathname === h.href ? 'page' : undefined}
+                      className="block py-3 text-lg font-bold text-ink no-underline"
+                    >
+                      {h.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
           <ul>
             {links.map((l) => (
               <li key={l.href} className="border-b border-line">

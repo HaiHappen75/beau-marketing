@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Check } from '@/components/brand/Check'
 import { CaseCard } from '@/components/blocks/CasesBlock'
 import { Faq } from '@/components/site/Faq'
+import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { MediaImage } from '@/components/site/MediaImage'
 import { ButtonLink, H2, Kicker, Section, Wrap } from '@/components/site/primitives'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -87,21 +88,10 @@ export default async function LocationPage(props: { params: Promise<{ locale: st
         {/* Hero */}
         <section className="bg-white pt-7">
           <Wrap>
-            <nav aria-label={ts('breadcrumb')}>
-              <ol className="flex flex-wrap gap-2 text-[15px] text-muted">
-                <li>
-                  <Link href="/" className="text-muted">
-                    {ts('home')}
-                  </Link>
-                </li>
-                <li aria-hidden="true">/</li>
-                <li>{t('breadcrumb')}</li>
-                <li aria-hidden="true">/</li>
-                <li aria-current="page" className="font-bold text-ink">
-                  {place}
-                </li>
-              </ol>
-            </nav>
+            <Breadcrumb
+              label={ts('breadcrumb')}
+              items={[{ label: ts('home'), href: '/' }, { label: t('breadcrumb') }, { label: place }]}
+            />
             <div className="mt-[clamp(32px,5vw,56px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,420px),1fr))] items-end gap-x-16 gap-y-8">
               <h1 className="text-[clamp(36px,5vw,62px)] leading-[1.04] font-extrabold tracking-[-0.025em] text-balance">
                 {withEmphasis(loc.headline || loc.title)}

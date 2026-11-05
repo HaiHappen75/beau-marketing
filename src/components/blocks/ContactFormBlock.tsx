@@ -34,7 +34,7 @@ export async function ContactFormBlock({ block, ctx }: { block: BlockOf<'contact
   // over ?leistung=. Unknown keys are ignored (src/lib/contact/topics.ts).
   const topic = contactTopic(ctx.preselectTopic)
   const services = ctx.services.map((s) => ({ value: s.title, label: s.title, slug: s.slug ?? '' }))
-  const options = topic && ctx.preselectTopic ? [{ value: topic, label: topic, slug: ctx.preselectTopic }, ...services] : services
+  const options = topic && ctx.preselectTopic ? [{ ...topic, slug: ctx.preselectTopic }, ...services] : services
   const preselect = topic ? ctx.preselectTopic : ctx.preselectService
 
   return (

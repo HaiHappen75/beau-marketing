@@ -8,6 +8,11 @@ import type { CollectionSummary, LegacyEvent, SeedLocale, SeedSummary } from './
 //   2. Existing documents only get EMPTY fields filled — nothing is overwritten.
 //   3. Exception: a field holding a known legacy value (src/seed/legacy.ts) counts
 //      as empty; every such replacement is reported individually.
+//   4. Blocks of an existing page (05.11.2026): a block list is atomic for rule 2,
+//      so a new block never reaches a page that already has a layout. A seed block
+//      marked with `_insert` counts as an empty field as long as the page has NO
+//      block of its type — then it is inserted at its anchor (insertBlocks). Like
+//      any emptied field, a block deleted in the admin comes back with the next run.
 // Localized fields are read per locale WITHOUT fallback, otherwise a German
 // fallback would make an empty Danish field look filled.
 
@@ -111,6 +116,78 @@ export function fillRowLabels(
   })
   if (touched) plan.patch[field] = next
   return plan
+}
+
+/**
+ * Where a block goes in an existing layout: before/after the first (or last)
+ * block of a type, or at one end. A list of anchors is a fallback chain — the
+ * admin may have removed or reordered blocks since the seed created the page.
+ */
+export type Anchor =
+  | { after: string; pick?: 'first' | 'last' }
+  | { before: string; pick?: 'first' | 'last' }
+  | 'start'
+  | 'end'
+
+export type BlockInsert = { block: Obj; at: Anchor[] }
+
+/** Position for the first anchor the layout offers; without any of them: the end. */
+export function resolveAnchor(rows: Obj[], at: Anchor[]): { index: number; label: string } {
+  for (const anchor of at) {
+    if (anchor === 'start') return { index: 0, label: 'am Anfang' }
+    if (anchor === 'end') return { index: rows.length, label: 'am Ende' }
+    const type = 'after' in anchor ? anchor.after : anchor.before
+    const hits = rows.flatMap((row, i) => (row.blockType === type ? [i] : []))
+    if (hits.length === 0) continue
+    const i = anchor.pick === 'last' ? hits[hits.length - 1] : hits[0]
+    return 'after' in anchor ? { index: i + 1, label: `nach ${type}` } : { index: i, label: `vor ${type}` }
+  }
+  return { index: rows.length, label: 'am Ende' }
+}
+
+/**
+ * Rule 4: inserts every block whose type the layout does not hold yet. The rows
+ * that exist go back untouched — the same objects, with their ids, so their
+ * order, their nested rows and their texts in the other languages stay as they
+ * are. An empty layout is left to planFill, which writes the whole page.
+ */
+export function insertBlocks(rows: unknown, inserts: BlockInsert[], field = 'layout', note = ''): Plan {
+  const plan = emptyPlan()
+  if (!Array.isArray(rows) || rows.length === 0) return plan
+  let next = rows as Obj[]
+  for (const insert of inserts) {
+    const type = insert.block.blockType
+    if (next.some((row) => row.blockType === type)) continue
+    const { index, label } = resolveAnchor(next, insert.at)
+    next = [...next.slice(0, index), insert.block, ...next.slice(index)]
+    plan.filled.push(`${field} +${String(type)} (${label}${note})`)
+  }
+  if (next !== rows) plan.patch[field] = next
+  return plan
+}
+
+/**
+ * A field path with blocks addressed by type: `layout.@packages.kicker` is the
+ * kicker of the FIRST block of type "packages", wherever it stands. Plain
+ * positions (`layout.2.kicker`) break as soon as a block is inserted above —
+ * which rule 4 does and the admin may do any time. Resolved against the German
+ * document; the block list is the same in every language. null when the page has
+ * no block of that type. Used by the translations (src/seed/translations.ts).
+ */
+export function resolvePath(doc: unknown, path: string): string[] | null {
+  const parts: string[] = []
+  let node: unknown = doc
+  for (const part of path.split('.')) {
+    let key = part
+    if (part.startsWith('@')) {
+      const index = Array.isArray(node) ? node.findIndex((row) => (row as Obj | null)?.blockType === part.slice(1)) : -1
+      if (index < 0) return null
+      key = String(index)
+    }
+    parts.push(key)
+    node = node && typeof node === 'object' ? (node as Obj)[key] : undefined
+  }
+  return parts
 }
 
 export const newSummary = (): CollectionSummary => ({

@@ -4,6 +4,8 @@ import { RichText } from '@/components/richtext/RichText'
 
 import type { BlockOf } from './types'
 
+const RATIO = { landscape: '4/3', square: '1/1', portrait: '4/5' } as const
+
 export function TextImageBlock({ block }: { block: BlockOf<'textImage'> }) {
   const left = block.imagePosition === 'left'
   return (
@@ -18,7 +20,13 @@ export function TextImageBlock({ block }: { block: BlockOf<'textImage'> }) {
             </div>
           )}
         </div>
-        {block.image ? <MediaImage media={block.image} ratio="4/3" sizes="(min-width: 1024px) 560px, 100vw" /> : null}
+        {block.image ? (
+          <MediaImage
+            media={block.image}
+            ratio={RATIO[block.imageRatio ?? 'landscape']}
+            sizes="(min-width: 1024px) 560px, 100vw"
+          />
+        ) : null}
       </div>
     </Section>
   )

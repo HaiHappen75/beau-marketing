@@ -17,6 +17,8 @@
     "mainNav": "Main navigation",
     "agency": "Agency",
     "services": "Services",
+    "hosts": "Hosts",
+    "hostsKicker": "Hosts in the north",
     "packages": "Three packages",
     "packageAppearance": "Presence",
     "packageAppearanceNote": "Website or shop",
@@ -128,6 +130,7 @@
     },
     "perHour": "/ hour",
     "onRequest": "on request",
+    "qrCode": "QR code: {label}",
     "references": "Work",
     "case": {
       "kicker": "Project",

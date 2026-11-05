@@ -2,9 +2,12 @@ import { expect, test, type APIRequestContext, type Page } from '@playwright/tes
 
 // Offer page "Website für Ferienwohnung und Ferienhaus" (05.10.2026): German only,
 // two priced offers, contact form with a fixed topic, linked from the Websites
-// service page and the footer, not from the main navigation.
+// service page and the footer. Since 05.11.2026 it lives in the host area
+// (/de/gastgeber/ferienwohnung, the old path answers 301) with a breadcrumb and a
+// pointer to the restaurant page; the rest of the area: gastgeber-bereich.spec.ts.
 
-const PATH = '/de/website-ferienwohnung'
+const PATH = '/de/gastgeber/ferienwohnung'
+const OLD_PATH = '/de/website-ferienwohnung'
 const CHECK_HREF = '/de/kontakt?anliegen=website-check-fewo'
 const TOPIC = 'Website-Check Ferienwohnung (290 €)'
 const MAILPIT = process.env.MAILPIT_URL ?? 'http://localhost:8025'
@@ -43,9 +46,7 @@ test('Angebotsseite: 200, Title, Description, H1, beide Preise, Button-Ziel', as
   await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
   await expect(page.locator('html')).toHaveAttribute('lang', 'de')
 
-  // Not in the main navigation (only the switcher's own "de" link points here);
-  // the language switchers lead da/en to their start page.
-  await expect(page.locator('header a[href*="website-ferienwohnung"]:not([hreflang])')).toHaveCount(0)
+  // The language switchers lead da/en to their start page.
   for (const code of ['da', 'en']) {
     for (const href of await page.locator(`a[hreflang="${code}"]`).evaluateAll((els) => els.map((e) => e.getAttribute('href')))) {
       expect(href, code).toBe(`/${code}`)
@@ -53,21 +54,65 @@ test('Angebotsseite: 200, Title, Description, H1, beide Preise, Button-Ziel', as
   }
 })
 
+test('Angebotsseite im Gastgeber-Bereich: Brotkrume oben, Querverweis zur Gastronomie unten', async ({ page }) => {
+  await page.goto(PATH)
+  const crumbs = page.getByRole('navigation', { name: 'Brotkrumen' })
+  expect(await crumbs.locator('li:not([aria-hidden])').allTextContents()).toEqual(['Startseite', 'Gastgeber', 'Ferienwohnung'])
+  await expect(crumbs.getByRole('link', { name: 'Startseite' })).toHaveAttribute('href', '/de')
+  await expect(crumbs.getByRole('link', { name: 'Gastgeber' })).toHaveAttribute('href', '/de/gastgeber')
+  await expect(crumbs.locator('[aria-current="page"]')).toHaveText('Ferienwohnung')
+  // Above the heading.
+  expect(await crumbs.evaluate((nav) => Boolean(nav.compareDocumentPosition(document.querySelector('h1')!) & Node.DOCUMENT_POSITION_FOLLOWING))).toBe(true)
+
+  const main = page.locator('main')
+  const pointer = main.getByRole('link', { name: /Du führst ein Restaurant\?/ })
+  await expect(pointer).toHaveAttribute('href', '/de/gastgeber/gastronomie')
+  await expect(pointer).toContainText('Zur Seite für Gastronomie')
+  // Below the content, above the closing call to action.
+  const order = await main.locator('section').evaluateAll((els) => els.map((e) => (e as HTMLElement).innerText))
+  const at = (text: string) => order.findIndex((s) => s.includes(text))
+  expect(at('Du führst ein Restaurant?')).toBeGreaterThan(at('Gehört die Website mir?'))
+  expect(at('Du führst ein Restaurant?')).toBe(at('Lass uns mit dem Check anfangen.') - 1)
+})
+
 test('Angebotsseite: da/en liefern 404, ohne Sprachpräfix 308 auf /de', async ({ request }) => {
-  for (const path of ['/da/website-ferienwohnung', '/en/website-ferienwohnung']) {
+  for (const path of ['/da/gastgeber/ferienwohnung', '/en/gastgeber/ferienwohnung', '/da/website-ferienwohnung', '/en/website-ferienwohnung']) {
     expect((await request.get(path)).status(), path).toBe(404)
   }
-  const res = await request.get('/website-ferienwohnung', { maxRedirects: 0 })
+  const res = await request.get('/gastgeber/ferienwohnung', { maxRedirects: 0 })
   expect(res.status()).toBe(308)
   expect(new URL(res.headers()['location'], 'http://x').pathname).toBe(PATH)
 })
 
-test('Sitemap: Angebotsseite nur auf Deutsch', async ({ request }) => {
+test('Umzug: alter Pfad 301 in einem Sprung auf den neuen, Query bleibt, Ziel 200', async ({ request, page }) => {
+  for (const [from, to] of [
+    [OLD_PATH, PATH],
+    [`${OLD_PATH}/`, PATH],
+    ['/website-ferienwohnung', PATH],
+    [`${OLD_PATH}?utm_source=flyer&x=1`, `${PATH}?utm_source=flyer&x=1`],
+  ]) {
+    const res = await request.get(from, { maxRedirects: 0 })
+    expect(res.status(), from).toBe(301)
+    const target = new URL(res.headers()['location'], 'http://x')
+    expect(target.pathname + target.search, from).toBe(to)
+  }
+  // One hop: the target answers itself. (Counted here, not in the browser — Chromium
+  // adds an internal 307 to the same address in front of every first navigation.)
+  expect((await request.get(PATH, { maxRedirects: 0 })).status()).toBe(200)
+  // In the browser: lands on the page, which names the new address as canonical.
+  const res = await page.goto(OLD_PATH)
+  expect(res?.status()).toBe(200)
+  expect(new URL(page.url()).pathname).toBe(PATH)
+  expect(new URL((await page.locator('link[rel="canonical"]').getAttribute('href'))!).pathname).toBe(PATH)
+})
+
+test('Sitemap: Angebotsseite nur auf Deutsch, alter Pfad nicht mehr gelistet', async ({ request }) => {
   const xml = await (await request.get('/sitemap.xml')).text()
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname)
-  expect(locs).toContain(PATH)
-  expect(locs).not.toContain('/da/website-ferienwohnung')
-  expect(locs).not.toContain('/en/website-ferienwohnung')
+  expect(locs.filter((l) => l === PATH)).toHaveLength(1)
+  expect(locs.some((l) => l.includes('website-ferienwohnung'))).toBe(false)
+  expect(locs).not.toContain('/da/gastgeber/ferienwohnung')
+  expect(locs).not.toContain('/en/gastgeber/ferienwohnung')
 })
 
 test('JSON-LD: Service mit zwei Nettoangeboten, Anbieter ist die Agentur, FAQPage', async ({ page }) => {
@@ -92,6 +137,15 @@ test('JSON-LD: Service mit zwei Nettoangeboten, Anbieter ist die Agentur, FAQPag
   const faq = graph.find((n) => n['@type'] === 'FAQPage') as { mainEntity: { name: string }[] }
   expect(faq.mainEntity.map((q) => q.name)).toContain('Gehört die Website mir?')
   expect(faq.mainEntity).toHaveLength(5)
+  // Unchanged by the move: the service keeps the page heading as its name, no audience.
+  expect((service as unknown as { name: string }).name).toBe('Website für Ferienwohnung und Ferienhaus')
+  expect(service).not.toHaveProperty('audience')
+  const crumbs = graph.find((n) => n['@type'] === 'BreadcrumbList') as { itemListElement: { name: string; item: string }[] }
+  expect(crumbs.itemListElement.map((i) => [i.name, new URL(i.item).pathname])).toEqual([
+    ['Startseite', '/de'],
+    ['Gastgeber', '/de/gastgeber'],
+    ['Ferienwohnung', PATH],
+  ])
 })
 
 test('Einbindung: Kasten auf der Leistungsseite Websites und Footer-Link, nur auf Deutsch', async ({ page }) => {
@@ -104,7 +158,7 @@ test('Einbindung: Kasten auf der Leistungsseite Websites und Footer-Link, nur au
   )
   for (const path of ['/da/agentur/websites', '/en/agentur/websites']) {
     await page.goto(path)
-    await expect(page.locator('a[href*="website-ferienwohnung"]'), path).toHaveCount(0)
+    await expect(page.locator('a[href*="ferienwohnung"], a[href*="/gastgeber"]'), path).toHaveCount(0)
   }
 })
 

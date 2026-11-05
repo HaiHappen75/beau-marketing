@@ -180,8 +180,10 @@ export function webPageNode(input: {
   description?: string
   /** Language actually rendered here, not necessarily the URL locale. */
   lang: Locale
+  /** @id of the entity the page is about (e.g. AGENCY_ID) — its node must sit on the same page. */
+  about?: string
 }): JsonLdNode {
-  const { canonical, name, description, lang } = input
+  const { canonical, name, description, lang, about } = input
   return {
     '@type': 'WebPage',
     '@id': webPageId(canonical),
@@ -189,6 +191,7 @@ export function webPageNode(input: {
     name,
     ...(description ? { description } : {}),
     isPartOf: ref(WEBSITE_ID),
+    ...(about ? { about: ref(about) } : {}),
     inLanguage: BCP47[lang],
   }
 }
@@ -318,8 +321,8 @@ export function offerNode(p: PricedItem): JsonLdNode {
 }
 
 /**
- * An offer page (e.g. /de/website-ferienwohnung): one Service, provided by the
- * agency, with one Offer per priced offer block of the page.
+ * An offer page (e.g. /de/gastgeber/gastronomie): one Service, provided by the
+ * agency, with one Offer per priced block of the page (offer and pricing blocks).
  */
 export function offerPageServiceNode(input: {
   canonical: string
@@ -327,8 +330,10 @@ export function offerPageServiceNode(input: {
   description?: string | null
   offers: PricedItem[]
   areaServed: JsonLdNode[]
+  /** Who the service is for, e.g. "Restaurants und Gastronomie". */
+  audience?: string
 }): JsonLdNode {
-  const { canonical, name, description, offers, areaServed } = input
+  const { canonical, name, description, offers, areaServed, audience } = input
   return {
     '@type': 'Service',
     '@id': `${canonical}#service`,
@@ -338,6 +343,7 @@ export function offerPageServiceNode(input: {
     provider: ref(AGENCY_ID),
     url: canonical,
     ...(areaServed.length ? { areaServed } : {}),
+    ...(audience ? { audience: { '@type': 'Audience', audienceType: audience } } : {}),
     ...(offers.length ? { offers: offers.map(offerNode) } : {}),
   }
 }

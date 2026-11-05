@@ -1,3 +1,4 @@
+import type { Crumb } from '@/components/site/Breadcrumb'
 import type { Page, Service, SiteSetting, Trust } from '@/payload-types'
 import type { Locale } from '@/lib/locale'
 
@@ -14,4 +15,6 @@ export type BlockContext = {
   preselectService?: string | null
   /** ?anliegen=<key>: fixed contact topic (src/lib/contact/topics.ts), contact page only. */
   preselectTopic?: string | null
+  /** Breadcrumb trail of the page; the hero block renders it above the heading. */
+  breadcrumb?: Crumb[]
 }

@@ -16,6 +16,8 @@
     "mainNav": "Hauptnavigation",
     "agency": "Agentur",
     "services": "Leistungen",
+    "hosts": "Gastgeber",
+    "hostsKicker": "Gastgeber im Norden",
     "packages": "Drei Pakete",
     "packageAppearance": "Auftritt",
     "packageAppearanceNote": "Website oder Shop",
@@ -126,6 +128,7 @@
     },
     "perHour": "/ Stunde",
     "onRequest": "auf Anfrage",
+    "qrCode": "QR-Code: {label}",
     "references": "Referenzen",
     "case": {
       "kicker": "Referenz",

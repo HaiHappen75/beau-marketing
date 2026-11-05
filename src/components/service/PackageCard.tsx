@@ -57,11 +57,13 @@ export function PackageCard({
 }: {
   kicker?: string | null
   title: string
-  pkg: Pkg
+  /** A service package, or the price fields of a pricing block row. */
+  pkg: Pick<Pkg, 'price' | 'priceIsFrom' | 'unit' | 'term'>
   description?: string | null
   items: string[]
   highlighted?: boolean
-  cta: { href: string; label: string }
+  /** Without a button the card only shows the package (the pricing block has shared buttons below). */
+  cta?: { href: string; label: string }
   locale: Locale
   labels: PriceLabels
 }) {
@@ -83,9 +85,11 @@ export function PackageCard({
           ))}
         </ul>
       )}
-      <ButtonLink href={cta.href} variant="secondary" className="mt-7 text-base">
-        {cta.label}
-      </ButtonLink>
+      {cta && (
+        <ButtonLink href={cta.href} variant="secondary" className="mt-7 text-base">
+          {cta.label}
+        </ButtonLink>
+      )}
     </article>
   )
 }

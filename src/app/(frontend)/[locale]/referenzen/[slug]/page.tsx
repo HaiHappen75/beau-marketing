@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Check } from '@/components/brand/Check'
 import { RichText } from '@/components/richtext/RichText'
+import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { DeviceFrame, MediaImage, asMedia } from '@/components/site/MediaImage'
 import { ButtonLink, Wrap } from '@/components/site/primitives'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -98,25 +99,10 @@ export default async function CasePage(props: { params: Promise<{ locale: string
       {/* Case header */}
       <section aria-labelledby="case-h" className="bg-white pt-7 pb-[clamp(48px,6vw,80px)]">
         <Wrap>
-          <nav aria-label={t('breadcrumb')}>
-            <ol className="flex flex-wrap gap-2 text-[15px] text-muted">
-              <li>
-                <Link href="/" className="text-muted">
-                  {t('home')}
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li>
-                <Link href="/referenzen" className="text-muted">
-                  {t('references')}
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page" className="font-bold text-ink">
-                {c.client}
-              </li>
-            </ol>
-          </nav>
+          <Breadcrumb
+            label={t('breadcrumb')}
+            items={[{ label: t('home'), href: '/' }, { label: t('references'), href: '/referenzen' }, { label: c.client }]}
+          />
           <div className="mt-[clamp(32px,5vw,56px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))] items-end gap-x-16 gap-y-8">
             <div>
               <p className="text-[15px] font-extrabold text-muted">{t('case.kicker')}</p>

@@ -4,6 +4,10 @@
 // "most customers take …", legal promises), the text is neutralised; the PR
 // lists every such spot. Prices never appear in copy — they come from services.
 
+import type { IconName } from '../lib/icons'
+import type { SeedMediaKey } from './data'
+import type { Anchor } from './fill'
+
 type Faq = { question: string; answer: string }
 type Step = { title: string; text: string }
 
@@ -260,17 +264,77 @@ export const SERVICE_CONTENT: Record<string, ServiceContent> = {
 // Blocks reference services by slug; the seed resolves them to ids.
 
 type Link = { label: string; href: string }
-export type BlockSeed =
+type Tone = 'white' | 'offwhite'
+
+/** An image by file name (src/seed/data.ts → SEED_MEDIA); the seed turns it into the media id. */
+export const media = (file: SeedMediaKey) => ({ $media: file }) as const
+type MediaRef = ReturnType<typeof media>
+
+type BlockData =
   | {
       blockType: 'hero'
       kicker?: string
       heading: string
       text?: string
+      image?: MediaRef
       captionName?: string
       captionText?: string
       primary?: Link
       secondary?: Link
       checks?: ({ kind: 'service'; service: string } | { kind: 'text'; text: string })[]
+    }
+  | {
+      blockType: 'textImage'
+      kicker?: string
+      heading: string
+      /** Plain paragraphs; the seed builds the rich text. */
+      body: string[]
+      image?: MediaRef
+      imagePosition: 'left' | 'right'
+      imageRatio: 'landscape' | 'square' | 'portrait'
+    }
+  | {
+      blockType: 'tiles'
+      style: 'cards' | 'box'
+      tone: Tone
+      deOnly: boolean
+      kicker?: string
+      heading?: string
+      intro?: string
+      items: { image?: MediaRef; qr?: boolean; title?: string; text?: string; link?: Link }[]
+      link?: Link
+    }
+  | { blockType: 'prose'; tone: Tone; deOnly: boolean; kicker?: string; heading: string; text: string }
+  | {
+      blockType: 'points'
+      style: 'icons' | 'steps'
+      tone: Tone
+      deOnly: boolean
+      kicker?: string
+      heading: string
+      intro?: string
+      items: { icon?: IconName; title: string; text: string }[]
+      link?: Link
+    }
+  | {
+      blockType: 'pricing'
+      deOnly: boolean
+      kicker?: string
+      heading: string
+      intro?: string
+      offers: {
+        display: 'card' | 'row'
+        name: string
+        price: number
+        priceIsFrom: boolean
+        unit: 'once' | 'month' | 'hour'
+        note?: string
+        text?: string
+        items?: { item: string }[]
+      }[]
+      footnote?: string
+      primary?: Link
+      secondary?: Link
     }
   | { blockType: 'packages' | 'serviceTiles' | 'brandShowcase' | 'postTeaser' | 'caseTeaser' | 'priceTable'; kicker?: string; heading?: string; intro?: string }
   | { blockType: 'engagementBand'; kicker?: string; heading?: string; text?: string; link?: Link }
@@ -294,6 +358,14 @@ export type BlockSeed =
       link?: Link
     }
 
+/**
+ * `_insert` is seed-only (never sent to Payload): on a page that already exists,
+ * the block is inserted at the first anchor found while the page has no block of
+ * its type (src/seed/fill.ts, rule 4). Its place in the list below is where a new
+ * database gets it — the seed checks that both ways lead to the same order.
+ */
+export type BlockSeed = BlockData & { _insert?: Anchor[] }
+
 export type PageSeed = {
   slug: string
   title: string
@@ -303,6 +375,92 @@ export type PageSeed = {
 
 /** Contact form with the fixed topic of the offer page (src/lib/contact/topics.ts). */
 const WEBSITE_CHECK_REQUEST = '/kontakt?anliegen=website-check-fewo'
+
+// ── Host area "Gastgeber im Norden" (05.11.2026) ─────────────────────────────
+// Copy: Cowork draft of 05.11.2026 (Bauauftrag G8), taken over word for word.
+// Deviations (listed in the PR): prices sit in number fields and show through
+// the price line with the usual net note; the contents of the two packages are a
+// check list (same words); the closing sentence of "Rund um den Tisch" stands in
+// the text column above the button.
+
+const DEMO_REQUEST = '/kontakt?anliegen=demo-gastronomie'
+const GASTRO_CHECK_REQUEST = '/kontakt?anliegen=website-check-gastro'
+const TABLE_REQUEST = '/kontakt?anliegen=rund-um-den-tisch'
+/**
+ * Demo menu of the Deckplan test tenant "Mövenkrug" — checked 05.11.2026 (200).
+ * The address in the Bauauftrag (moevenkrug.beau-marketing.de) does not exist;
+ * tenants live under *.deckplan.beau-marketing.de (decision Stephan).
+ */
+const DEMO_MENU_URL = 'https://moevenkrug.deckplan.beau-marketing.de/karte'
+
+const HOST_PATH = '/gastgeber'
+const GASTRO_PATH = '/gastgeber/gastronomie'
+const HOLIDAY_LET_PATH = '/gastgeber/ferienwohnung'
+
+/** Start page, below the hero: the two host offers. German only — the targets are. */
+const HOST_TILES: BlockSeed = {
+  blockType: 'tiles',
+  style: 'cards',
+  tone: 'offwhite',
+  deOnly: true,
+  heading: 'Spezialisiert auf Gastgeber im Norden',
+  intro:
+    'Restaurants, Wirtshäuser, Landgasthöfe, Ferienwohnungen – wir bauen Websites, die Gäste bringen, und das Werkzeug dahinter: digitale Speisekarte, Reservierung, Belegungskalender. Aus Satrup bei Flensburg.',
+  items: [
+    {
+      title: 'Für Restaurants und Gasthöfe',
+      text: 'Website, Speisekarte per QR, Reservierung und Veranstaltungen aus einer Hand',
+      link: { label: 'Mehr für Restaurants', href: GASTRO_PATH },
+    },
+    {
+      title: 'Für Vermieter von Ferienwohnungen',
+      text: 'Eigene Website statt nur Portal – Festpreis, fertig in vier Wochen',
+      link: { label: 'Mehr für Vermieter', href: HOLIDAY_LET_PATH },
+    },
+  ],
+  link: { label: 'Alle Gastgeber-Angebote', href: HOST_PATH },
+  _insert: [{ after: 'hero' }, { before: 'packages' }, 'start'],
+}
+
+/** Start page, SEO text (H2 + running text). German only — there is no translation. */
+const HOME_SEO_TEXT: BlockSeed = {
+  blockType: 'prose',
+  tone: 'white',
+  deOnly: true,
+  heading: 'Webdesign-Agentur aus Satrup bei Flensburg – für Schleswig-Holstein und darüber hinaus',
+  text: [
+    'beau marketing ist eine Agentur für Webdesign, Shopify-Shops und Software aus Satrup in Angeln, zwischen Flensburg und Schleswig. Seit 2016 bauen wir Websites und Onlineshops – zuerst für den eigenen Shop, heute für Betriebe in ganz Schleswig-Holstein: Handwerk, Gastronomie, Vermieter, Vereine und Immobilienmakler. Was wir anbieten, benutzen wir selbst: Unsere eigenen Marken laufen auf derselben Technik, mit derselben Betreuung, die auch unsere Kunden bekommen.',
+    'Du bekommst bei uns keine Baukasten-Seite und keinen Freelancer, der nach dem Launch verschwindet. Wir übernehmen Hosting, Backups, Updates und halten Impressum und Datenschutzerklärung automatisch aktuell. Wer einen Onlineshop braucht, bekommt ihn als Shopify-Partner-Agentur aus einer Hand – vom Aufbau bis zur laufenden Pflege. Und wer eine App oder ein eigenes Werkzeug für seinen Betrieb braucht, bekommt es von uns entwickelt statt zusammengeklickt.',
+    'Unsere Spezialisierung sind Gastgeber im Norden: Restaurants, Wirtshäuser, Landgasthöfe und Ferienvermieter zwischen Nordsee, Schlei und Flensburger Förde. Für sie haben wir ein eigenes Paket aus Website, digitaler Speisekarte, Online-Reservierung und Veranstaltungen entwickelt – mehr dazu auf der Seite für Gastgeber. Du sitzt in Flensburg, Kiel oder Lübeck? Wir kommen vorbei: [Webdesign Flensburg](/region/flensburg).',
+  ].join('\n\n'),
+  _insert: [{ before: 'engagementBand' }, { before: 'trustBar' }, { before: 'cta', pick: 'last' }, 'end'],
+}
+
+/** Pointer from one host page to the other, above the closing call to action. */
+const crossLink = (title: string, label: string, href: string): BlockSeed => ({
+  blockType: 'tiles',
+  style: 'cards',
+  tone: 'offwhite',
+  deOnly: false,
+  items: [{ title, link: { label, href } }],
+})
+
+/**
+ * "Vom Koch gebaut" — the same section on the hub and the restaurant page. Blocks
+ * cannot reference each other, so this one constant becomes two copies.
+ */
+const BUILT_BY_A_COOK: BlockSeed = {
+  blockType: 'textImage',
+  heading: 'Vom Koch gebaut',
+  body: [
+    'Bevor ich Websites gebaut habe, stand ich in der Küche. Erst als Koch, später in der Leitung von Küche und Service. Ich weiß, wie ein Abend läuft, wenn die Karte nicht stimmt, das Telefon im Service klingelt und der Gast am Tisch auf die Rechnung wartet.',
+    'Genau deshalb bauen wir unsere Werkzeuge so, dass sie im Betrieb funktionieren – nicht nur in der Präsentation. Entwickelt haben wir sie im Austausch mit Gastronomen aus Angeln und Flensburg. Wenn du willst, zeige ich dir das System an deinem Tresen.',
+    '– Stephan Beau, Geschäftsführer beau marketing',
+  ],
+  image: media('stephan-beau.webp'),
+  imagePosition: 'left',
+  imageRatio: 'square',
+}
 
 const CLOSING_CTA: BlockSeed = {
   blockType: 'cta',
@@ -349,6 +507,7 @@ export const PAGES: PageSeed[] = [
           { kind: 'text', text: 'Server in Deutschland' },
         ],
       },
+      HOST_TILES,
       PACKAGES,
       SERVICE_TILES,
       { blockType: 'caseTeaser', kicker: 'Referenzen', heading: 'Echte Betriebe, echte Projekte.' },
@@ -358,6 +517,9 @@ export const PAGES: PageSeed[] = [
         heading: 'Wir bauen das auch *für uns selbst.*',
         intro: 'Beau Marketing ist auch ein Markenhaus. Websites, Shops und Apps bauen wir auch für unsere eigenen Marken.',
       },
+      // Before "Für die Region": the text ends with the region and leads into the band;
+      // after the brand band its first paragraph ("Unsere eigenen Marken …") picks that up.
+      HOME_SEO_TEXT,
       {
         blockType: 'engagementBand',
         kicker: 'Für die Region',
@@ -612,10 +774,409 @@ export const PAGES: PageSeed[] = [
           },
         ],
       },
+      // Added with the move into the host area (05.11.2026) — reaches the existing page through `_insert`.
+      {
+        ...crossLink('Du führst ein Restaurant?', 'Zur Seite für Gastronomie', GASTRO_PATH),
+        _insert: [{ before: 'cta', pick: 'last' }, 'end'],
+      },
       {
         blockType: 'cta',
         heading: 'Lass uns mit dem Check anfangen.',
         button: { label: 'Website-Check anfragen', href: WEBSITE_CHECK_REQUEST },
+      },
+    ],
+  },
+  // Hub of the host area, German only (src/lib/offerPages.ts). Target of the QR
+  // codes on flyers and table stands. The page title is the footer label.
+  {
+    slug: 'gastgeber',
+    title: 'Gastgeber im Norden',
+    meta: {
+      // Shortened from the draft (83 characters with the brand): the layout appends "| beau marketing".
+      title: 'Gastgeber im Norden – Gastronomie & Vermieter',
+      description:
+        'Website, digitale Speisekarte, Reservierung und Belegungskalender für Restaurants, Gasthöfe und Ferienwohnungen in Schleswig-Holstein. Aus Satrup bei Flensburg, vom Koch gebaut.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        heading: 'Gastgeber im Norden',
+        text: [
+          'Websites, Speisekarte, Reservierung und alles rund um den Tisch – aus einer Hand, aus Angeln.',
+          'Du führst ein Restaurant, ein Wirtshaus, einen Landgasthof oder vermietest Ferienwohnungen? Dann kennst du das: Die Website ist von 2014, die Speisekarte ein PDF, Reservierungen laufen übers Telefon und die Veranstaltungen stehen nur auf Facebook. Wir ändern das – mit Technik, die dein Betrieb selbst bedienen kann, und einem Ansprechpartner, der weiß, wie es hinter dem Pass zugeht.',
+        ].join('\n\n'),
+        image: media('platzhalter-gastgeber-hub-hero.png'),
+        primary: { label: 'Für Restaurants und Gasthöfe', href: GASTRO_PATH },
+        secondary: { label: 'Für Ferienvermieter', href: HOLIDAY_LET_PATH },
+      },
+      {
+        blockType: 'tiles',
+        style: 'cards',
+        tone: 'white',
+        deOnly: false,
+        heading: 'Zwei Angebote, ein Prinzip',
+        items: [
+          {
+            image: media('platzhalter-gastgeber-hub-speisekarte.png'),
+            title: 'Gastronomie',
+            text: 'Website im eigenen Design, digitale Speisekarte mit QR-Code am Tisch, Online-Reservierung, Veranstaltungen mit Anmeldung. Dein Team pflegt Karte und Termine selbst – in Sekunden, nicht in Tagen.',
+            link: { label: 'Mehr für Restaurants', href: GASTRO_PATH },
+          },
+          {
+            image: media('platzhalter-gastgeber-hub-ferienwohnung.png'),
+            title: 'Ferienwohnung & Ferienhaus',
+            text: 'Eigene Website statt nur Portal: Belegungskalender mit Portal-Abgleich, Buchungsanfrage, Rechtstexte, Google-Profil – zum Festpreis, fertig in vier Wochen.',
+            link: { label: 'Mehr für Vermieter', href: HOLIDAY_LET_PATH },
+          },
+        ],
+      },
+      {
+        blockType: 'points',
+        style: 'icons',
+        tone: 'offwhite',
+        deOnly: false,
+        heading: 'Was Gastgeber von uns bekommen',
+        items: [
+          {
+            icon: 'website',
+            title: 'Eine Website, die Gäste bringt.',
+            text: 'Schnell, mobil, auffindbar – mit den Grunddaten für Google, damit dein Betrieb in der Umgebungssuche richtig erscheint.',
+          },
+          {
+            icon: 'controls',
+            title: 'Werkzeuge, die dein Betrieb selbst bedient.',
+            text: 'Speisekarte, „heute aus“, Veranstaltungen, Reservierungen, Belegung – ohne Agentur-Ticket, ohne Wartezeit.',
+          },
+          {
+            icon: 'legal',
+            title: 'Rechtstexte, die sich selbst aktuell halten.',
+            text: 'Impressum und Datenschutzerklärung kommen automatisch von eRecht24. Du musst nicht nachlesen, was sich geändert hat.',
+          },
+          {
+            icon: 'languages',
+            title: 'Gäste aus Dänemark verstehen dich.',
+            text: 'Website und Speisekarte auf Deutsch, Dänisch und Englisch – übersetzt per Knopf, freigegeben von dir.',
+          },
+          {
+            icon: 'table',
+            title: 'Alles rund um den Tisch.',
+            text: 'Die gedruckte Karte passt zur digitalen, dazu Tischaufsteller mit QR-Code, Tischsets, Untersetzer und Beschilderung – aus unserer eigenen Werkstatt und von Partnerdruckereien.',
+          },
+          {
+            icon: 'person',
+            title: 'Ein fester Ansprechpartner.',
+            text: 'Kein Ticketsystem, keine Hotline. Du rufst an, und am anderen Ende weiß jemand, was ein Samstagabend im Service bedeutet.',
+          },
+        ],
+      },
+      BUILT_BY_A_COOK,
+      {
+        blockType: 'offer',
+        style: 'columns',
+        heading: 'Rund um den Tisch',
+        text: 'Manchmal fängt es klein an: neue Untersetzer, ein Tischaufsteller mit QR-Code, eine frisch gesetzte Speisekarte zum Drucken. Auch das machen wir – und wer möchte, bekommt später die ganze Technik dazu.',
+        items: [
+          'Tischaufsteller mit QR-Code aus Holz, aus unserer eigenen Werkstatt – zweiseitig, zum Beispiel Speisekarte und Bewertung',
+          'Gedruckte Speisekarte, gesetzt aus derselben Datenbank wie die digitale – eine Änderung, beide Karten aktuell',
+          'Tischsets und Untersetzer mit deinem Design',
+          'Beschilderung und Gravuren für Tresen, Eingang und Außenbereich',
+          'Flyer und Aushänge für Veranstaltungen',
+        ].map((item) => ({ item })),
+        link: { label: 'Anfragen', href: TABLE_REQUEST },
+      },
+      {
+        blockType: 'points',
+        style: 'steps',
+        tone: 'offwhite',
+        deOnly: false,
+        heading: 'So geht es los',
+        items: [
+          {
+            title: 'Demo an deinem Tresen.',
+            text: '20 Minuten am Tablet, kostenlos, mit deiner Speisekarte – vorab von uns eingepflegt. Oder, wenn du schon eine größere Website hast: der Website-Check mit schriftlichem Befund.',
+          },
+          {
+            title: 'Entscheidung ohne Druck.',
+            text: 'Du siehst, was das System kann, und entscheidest, ob es zu deinem Betrieb passt. Festpreise, veröffentlicht, netto.',
+          },
+          {
+            title: 'Live in wenigen Wochen.',
+            text: 'Wir richten alles ein, übernehmen Karte, Texte und Termine, schulen dein Team eine Stunde – dann läuft es.',
+          },
+        ],
+        link: { label: 'Demo-Termin anfragen', href: DEMO_REQUEST },
+      },
+      {
+        blockType: 'tiles',
+        style: 'cards',
+        tone: 'white',
+        deOnly: false,
+        items: [
+          {
+            title: 'Du bist Immobilienmakler oder Eventanbieter?',
+            text: 'Dann sprich uns an – für beide Bereiche entsteht gerade eine eigene Variante. Bis dahin: [Websites](/agentur/websites) und [Betreuung & Pflege](/agentur/betreuung-pflege).',
+          },
+        ],
+      },
+    ],
+  },
+  // Landing page for restaurants ("Deckplan"), German only (src/lib/offerPages.ts).
+  // The order is intended: problem → solution in building blocks → demo → Danish →
+  // around the table → the cook → only then packages and prices → FAQ → closing.
+  {
+    slug: 'gastgeber-gastronomie',
+    title: 'Website für Restaurants',
+    meta: {
+      // Shortened from the draft (74 characters with the brand); the H1 keeps the full wording.
+      title: 'Restaurant-Website, Speisekarte & Reservierung',
+      description:
+        'Restaurant-Website mit digitaler Speisekarte per QR-Code, Online-Reservierung und Veranstaltungen – dein Team pflegt alles selbst. Aus Satrup bei Flensburg, für Gastronomie in Schleswig-Holstein.',
+    },
+    layout: [
+      {
+        blockType: 'hero',
+        heading: 'Website, Speisekarte und Reservierung für dein Restaurant',
+        text: [
+          'Dein Team pflegt alles selbst. Deine Gäste finden dich, lesen die Karte am Tisch und reservieren ohne Anruf.',
+          'Für Restaurants, Wirtshäuser, Landgasthöfe und Hotel-Restaurants in Schleswig-Holstein. Vom Koch entwickelt, aus Satrup bei Flensburg.',
+        ].join('\n\n'),
+        image: media('platzhalter-gastgeber-gastro-hero.png'),
+        primary: { label: 'Demo-Speisekarte ansehen', href: DEMO_MENU_URL },
+        secondary: { label: 'Demo an deinem Tresen', href: DEMO_REQUEST },
+      },
+      {
+        blockType: 'points',
+        style: 'icons',
+        tone: 'offwhite',
+        deOnly: false,
+        heading: 'Kommt dir das bekannt vor?',
+        items: [
+          {
+            icon: 'document',
+            title: 'Die Karte ist ein PDF.',
+            text: 'Auf dem Handy nicht lesbar, Allergene stehen irgendwo auf Seite drei, und das Gericht, das heute aus ist, steht trotzdem drin.',
+          },
+          {
+            icon: 'phone',
+            title: 'Das Telefon klingelt im Service.',
+            text: 'Zwei Drittel der Betriebe im Norden nehmen Reservierungen nur telefonisch an – mitten im Abendgeschäft.',
+          },
+          {
+            icon: 'megaphone',
+            title: 'Veranstaltungen leben nur auf Facebook.',
+            text: 'Grünkohlessen, Schnitzeltag, Live-Musik – wer nicht auf Facebook ist, erfährt es nicht. Anmeldungen laufen per Zettel.',
+          },
+          {
+            icon: 'clock',
+            title: 'Die Website ist von damals.',
+            text: 'Nicht mobil, nicht aktuell, die Agentur von damals gibt es nicht mehr. Für jede Änderung ein Ticket, für jedes Ticket eine Woche.',
+          },
+        ],
+      },
+      {
+        blockType: 'prose',
+        tone: 'white',
+        deOnly: false,
+        heading: 'Ein System, das dein Betrieb selbst bedient',
+        text: 'Wir nennen es Deckplan: Website, Speisekarte, Reservierung und Veranstaltungen in einem System, gebaut für Betriebe mit Tischbedienung. Kein zweites Abo für die Reservierung, kein drittes für die Karte. Und die Küche darf ran.',
+      },
+      {
+        blockType: 'textImage',
+        kicker: 'Baustein 1',
+        heading: 'Die Speisekarte, die immer stimmt',
+        body: [
+          'Einmal eingepflegt, in Sekunden geändert. Kategorien, Preise, Allergene und Zusatzstoffe stehen dort, wo der Gast sie braucht. Ist das Tagesgericht aus, tippt die Küche einmal – weg ist es, auf der Website und auf dem Handy am Tisch. Per QR-Code auf dem Tischaufsteller öffnet der Gast die Karte, ohne eine App zu laden. Und die gedruckte Karte kommt aus derselben Datenbank: eine Änderung, beide Karten aktuell.',
+        ],
+        image: media('platzhalter-gastgeber-gastro-speisekarte.png'),
+        imagePosition: 'left',
+        imageRatio: 'landscape',
+      },
+      {
+        blockType: 'textImage',
+        kicker: 'Baustein 2',
+        heading: 'Reservierung ohne Telefonklingeln',
+        body: [
+          'Der Gast wählt Datum, Uhrzeit und Personenzahl auf deiner Website. Die Anfrage landet bei dir, du bestätigst mit einem Knopf, der Gast bekommt die Mail. Das System kennt deine Kapazität je Bereich – Gastraum, Terrasse, Kegelbahn, Nebenraum – und nimmt nicht mehr an, als du hast. Keine Doppelbuchung, kein Zettelchaos. Du behältst die Entscheidung: Nichts wird bestätigt, was du nicht bestätigt hast.',
+        ],
+        image: media('platzhalter-gastgeber-gastro-reservierung.png'),
+        imagePosition: 'right',
+        imageRatio: 'landscape',
+      },
+      {
+        blockType: 'textImage',
+        kicker: 'Baustein 3',
+        heading: 'Veranstaltungen mit Anmeldung',
+        body: [
+          'Grünkohl, Schnitzelabend, Weinprobe, Live-Musik: Lege die Veranstaltung an, setze Datum, Preis und Plätze – fertig ist die Seite mit Anmeldung. Deine Gäste melden sich an, du siehst die Liste. Wer will, teilt den Link auf Facebook und Instagram; wer nicht will, muss es nicht.',
+        ],
+        image: media('platzhalter-gastgeber-gastro-veranstaltung.png'),
+        imagePosition: 'left',
+        imageRatio: 'landscape',
+      },
+      {
+        blockType: 'textImage',
+        kicker: 'Baustein 4',
+        heading: 'Eine Website, die Gäste bringt',
+        body: [
+          'Im Design deines Betriebs, schnell, mobil, mit den Grunddaten für Google, damit du in der Umgebungssuche richtig erscheinst: Öffnungszeiten, Adresse, Küche, Reservierung. Impressum und Datenschutzerklärung halten sich automatisch aktuell. Hosting, Backups und Updates machen wir. Wenn du schon eine Website hast, übernehmen wir die Inhalte und leiten die alten Adressen weiter – deine Google-Platzierung bleibt erhalten.',
+        ],
+        image: media('platzhalter-gastgeber-gastro-website.png'),
+        imagePosition: 'right',
+        imageRatio: 'landscape',
+      },
+      {
+        blockType: 'tiles',
+        style: 'box',
+        tone: 'offwhite',
+        deOnly: false,
+        heading: 'Probier es aus – jetzt, am Handy',
+        items: [
+          {
+            text: 'Scanne den QR-Code oder tippe auf den Knopf: Das ist die Speisekarte eines Demo-Betriebs, so wie dein Gast sie am Tisch sieht.',
+            qr: true,
+            link: { label: 'Demo-Speisekarte öffnen', href: DEMO_MENU_URL },
+          },
+          {
+            text: 'Oder wir kommen vorbei: 20 Minuten an deinem Tresen, am Tablet, mit deiner eigenen Speisekarte – die haben wir vorher eingepflegt. Du siehst Karte, „heute aus“, eine Reservierung und eine Veranstaltung im echten System. Kostenlos, ohne Verpflichtung.',
+            link: { label: 'Demo-Termin anfragen', href: DEMO_REQUEST },
+          },
+        ],
+      },
+      {
+        blockType: 'textImage',
+        heading: 'Deine Gäste aus Dänemark verstehen die Karte',
+        body: [
+          'Website und Speisekarte gibt es auf Deutsch, Dänisch und Englisch. Übersetzt wird per Knopf im Admin – mit Küchenverstand: Labskaus wird erklärt, nicht verfälscht. Du liest die Übersetzung gegen und gibst sie frei. Für Betriebe an der Grenze, an der Förde und an den Küsten ist das kein Extra, sondern Umsatz.',
+        ],
+        image: media('platzhalter-gastgeber-gastro-daenisch.png'),
+        imagePosition: 'left',
+        imageRatio: 'landscape',
+      },
+      {
+        blockType: 'offer',
+        style: 'columns',
+        heading: 'Rund um den Tisch',
+        text: [
+          'Ein Betrieb ist mehr als seine Website. Deshalb bekommst du bei uns auch das, was auf dem Tisch liegt – passend zum Design, aus einer Hand.',
+          'Auch ohne das ganze System – manchmal fängt es mit neuen Untersetzern an.',
+        ].join('\n\n'),
+        items: [
+          'Tischaufsteller mit QR-Code aus Holz, zweiseitig (Speisekarte / Bewertung), aus unserer eigenen Werkstatt',
+          'Gedruckte Speisekarte aus derselben Datenbank wie die digitale',
+          'Tischsets, Untersetzer, Bierdeckel mit deinem Motiv',
+          'Beschilderung und Gravuren für Tresen, Eingang und Außenbereich',
+          'Flyer und Aushänge für Veranstaltungen',
+        ].map((item) => ({ item })),
+        link: { label: 'Anfragen', href: TABLE_REQUEST },
+      },
+      BUILT_BY_A_COOK,
+      {
+        blockType: 'pricing',
+        deOnly: false,
+        heading: 'Was es kostet',
+        intro:
+          'Festpreise, veröffentlicht, netto. Die Website ist im Abo drin – das ist der Unterschied zu einem Reservierungstool, bei dem die Website extra kostet.',
+        offers: [
+          {
+            display: 'card',
+            name: 'Deckplan Start',
+            price: 89,
+            priceIsFrom: false,
+            unit: 'month',
+            text: 'Dein Team pflegt Speisekarte, Veranstaltungen, Öffnungszeiten und Reservierungen selbst.',
+            items: [
+              'Website im Design deines Betriebs',
+              'Digitale Speisekarte mit QR-Code',
+              'Online-Reservierung',
+              'Veranstaltungen mit Anmeldung',
+              'Rechtstexte automatisch aktuell',
+              'Hosting, Backups, Updates',
+              'Zehn Tischaufsteller mit QR-Code',
+              'Fester Ansprechpartner',
+            ].map((item) => ({ item })),
+          },
+          {
+            display: 'card',
+            name: 'Deckplan Plus',
+            price: 149,
+            priceIsFrom: false,
+            unit: 'month',
+            text: 'Alles aus Start, dazu:',
+            items: [
+              'Änderungen an der Website durch uns (Texte, Bilder, Seitenaufbau – eine Stunde im Monat)',
+              'Einrichtung der Google Search Console',
+              'Ein monatlicher Bericht zu Reservierungen und Besuchern',
+            ].map((item) => ({ item })),
+          },
+          {
+            display: 'row',
+            name: 'Einrichtung',
+            price: 490,
+            priceIsFrom: false,
+            unit: 'once',
+            note: 'Bei 24 Monaten Laufzeit entfällt die Einrichtung.',
+            text: 'Design-Anpassung, Übernahme von Speisekarte, Veranstaltungen und Texten, Domain und E-Mail, Rechtstexte, eine Stunde Einweisung.',
+          },
+          {
+            display: 'row',
+            name: 'Website-Check',
+            price: 290,
+            priceIsFrom: false,
+            unit: 'once',
+            note: 'Voll anrechenbar.',
+            text: 'Für Betriebe mit größerer Website (Hotel-Restaurant, Gasthof mit Zimmern): Befund zu Sichtbarkeit, Mobil, Speisekarte, Reservierung und Rechtstexten auf zwei Seiten, innerhalb von 48 Stunden. Beauftragst du danach Deckplan, ziehen wir die 290 € ab.',
+          },
+        ],
+        footnote:
+          'Nicht dabei, bewusst: Online-Bestellung außer Haus und ein grafischer Tischplan. Deckplan ist für Betriebe mit Tischbedienung gebaut, nicht für Lieferdienste.',
+        primary: { label: 'Demo-Termin anfragen', href: DEMO_REQUEST },
+        secondary: { label: 'Website-Check anfragen', href: GASTRO_CHECK_REQUEST },
+      },
+      {
+        blockType: 'faq',
+        heading: 'Häufige Fragen',
+        items: [
+          {
+            question: 'Brauche ich zusätzlich ein Reservierungstool wie resmio oder DISH?',
+            answer:
+              'Nein. Die Reservierung ist Teil des Systems. Wenn du heute ein Tool nutzt, kannst du es ablösen – oder parallel weiterlaufen lassen, bis du sicher bist.',
+          },
+          {
+            question: 'Kann die Küche die Speisekarte selbst ändern?',
+            answer:
+              'Ja, das ist der Sinn. Jeder im Team mit Zugang kann Gerichte anlegen, Preise ändern und „heute aus“ setzen – vom Handy, vom Tablet, vom Rechner im Büro.',
+          },
+          {
+            question: 'Was passiert mit meiner alten Website?',
+            answer:
+              'Wir übernehmen Texte und Bilder, leiten alle alten Adressen auf die neuen weiter und behalten deine Domain. Deine Platzierung bei Google geht nicht verloren.',
+          },
+          {
+            question: 'Wie lange dauert die Einrichtung?',
+            answer:
+              'In der Regel zwei bis vier Wochen, sobald Speisekarte, Texte und Bilder vollständig da sind. Die Einweisung dauert eine Stunde.',
+          },
+          {
+            question: 'Gibt es einen Vertrag mit langer Laufzeit?',
+            answer: 'Du wählst: monatlich kündbar mit Einrichtungspauschale, oder 24 Monate ohne Einrichtungspauschale.',
+          },
+          {
+            question: 'Funktioniert das auch, wenn mein Betrieb kein Restaurant ist?',
+            answer:
+              'Für Hotel-Restaurants, Landgasthöfe und Gasthöfe mit Zimmern ja. Für Imbisse, Lieferdienste und reine Cafés ist Deckplan nicht gedacht – dort fehlt die Tischbedienung, für die das System gebaut ist.',
+          },
+          {
+            question: 'Was ist mit Gästen, die kein Handy zücken wollen?',
+            answer: 'Die gedruckte Karte bleibt – und kommt aus derselben Datenbank. Der QR-Code ist ein Zusatz, kein Ersatz.',
+          },
+        ],
+      },
+      crossLink('Du vermietest Ferienwohnungen?', 'Zur Seite für Vermieter', HOLIDAY_LET_PATH),
+      {
+        blockType: 'cta',
+        heading: 'Lass es uns an deinem Tresen anschauen',
+        text: 'Zwanzig Minuten, dein Tablet oder unseres, deine Speisekarte. Danach weißt du, ob das für deinen Betrieb passt. Kein Verkaufsgespräch, ein Blick ins System.',
+        button: { label: 'Demo-Termin anfragen', href: DEMO_REQUEST },
       },
     ],
   },

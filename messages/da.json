@@ -17,6 +17,8 @@
     "mainNav": "Hovednavigation",
     "agency": "Bureau",
     "services": "Ydelser",
+    "hosts": "Værter",
+    "hostsKicker": "Værter i nord",
     "packages": "Tre pakker",
     "packageAppearance": "Tilstedeværelse",
     "packageAppearanceNote": "Hjemmeside eller shop",
@@ -128,6 +130,7 @@
     },
     "perHour": "/ time",
     "onRequest": "efter aftale",
+    "qrCode": "QR-kode: {label}",
     "references": "Referencer",
     "case": {
       "kicker": "Reference",

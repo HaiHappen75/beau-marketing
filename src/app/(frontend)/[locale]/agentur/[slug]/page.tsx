@@ -4,9 +4,11 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { Check } from '@/components/brand/Check'
 import { CaseCard } from '@/components/blocks/CasesBlock'
+import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { DeviceFrame, MediaImage } from '@/components/site/MediaImage'
 import { Faq } from '@/components/site/Faq'
 import { ButtonLink, H2, Kicker, PriceNote, Section, Wrap } from '@/components/site/primitives'
+import { Steps } from '@/components/site/Steps'
 import { CheckList, OfferBox } from '@/components/service/OfferBox'
 import { PackageCard, PriceLine, TermNote, type Pkg, type PriceLabels } from '@/components/service/PackageCard'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -154,25 +156,10 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
       {/* Hero */}
       <section className="bg-white pt-7 pb-[clamp(56px,8vw,104px)]">
         <Wrap>
-          <nav aria-label={t('breadcrumb')}>
-            <ol className="flex flex-wrap gap-2 text-[15px] text-muted">
-              <li>
-                <Link href="/" className="text-muted">
-                  {t('home')}
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li>
-                <Link href="/agentur" className="text-muted">
-                  {t('agency')}
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page" className="font-bold text-ink">
-                {service.title}
-              </li>
-            </ol>
-          </nav>
+          <Breadcrumb
+            label={t('breadcrumb')}
+            items={[{ label: t('home'), href: '/' }, { label: t('agency'), href: '/agentur' }, { label: service.title }]}
+          />
           <div className="mt-[clamp(32px,5vw,64px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-center gap-[clamp(40px,5vw,72px)]">
             <div>
               <p className="text-[15px] font-extrabold text-muted">
@@ -304,18 +291,7 @@ export default async function ServicePage(props: { params: Promise<{ locale: str
         <Section>
           <Kicker>{t('service.processKicker')}</Kicker>
           <H2>{t('service.processHeading', { count: steps.length })}</H2>
-          <ol className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] gap-x-6 gap-y-8">
-            {steps.map((s, i) => (
-              <li key={s.id ?? s.title} className="border-t-2 border-ink pt-5">
-                <p className="flex items-center gap-2.5 text-sm font-extrabold text-muted">
-                  <Check size={26} index={i} />
-                  {t('service.step', { n: i + 1 })}
-                </p>
-                <h3 className="mt-3.5 text-[21px] font-extrabold">{s.title}</h3>
-                {s.text && <p className="mt-1.5 text-[17px]">{s.text}</p>}
-              </li>
-            ))}
-          </ol>
+          <Steps items={steps} label={(n) => t('service.step', { n })} />
         </Section>
       )}
 
