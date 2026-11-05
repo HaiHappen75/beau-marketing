@@ -10,10 +10,14 @@ import { EngagementBlock } from './EngagementBlock'
 import { HeroBlock } from './HeroBlock'
 import { OfferBlock } from './OfferBlock'
 import { PackagesBlock } from './PackagesBlock'
+import { PointsBlock } from './PointsBlock'
 import { PostTeaserBlock } from './PostTeaserBlock'
 import { PriceTableBlock } from './PriceTableBlock'
+import { PricingBlock } from './PricingBlock'
+import { ProseBlock } from './ProseBlock'
 import { ServiceTilesBlock } from './ServiceTilesBlock'
 import { TextImageBlock } from './TextImageBlock'
+import { TilesBlock } from './TilesBlock'
 import { TimelineBlock } from './TimelineBlock'
 import { TrustBlock } from './TrustBlock'
 import type { BlockContext, LayoutBlock } from './types'
@@ -24,6 +28,9 @@ export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | u
     <>
       {(blocks ?? []).map((block, i) => {
         const key = block.id ?? `${block.blockType}-${i}`
+        // The block list is the same in every language; a block marked "nur Deutsch"
+        // (targets that exist in German only, no translation) stays off the others.
+        if ('deOnly' in block && block.deOnly && ctx.locale !== 'de') return null
         switch (block.blockType) {
           case 'hero':
             return <HeroBlock key={key} block={block} ctx={ctx} />
@@ -65,6 +72,14 @@ export function RenderBlocks({ blocks, ctx }: { blocks: LayoutBlock[] | null | u
             return <CaseGridBlock key={key} block={block} ctx={ctx} />
           case 'offer':
             return <OfferBlock key={key} block={block} ctx={ctx} />
+          case 'tiles':
+            return <TilesBlock key={key} block={block} ctx={ctx} />
+          case 'prose':
+            return <ProseBlock key={key} block={block} />
+          case 'points':
+            return <PointsBlock key={key} block={block} ctx={ctx} />
+          case 'pricing':
+            return <PricingBlock key={key} block={block} ctx={ctx} />
           default:
             return null
         }

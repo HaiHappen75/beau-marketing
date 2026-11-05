@@ -10,12 +10,24 @@ import {
   NAV_FOOTER_LEGAL,
   NAV_HEADER,
   RELEASE,
+  SEED_MEDIA,
   SERVICES,
   SITE_SETTINGS,
   TRUST_MEDIA,
   TRUST_SERVER_NOTE,
+  type SeedMediaKey,
 } from './data'
-import { display, emptyPlan, ensureMedia, fillGlobal, fillRowLabels, fillRowsByKey, mergePlans, upsertDoc } from './fill'
+import {
+  display,
+  emptyPlan,
+  ensureMedia,
+  fillGlobal,
+  fillRowLabels,
+  fillRowsByKey,
+  insertBlocks,
+  mergePlans,
+  upsertDoc,
+} from './fill'
 import type { Plan } from './fill'
 import {
   isLegacyUrl,
@@ -37,19 +49,86 @@ import {
   LEGACY_SITE_NAME,
 } from './legacy'
 import { isRichText, nodeText, rt } from './richtext'
-import { PAGES, SERVICE_CONTENT, SERVICE_HIGHLIGHTS, type BlockSeed } from './content'
+import { PAGES, SERVICE_CONTENT, SERVICE_HIGHLIGHTS, type BlockSeed, type PageSeed } from './content'
 import { LOCATIONS } from './locations'
 import { fillTranslations } from './translations'
-import type { SeedLocale, SeedSummary } from './types'
+import { isInsertedBlock, type SeedLocale, type SeedSummary } from './types'
 
 // Idempotent master-data seed: `pnpm seed` locally, admin button (POST /api/seed)
 // in production. Fill-only — see src/seed/fill.ts for the rules.
 
-const TRUST_DIR = path.resolve(process.cwd(), 'public', 'brand', 'trust')
+const PUBLIC_DIR = path.resolve(process.cwd(), 'public')
+const TRUST_DIR = path.join(PUBLIC_DIR, 'brand', 'trust')
 
 type Obj = Record<string, unknown>
 
 const websiteLink = (url: string) => [{ label: 'Website', url, type: 'website' }]
+
+// ── Page seeds: images by name, blocks for existing pages ─────────────────────
+
+const isMediaRef = (v: unknown): v is { $media: SeedMediaKey } =>
+  Boolean(v && typeof v === 'object' && '$media' in (v as object))
+
+/** File names of all images a seed block refers to, at any depth. */
+const mediaKeysOf = (value: unknown): SeedMediaKey[] => {
+  if (isMediaRef(value)) return [value.$media]
+  if (Array.isArray(value)) return value.flatMap(mediaKeysOf)
+  if (value && typeof value === 'object') return Object.values(value).flatMap(mediaKeysOf)
+  return []
+}
+
+/** Replaces every image reference by its media id and drops the seed-only `_insert`. */
+const withMediaIds = (value: unknown, ids: Partial<Record<SeedMediaKey, number>>): unknown => {
+  if (isMediaRef(value)) {
+    const id = ids[value.$media]
+    if (!id) throw new Error(`Seed: Bild „${value.$media}“ wird gebraucht, wurde aber nicht angelegt.`)
+    return id
+  }
+  // Rich text is finished data — nothing to resolve inside.
+  if (isRichText(value)) return value
+  if (Array.isArray(value)) return value.map((v) => withMediaIds(v, ids))
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([k]) => k !== '_insert')
+        .map(([k, v]) => [k, withMediaIds(v, ids)]),
+    )
+  }
+  return value
+}
+
+/**
+ * Guards for the page seeds, checked before anything is written:
+ *  - a legacy rule matches rows by block type (fillRowsByKey) — with two blocks
+ *    of that type on the page it would give both the text of the first;
+ *  - `_insert` identifies a block by its type, so a page takes one per type, and
+ *    no other block of that type;
+ *  - inserting the marked blocks into the rest of the layout must give exactly
+ *    the seed order: a new database and an existing one end up the same.
+ */
+function assertPageSeeds() {
+  for (const page of PAGES) {
+    const types = page.layout.map((b) => b.blockType as string)
+    const count = (type: string) => types.filter((t) => t === type).length
+    for (const type of new Set([
+      ...Object.keys(LEGACY_BLOCK_HEADINGS[page.slug] ?? {}),
+      ...Object.keys(LEGACY_BLOCK_TEXTS[page.slug] ?? {}),
+    ])) {
+      if (count(type) > 1) throw new Error(`Seed ${page.slug}: Altwert-Regel für „${type}“, der Blocktyp kommt aber ${count(type)}× vor.`)
+    }
+    const marked = page.layout.filter((b) => b._insert)
+    if (marked.length === 0) continue
+    for (const b of marked) {
+      if (count(b.blockType) > 1) throw new Error(`Seed ${page.slug}: „_insert“ an „${b.blockType}“, der Blocktyp kommt aber ${count(b.blockType)}× vor.`)
+    }
+    const rest = page.layout.filter((b) => !b._insert) as unknown as Obj[]
+    const plan = insertBlocks(rest, marked.map((b) => ({ block: b as unknown as Obj, at: b._insert! })))
+    const order = ((plan.patch.layout as Obj[] | undefined) ?? rest).map((b) => b.blockType)
+    if (order.join() !== types.join()) {
+      throw new Error(`Seed ${page.slug}: Anker ergeben ${order.join(' › ')}, die Seed-Reihenfolge ist ${types.join(' › ')}.`)
+    }
+  }
+}
 
 /**
  * Brand rules beyond plain fields: legacy link rows and legacy description
@@ -451,17 +530,59 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
   )
 
   // ── Pages (start, agentur, kontakt, …, offer pages) ─────────────────────────
-  const toBlock = (b: BlockSeed) => {
-    if (b.blockType !== 'hero' || !b.checks) return b
-    return {
-      ...b,
-      checks: b.checks
-        .map((c) => (c.kind === 'service' ? { kind: 'service', service: serviceIds[c.service] } : c))
-        .filter((c) => c.kind === 'text' || (c as { service?: number }).service),
-    }
+  assertPageSeeds()
+
+  // What exists decides what this run writes: a whole layout (new page, or one
+  // without blocks) or only the blocks marked `_insert` whose type the page lacks.
+  const { docs: existingPages } = await payload.find({
+    collection: 'pages',
+    where: { slug: { in: PAGES.map((p) => p.slug) } },
+    locale: 'de',
+    fallbackLocale: false,
+    depth: 0,
+    limit: PAGES.length,
+    draft: true,
+    pagination: false,
+  })
+  const haveLayout = new Map(existingPages.map((p) => [p.slug, (p.layout ?? []) as unknown as Obj[]]))
+  const writesAll = (page: PageSeed) => (haveLayout.get(page.slug) ?? []).length === 0
+  const dueBlocks = (page: PageSeed): BlockSeed[] => {
+    if (writesAll(page)) return page.layout
+    const have = haveLayout.get(page.slug)!
+    return page.layout.filter((b) => b._insert && !have.some((row) => row.blockType === b.blockType))
   }
+
+  // Images only for blocks written in this run. Once a page stands, its images
+  // belong to the admin: a placeholder that was replaced or deleted there must
+  // not come back with the next run.
+  const seedMedia: Partial<Record<SeedMediaKey, number>> = {}
+  for (const key of new Set(PAGES.flatMap((page) => dueBlocks(page).flatMap(mediaKeysOf)))) {
+    const m = SEED_MEDIA[key]
+    seedMedia[key] = await ensureMedia(
+      payload,
+      { filename: key, filePath: path.join(PUBLIC_DIR, ...m.dir, key), alt: m.alt, credit: m.credit },
+      summary,
+    )
+  }
+
+  /** Seed block → Payload data: service slugs and image names become ids, plain paragraphs rich text. */
+  const toBlock = (b: BlockSeed): Obj => {
+    let block: Obj = b
+    if (b.blockType === 'hero' && b.checks) {
+      block = {
+        ...b,
+        checks: b.checks
+          .map((c) => (c.kind === 'service' ? { kind: 'service', service: serviceIds[c.service] } : c))
+          .filter((c) => c.kind === 'text' || (c as { service?: number }).service),
+      }
+    }
+    if (b.blockType === 'textImage') block = { ...b, body: rt(b.body) }
+    return withMediaIds(block, seedMedia) as Obj
+  }
+
   const pageIds: Record<string, number> = {}
   for (const page of PAGES) {
+    const due = dueBlocks(page)
     const pageDoc = await upsertDoc(
       payload,
       'pages',
@@ -470,14 +591,15 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
         where: { slug: { equals: page.slug } },
         status: 'published',
         data: {
-          de: { title: page.title, slug: page.slug, meta: page.meta, layout: page.layout.map(toBlock) },
+          // The layout only where it is written as a whole; an existing one is never compared.
+          de: { title: page.title, slug: page.slug, meta: page.meta, ...(writesAll(page) ? { layout: page.layout.map(toBlock) } : {}) },
         },
         legacy: (field, value, locale) => locale === 'de' && (LEGACY_PAGE_META[page.slug]?.[field] ?? []).includes(value as string),
-        // Reworded block headings and texts of existing pages (matched by block type).
         custom: (current, locale) => {
+          if (locale !== 'de') return emptyPlan()
+          // 1. Reworded block headings and texts of existing pages (matched by block type).
           const legacyHeadings = LEGACY_BLOCK_HEADINGS[page.slug] ?? {}
           const legacyTexts = LEGACY_BLOCK_TEXTS[page.slug] ?? {}
-          if (locale !== 'de') return emptyPlan()
           const desired = page.layout
             .filter((b) => b.blockType in legacyHeadings || b.blockType in legacyTexts)
             .map((b) => {
@@ -488,17 +610,36 @@ export async function runSeed(payload: Payload): Promise<SeedSummary> {
                 ...(block.blockType in legacyTexts ? { text: block.text } : {}),
               }
             })
-          if (desired.length === 0) return emptyPlan()
           const isLegacy = (field: string, value: unknown, legacy: Record<string, string[]>, suffix: string) =>
             field.endsWith(suffix) && Object.values(legacy).some((list) => list.includes(value as string))
-          return fillRowsByKey(
-            current.layout,
-            desired,
-            'layout',
-            'blockType',
-            locale,
-            (field, value) => isLegacy(field, value, legacyHeadings, '.heading') || isLegacy(field, value, legacyTexts, '.text'),
-          )
+          const reworded =
+            desired.length === 0
+              ? emptyPlan()
+              : fillRowsByKey(
+                  current.layout,
+                  desired,
+                  'layout',
+                  'blockType',
+                  locale,
+                  (field, value) => isLegacy(field, value, legacyHeadings, '.heading') || isLegacy(field, value, legacyTexts, '.text'),
+                )
+          // 2. New blocks for an existing page (fill.ts, rule 4) — on top of the rows
+          //    from step 1, so both changes travel in ONE layout patch (mergePlans
+          //    would drop one of two patches of the same field).
+          const inserted = writesAll(page)
+            ? emptyPlan()
+            : insertBlocks(
+                reworded.patch.layout ?? current.layout,
+                due.map((b) => ({ block: toBlock(b), at: b._insert ?? [] })),
+                'layout',
+                // With unpublished changes the update only reaches the draft, not the live page.
+                current._status === 'draft' ? ', nur im Entwurf – Seite hat unveröffentlichte Änderungen' : '',
+              )
+          return {
+            patch: { ...reworded.patch, ...inserted.patch },
+            filled: [...reworded.filled, ...inserted.filled],
+            legacy: reworded.legacy,
+          }
         },
       },
       summary,
@@ -536,8 +677,13 @@ export function formatSummary(summary: SeedSummary): string {
     lines.push(
       `${collection}: angelegt ${s.created.length} · ergänzt ${s.filled.length} · übersprungen ${s.skipped.length} · Altwert ersetzt ${s.legacyReplaced.length}`,
     )
-    for (const x of s.skipped.filter((k) => k.includes('deutscher Text geändert') || k.includes('Dokument fehlt'))) {
+    for (const x of s.skipped.filter(
+      (k) => k.includes('deutscher Text geändert') || k.includes('Dokument fehlt') || k.includes('Block fehlt'),
+    )) {
       lines.push(`  ↳ nicht übersetzt: ${x}`)
+    }
+    for (const x of s.filledFields.filter(isInsertedBlock)) {
+      lines.push(`  ↳ Block eingefügt: ${x}`)
     }
     for (const l of s.legacyReplaced) {
       lines.push(`  ↳ Altwert ersetzt: ${l.doc} · ${l.field}${l.locale ? ` (${l.locale})` : ''}: „${l.from}“ → ${l.to === null ? '(geleert)' : `„${l.to}“`}`)

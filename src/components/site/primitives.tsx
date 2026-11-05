@@ -79,6 +79,11 @@ type ButtonProps = {
   className?: string
 }
 
+/** Another website (not a path, mail, phone or anchor of this one). */
+export const isExternalHref = (href: string) => /^https?:/.test(href)
+/** Links to another website open in a new tab — the visitor keeps this page. */
+export const EXTERNAL_LINK = { target: '_blank', rel: 'noopener' } as const
+
 /** Orange/black button. Internal paths go through the locale-aware Link. */
 export function ButtonLink({ href, children, variant = 'primary', onDark = false, className = '' }: ButtonProps) {
   const base =
@@ -90,7 +95,7 @@ export function ButtonLink({ href, children, variant = 'primary', onDark = false
   const cls = `${base} ${look} ${className}`
   if (/^(https?:|mailto:|tel:|#)/.test(href)) {
     return (
-      <a href={href} className={cls}>
+      <a href={href} className={cls} {...(isExternalHref(href) ? EXTERNAL_LINK : {})}>
         {children}
       </a>
     )

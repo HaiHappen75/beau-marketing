@@ -1,5 +1,7 @@
 import type { Block, Field } from 'payload'
 
+import { ICON_OPTIONS } from '../lib/icons'
+
 // Layout blocks for free pages (start, agency overview, about, contact, offer pages).
 // Data-driven blocks (services, cases, brands, trust, engagements, posts) only
 // carry a heading — their content comes from the collections and they hide
@@ -187,13 +189,31 @@ export const TextImageBlock: Block = {
     { name: 'body', label: 'Text', type: 'richText', localized: true },
     { name: 'image', label: 'Bild', type: 'upload', relationTo: 'media' },
     {
-      name: 'imagePosition',
-      label: 'Bildposition',
-      type: 'select',
-      defaultValue: 'right',
-      options: [
-        { label: 'rechts', value: 'right' },
-        { label: 'links', value: 'left' },
+      type: 'row',
+      fields: [
+        {
+          name: 'imagePosition',
+          label: 'Bildposition',
+          type: 'select',
+          defaultValue: 'right',
+          options: [
+            { label: 'rechts', value: 'right' },
+            { label: 'links', value: 'left' },
+          ],
+          admin: { width: '50%' },
+        },
+        {
+          name: 'imageRatio',
+          label: 'Bildformat',
+          type: 'select',
+          defaultValue: 'landscape',
+          options: [
+            { label: 'quer (4:3)', value: 'landscape' },
+            { label: 'quadratisch (1:1)', value: 'square' },
+            { label: 'hoch (4:5)', value: 'portrait' },
+          ],
+          admin: { width: '50%' },
+        },
       ],
     },
   ],
@@ -262,7 +282,7 @@ export const CaseGridBlock: Block = {
 }
 
 /**
- * Offer pages (e.g. /de/website-ferienwohnung): a priced box, a two-column
+ * Offer pages (e.g. /de/gastgeber/ferienwohnung): a priced box, a two-column
  * section (text | check list) or a plain section. Prices are numbers here, never
  * free text — with a price the block also becomes an Offer in the page's
  * JSON-LD (name = heading).
@@ -334,6 +354,220 @@ export const OfferBlock: Block = {
   ],
 }
 
+// ── Free blocks of the host area (05.11.2026) ────────────────────────────────
+// Rule for all of them: no `required` on localized fields. The page list is the
+// same in every language, so a required German-only text would block saving the
+// page in Danish or English (the check runs per language) — in the admin and in
+// the seed. The components simply render nothing for an empty field.
+
+const tone: Field = {
+  name: 'tone',
+  label: 'Hintergrund',
+  type: 'select',
+  defaultValue: 'white',
+  options: [
+    { label: 'weiß', value: 'white' },
+    { label: 'hell (Off-White)', value: 'offwhite' },
+  ],
+}
+
+/**
+ * `layout` is not localized — every block shows in all three languages, untranslated
+ * ones with the German text. A block that leads to German-only pages (offer pages)
+ * or has no translation is switched off for the other languages here.
+ */
+const deOnly: Field = {
+  name: 'deOnly',
+  label: 'Nur auf der deutschen Seite anzeigen',
+  type: 'checkbox',
+  defaultValue: false,
+  admin: { description: 'Für Abschnitte, die auf Nur-Deutsch-Seiten verlinken oder nicht übersetzt sind.' },
+}
+
+/** Free tiles: cards side by side, or one highlighted box with columns (e.g. the demo box with a QR code). */
+export const TilesBlock: Block = {
+  slug: 'tiles',
+  labels: { singular: 'Kacheln', plural: 'Kacheln' },
+  fields: [
+    {
+      name: 'style',
+      label: 'Darstellung',
+      type: 'select',
+      defaultValue: 'cards',
+      options: [
+        { label: 'Karten', value: 'cards' },
+        { label: 'Kasten mit Spalten', value: 'box' },
+      ],
+    },
+    kicker,
+    heading,
+    intro,
+    {
+      name: 'items',
+      label: 'Kacheln',
+      type: 'array',
+      labels: { singular: 'Kachel', plural: 'Kacheln' },
+      fields: [
+        { name: 'image', label: 'Bild', type: 'upload', relationTo: 'media' },
+        {
+          name: 'qr',
+          label: 'QR-Code zum Link anzeigen',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { description: 'Nur im Kasten: QR-Code, der auf das Linkziel der Kachel führt. Folgt dem Link automatisch.' },
+        },
+        { name: 'title', label: 'Titel', type: 'text', localized: true },
+        {
+          name: 'text',
+          label: 'Text',
+          type: 'textarea',
+          localized: true,
+          admin: {
+            description:
+              'Absätze durch eine Leerzeile trennen. Hat die Kachel kein Linkziel, sind Links im Text möglich: [Websites](/agentur/websites).',
+          },
+        },
+        link('link', 'Link'),
+      ],
+    },
+    link('link', 'Link darunter'),
+    tone,
+    deOnly,
+  ],
+}
+
+/** Running text under a heading — no tiles, no image. */
+export const ProseBlock: Block = {
+  slug: 'prose',
+  labels: { singular: 'Textabschnitt', plural: 'Textabschnitte' },
+  fields: [
+    kicker,
+    heading,
+    {
+      name: 'text',
+      label: 'Text',
+      type: 'textarea',
+      localized: true,
+      admin: { description: 'Absätze durch eine Leerzeile trennen. Interne Links im Text: [Flensburg](/region/flensburg).' },
+    },
+    tone,
+    deOnly,
+  ],
+}
+
+/** Points with an icon, or numbered steps (the "Ablauf" of the service pages). */
+export const PointsBlock: Block = {
+  slug: 'points',
+  labels: { singular: 'Punkte', plural: 'Punkte' },
+  fields: [
+    {
+      name: 'style',
+      label: 'Darstellung',
+      type: 'select',
+      defaultValue: 'icons',
+      options: [
+        { label: 'Punkte mit Icon', value: 'icons' },
+        { label: 'Nummerierte Schritte', value: 'steps' },
+      ],
+    },
+    kicker,
+    heading,
+    intro,
+    {
+      name: 'items',
+      label: 'Punkte',
+      type: 'array',
+      labels: { singular: 'Punkt', plural: 'Punkte' },
+      fields: [
+        {
+          name: 'icon',
+          label: 'Icon',
+          type: 'select',
+          options: ICON_OPTIONS.map((o) => ({ label: o.label, value: o.value })),
+          admin: { description: 'Nur bei „Punkte mit Icon“.' },
+        },
+        { name: 'title', label: 'Titel', type: 'text', localized: true },
+        { name: 'text', label: 'Text', type: 'textarea', localized: true },
+      ],
+    },
+    link('link', 'Button'),
+    tone,
+    deOnly,
+  ],
+}
+
+/**
+ * Prices of an offer page as cards and rows. Prices are numbers, never free text —
+ * every row with a name and a price also becomes an Offer in the page's JSON-LD.
+ */
+export const PricingBlock: Block = {
+  slug: 'pricing',
+  labels: { singular: 'Preise', plural: 'Preise' },
+  fields: [
+    kicker,
+    heading,
+    intro,
+    {
+      name: 'offers',
+      label: 'Angebote',
+      type: 'array',
+      labels: { singular: 'Angebot', plural: 'Angebote' },
+      admin: { description: 'Jedes Angebot mit Name und Preis erscheint auch im JSON-LD der Seite.' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'display',
+              label: 'Darstellung',
+              type: 'select',
+              defaultValue: 'card',
+              options: [
+                { label: 'Karte', value: 'card' },
+                { label: 'Zeile', value: 'row' },
+              ],
+              admin: { width: '30%' },
+            },
+            { name: 'name', label: 'Name', type: 'text', localized: true, admin: { width: '70%' } },
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            { name: 'price', label: 'Preis (€, netto)', type: 'number', min: 0, required: true, admin: { width: '40%' } },
+            { name: 'priceIsFrom', label: '„ab“-Preis', type: 'checkbox', defaultValue: false, admin: { width: '20%' } },
+            {
+              name: 'unit',
+              label: 'Einheit',
+              type: 'select',
+              defaultValue: 'once',
+              options: [
+                { label: 'einmalig', value: 'once' },
+                { label: 'pro Monat', value: 'month' },
+                { label: 'pro Stunde', value: 'hour' },
+              ],
+              admin: { width: '40%' },
+            },
+          ],
+        },
+        { name: 'note', label: 'Hinweis am Preis', type: 'text', localized: true, admin: { description: 'z. B. „Voll anrechenbar“.' } },
+        { name: 'text', label: 'Text', type: 'textarea', localized: true },
+        {
+          name: 'items',
+          label: 'Häkchen',
+          type: 'array',
+          labels: { singular: 'Punkt', plural: 'Punkte' },
+          fields: [{ name: 'item', label: 'Punkt', type: 'text', localized: true }],
+        },
+      ],
+    },
+    { name: 'footnote', label: 'Hinweis unter den Preisen', type: 'textarea', localized: true },
+    link('primary', 'Button'),
+    link('secondary', 'Zweiter Button'),
+    deOnly,
+  ],
+}
+
 export const pageBlocks: Block[] = [
   HeroBlock,
   ServiceTilesBlock,
@@ -352,4 +586,8 @@ export const pageBlocks: Block[] = [
   DarkTextBlock,
   CaseGridBlock,
   OfferBlock,
+  TilesBlock,
+  ProseBlock,
+  PointsBlock,
+  PricingBlock,
 ]

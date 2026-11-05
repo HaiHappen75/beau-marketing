@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 
 import { Check } from '@/components/brand/Check'
+import { Breadcrumb } from '@/components/site/Breadcrumb'
 import { ButtonLink, Wrap } from '@/components/site/primitives'
 import { MediaImage } from '@/components/site/MediaImage'
 import { withEmphasis } from '@/lib/emphasis'
@@ -26,9 +27,21 @@ export async function HeroBlock({ block, ctx }: { block: BlockOf<'hero'>; ctx: B
     })
     .filter((c): c is string => Boolean(c))
 
+  // With a breadcrumb the hero starts like a service page: trail on top, then the grid.
+  const crumbs = ctx.breadcrumb?.length ? ctx.breadcrumb : null
+
   return (
-    <section className="bg-white pt-[clamp(40px,7vw,96px)] pb-[clamp(56px,8vw,112px)]">
-      <Wrap className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-center gap-[clamp(40px,5vw,72px)]">
+    <section className={`bg-white pb-[clamp(56px,8vw,112px)] ${crumbs ? 'pt-7' : 'pt-[clamp(40px,7vw,96px)]'}`}>
+      {crumbs && (
+        <Wrap>
+          <Breadcrumb items={crumbs} label={t('breadcrumb')} />
+        </Wrap>
+      )}
+      <Wrap
+        className={`grid grid-cols-[repeat(auto-fit,minmax(min(100%,440px),1fr))] items-center gap-[clamp(40px,5vw,72px)] ${
+          crumbs ? 'mt-[clamp(32px,5vw,64px)]' : ''
+        }`}
+      >
         <div>
           {block.kicker && <p className="mb-5 text-[15px] font-bold text-muted">{block.kicker}</p>}
           <h1 className="text-[clamp(38px,5.2vw,64px)] leading-[1.04] font-extrabold tracking-[-0.025em] text-balance">

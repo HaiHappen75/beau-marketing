@@ -19,3 +19,10 @@ export type CollectionSummary = {
 }
 
 export type SeedSummary = Record<string, CollectionSummary>
+
+/**
+ * A `filledFields` entry that stands for a block inserted into an existing page
+ * ("start · layout +tiles (nach hero) (de)", written by fill.ts → insertBlocks).
+ * Pure — the admin seed button lists these by name.
+ */
+export const isInsertedBlock = (entry: string) => / · \w+ \+\w+ \(/.test(entry)

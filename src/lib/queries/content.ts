@@ -3,7 +3,7 @@ import { cache } from 'react'
 import type { Case, Category, Engagement, Location, Page, Post, Service } from '@/payload-types'
 import { getPayloadClient } from '@/lib/getPayload'
 import { toPayloadLocale, type Locale } from '@/lib/locale'
-import { isOfferPageSlug, OFFER_PAGES, offerPageAvailable, type OfferPageSlug } from '@/lib/offerPages'
+import { isOfferPageSlug, OFFER_PAGE_SLUGS, OFFER_PAGES, offerPageAvailable, type OfferPageSlug } from '@/lib/offerPages'
 
 // Page/section data. The Local API bypasses access control, so every query
 // filters on published state itself — drafts never reach the frontend.
@@ -163,7 +163,7 @@ const livePost = () => ({ and: [published, { publishedAt: { less_than_equal: new
  */
 export const getOfferPageLinks = cache(
   async (locale: Locale): Promise<{ slug: OfferPageSlug; href: string; label: string }[]> => {
-    const slugs = (Object.keys(OFFER_PAGES) as OfferPageSlug[]).filter((s) => offerPageAvailable(s, locale))
+    const slugs = OFFER_PAGE_SLUGS.filter((s) => offerPageAvailable(s, locale))
     if (slugs.length === 0) return []
     const payload = await getPayloadClient()
     const { docs } = await payload.find({
@@ -174,8 +174,10 @@ export const getOfferPageLinks = cache(
       limit: slugs.length,
       ...opts(locale),
     })
+    // In the order of OFFER_PAGES (hub first), not in the order the database returns them.
     return docs
       .filter((d): d is typeof d & { slug: OfferPageSlug } => isOfferPageSlug(d.slug))
+      .sort((a, b) => slugs.indexOf(a.slug) - slugs.indexOf(b.slug))
       .map((d) => ({ slug: d.slug, href: OFFER_PAGES[d.slug].path, label: d.title }))
   },
 )

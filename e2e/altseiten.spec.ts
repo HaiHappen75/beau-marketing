@@ -26,9 +26,17 @@ test('Altseiten (Entscheidung): Ziel mit Query, 410 mit Muster, alles andere unb
   gone.push('/feed/', '/wp-content/uploads/2021/x.jpg', '/wp-includes/js/jquery.js')
   for (const path of gone) expect(legacyUrlTarget(path, '', SITE), path).toEqual({ status: 410 })
 
+  // A page moved within the new site (05.11.2026): with and without the locale, query kept.
+  const moved = `${SITE}/de/gastgeber/ferienwohnung`
+  expect(legacyUrlTarget('/de/website-ferienwohnung', '', SITE)).toEqual({ status: 301, location: moved })
+  expect(legacyUrlTarget('/de/website-ferienwohnung/', '?utm_source=x', SITE)).toEqual({ status: 301, location: `${moved}?utm_source=x` })
+  expect(legacyUrlTarget('/website-ferienwohnung', '', SITE)).toEqual({ status: 301, location: moved })
+
   // Anchored at the root: real pages under a locale prefix are never hit.
   const untouched = ['/', '/de', '/de/', '/de/agentur/', '/de/ratgeber/2024-rueckblick', '/de/ratgeber/kategorie/websites', '/de/tag/x']
-  untouched.push('/impressum/', '/kontakt', '/marken', '/website-ferienwohnung', '/api/', '/admin', '/tags', '/20', '/2019abc', '/feeds')
+  untouched.push('/impressum/', '/kontakt', '/marken', '/gastgeber', '/de/gastgeber/ferienwohnung', '/api/', '/admin', '/tags', '/20', '/2019abc', '/feeds')
+  // The move is German only: the other languages never had the page (404 before and after).
+  untouched.push('/da/website-ferienwohnung', '/en/website-ferienwohnung')
   for (const path of untouched) expect(legacyUrlTarget(path, '', SITE), path).toBeNull()
 
   expect(stripTrailingSlash('/')).toBeNull()
@@ -58,6 +66,7 @@ test('Altseiten 301: Query bleibt erhalten, auch vor dem Anker', async ({ reques
     ['/customer-journey/?utm_source=x&utm_medium=y', '/de/ratgeber?utm_source=x&utm_medium=y'],
     ['/seo-analyse?x=1', '/de/agentur/lokale-sichtbarkeit?x=1'],
     ['/stephan-beau-card/?a=1', '/de/marken?a=1#tappi'],
+    ['/de/website-ferienwohnung?utm_source=flyer', '/de/gastgeber/ferienwohnung?utm_source=flyer'],
   ]
   for (const [path, to] of cases) {
     const res = await request.get(path, { maxRedirects: 0 })
@@ -84,7 +93,7 @@ test('übrige Pfade: Schrägstrich-308 wie bisher, /impressum/ und /kontakt/ lan
     ['/admin/', '/admin'],
     ['/api/', '/api'],
     ['/impressum/', '/impressum'],
-    ['/website-ferienwohnung', '/de/website-ferienwohnung'],
+    ['/gastgeber/ferienwohnung', '/de/gastgeber/ferienwohnung'],
     // next.config redirects() now catch the slash variant directly: one hop.
     ['/de/studio/', '/de/agentur/apps-software'],
   ]

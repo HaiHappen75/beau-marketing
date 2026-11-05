@@ -471,6 +471,63 @@ export const TRUST_MEDIA = {
   },
 }
 
+/**
+ * Images that seed blocks refer to by file name (content.ts → `media('…')`), kept
+ * under public/ so the admin seed button finds them in the production image too.
+ *
+ * Placeholders of the host area (05.11.2026): neutral PNGs with their description
+ * as text — Stephan replaces the FILE of the media entry in the admin, the pages
+ * keep pointing at the entry. Rendered by scripts/generate-gastgeber-placeholders.mjs.
+ * PNG on purpose: Payload leaves it byte-identical. The alt text is the same
+ * description in every language (the pages exist in German only).
+ *
+ * Uploaded only when a block that needs it is written in this run — once the
+ * pages exist, a replaced or deleted placeholder is not uploaded again.
+ * No file name may end in "-<digits>": ensureMedia reads that as a collision copy.
+ */
+const placeholder = (description: string, size: string) => ({
+  dir: ['brand', 'platzhalter'],
+  size,
+  alt: { de: description, en: description, da: description },
+  credit: {
+    author: 'Beau Marketing GmbH',
+    source: 'Platzhalter-Grafik, erzeugt mit scripts/generate-gastgeber-placeholders.mjs',
+    license: 'alle Rechte vorbehalten',
+  },
+})
+
+export const SEED_MEDIA = {
+  'platzhalter-gastgeber-hub-hero.png': placeholder('Gastraum mit Tischaufsteller', '1200 × 1500'),
+  'platzhalter-gastgeber-hub-speisekarte.png': placeholder('Screenshot Speisekarte am Handy', '1600 × 1200'),
+  'platzhalter-gastgeber-hub-ferienwohnung.png': placeholder('Screenshot Ferienwohnungs-Website', '1600 × 1200'),
+  'platzhalter-gastgeber-gastro-hero.png': placeholder('Handy mit Speisekarte vor Gastraum', '1200 × 1500'),
+  'platzhalter-gastgeber-gastro-speisekarte.png': placeholder(
+    'Screenshot Speisekarte am Handy + Admin-Ansicht „heute aus“',
+    '1600 × 1200',
+  ),
+  'platzhalter-gastgeber-gastro-reservierung.png': placeholder('Screenshot Reservierungsliste im Admin', '1600 × 1200'),
+  'platzhalter-gastgeber-gastro-veranstaltung.png': placeholder('Screenshot Event-Seite mit Anmeldung', '1600 × 1200'),
+  'platzhalter-gastgeber-gastro-website.png': placeholder('Screenshot Website-Startseite eines Betriebs', '1600 × 1200'),
+  'platzhalter-gastgeber-gastro-daenisch.png': placeholder('Screenshot Speisekarte auf Dänisch', '1600 × 1200'),
+  // The portrait of the Person schema (public/team, PR #17) as a media entry for
+  // "Vom Koch gebaut" (decision Stephan 05.11.2026). WebP is re-encoded once on upload.
+  'stephan-beau.webp': {
+    dir: ['team'],
+    size: '800 × 800',
+    alt: {
+      de: 'Stephan Beau, Geschäftsführer der Beau Marketing GmbH',
+      en: 'Stephan Beau, managing director of Beau Marketing GmbH',
+      da: 'Stephan Beau, direktør for Beau Marketing GmbH',
+    },
+    credit: { author: 'Beau Marketing GmbH', source: 'Porträt aus dem Website-Bestand (public/team)', license: 'alle Rechte vorbehalten' },
+  },
+} satisfies Record<
+  string,
+  { dir: string[]; size: string; alt: Record<'de' | 'en' | 'da', string>; credit: { author: string; source: string; license: string } }
+>
+
+export type SeedMediaKey = keyof typeof SEED_MEDIA
+
 export const TRUST_SERVER_NOTE = {
   de: 'Websites auf Servern in Deutschland',
   en: 'Websites hosted on servers in Germany',

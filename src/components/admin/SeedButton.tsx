@@ -3,7 +3,7 @@
 import { Button } from '@payloadcms/ui'
 import { useState } from 'react'
 
-import type { SeedSummary } from '@/seed/types'
+import { isInsertedBlock, type SeedSummary } from '@/seed/types'
 
 const COUNT_LABELS: [keyof SeedSummary[string], string][] = [
   ['created', 'angelegt'],
@@ -34,13 +34,20 @@ export function SeedButton() {
   const legacy = summary
     ? Object.entries(summary).flatMap(([collection, s]) => s.legacyReplaced.map((l) => ({ collection, ...l })))
     : []
+  // Blocks the seed added to pages that already existed — named, because they change a live page.
+  const inserted = summary
+    ? Object.entries(summary).flatMap(([collection, s]) =>
+        s.filledFields.filter(isInsertedBlock).map((entry) => ({ collection, entry })),
+      )
+    : []
 
   return (
     <section className="bm-seed">
       <h3>Stammdaten</h3>
       <p>
         Legt fehlende Einträge an und füllt leere Felder. Bestehende Werte bleiben unangetastet – außer bekannten
-        Altwerten aus dem früheren Seed. Beliebig oft ausführbar.
+        Altwerten aus dem früheren Seed. Fehlt einer Seite ein neuer Seed-Block, wird er eingefügt (und nach dem
+        Löschen wieder). Beliebig oft ausführbar.
       </p>
       <Button onClick={run} disabled={state === 'running'} buttonStyle="secondary" size="small">
         {state === 'running' ? 'Läuft …' : 'Stammdaten ergänzen'}
@@ -70,6 +77,24 @@ export function SeedButton() {
               ))}
             </tbody>
           </table>
+          {inserted.length > 0 && (
+            <table>
+              <thead>
+                <tr>
+                  <th>Block eingefügt</th>
+                  <th>Seite · Feld +Blocktyp (Position)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inserted.map((b, i) => (
+                  <tr key={i}>
+                    <td>{b.collection}</td>
+                    <td>{b.entry}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           {legacy.length > 0 && (
             <table>
               <thead>

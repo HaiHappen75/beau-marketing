@@ -43,7 +43,7 @@ test('www-Weiterleitung (Entscheidung): Ziel mit Pfad und Query, nur für Dokume
 
 test('www-Host → 301 auf die Hauptadresse, Pfad und Query bleiben', async ({ request, baseURL }) => {
   const base = new URL(baseURL!)
-  for (const path of ['/de/agentur?x=1&y=2', '/sitemap.xml', '/de/website-ferienwohnung']) {
+  for (const path of ['/de/agentur?x=1&y=2', '/sitemap.xml', '/de/gastgeber/ferienwohnung']) {
     const res = await request.get(path, { headers: { host: `www.${base.host}` }, maxRedirects: 0 })
     expect(res.status(), path).toBe(301)
     // Next writes the Location relative when the target is its own origin (local run);
@@ -52,6 +52,10 @@ test('www-Host → 301 auf die Hauptadresse, Pfad und Query bleiben', async ({ r
     expect(target.host, path).toBe(base.host)
     expect(target.pathname + target.search, path).toBe(path)
   }
+  // A moved page under www: the move comes first, so it stays one hop to the new address.
+  const moved = await request.get('/de/website-ferienwohnung', { headers: { host: `www.${base.host}` }, maxRedirects: 0 })
+  expect(moved.status()).toBe(301)
+  expect(new URL(moved.headers()['location'], base.origin).pathname).toBe('/de/gastgeber/ferienwohnung')
   // Without www nothing changes.
   expect((await request.get('/de/agentur', { maxRedirects: 0 })).status()).toBe(200)
 })

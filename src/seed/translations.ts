@@ -1,6 +1,6 @@
 import type { CollectionSlug, Payload, Where } from 'payload'
 
-import { isEmpty, newSummary } from './fill'
+import { isEmpty, newSummary, resolvePath } from './fill'
 import { isRichText, paragraphsOf, rt } from './richtext'
 import data from './translations.json'
 import type { SeedLocale, SeedSummary } from './types'
@@ -11,6 +11,7 @@ import type { SeedLocale, SeedSummary } from './types'
 // German text is still exactly the one the translation was made from. Arrays and
 // blocks are not localized here — only their leaves are — so rows are sent back
 // whole, with their ids, and nothing but the empty leaves changes.
+// Blocks of the start page are addressed by type (`layout.@hero.kicker`), see resolvePath.
 
 type Entry = {
   de: string
@@ -71,7 +72,11 @@ export async function fillTranslations(payload: Payload, summary: SeedSummary): 
       const next = structuredClone(current)
       const touched = new Set<string>()
       for (const [path, e] of fields) {
-        const parts = path.split('.')
+        const parts = resolvePath(de, path)
+        if (!parts) {
+          s.skipped.push(`${key} · ${path} (${locale}): Block fehlt`)
+          continue
+        }
         if (!sameGerman(getPath(de, parts), e)) {
           s.skipped.push(`${key} · ${path} (${locale}): deutscher Text geändert`)
           continue

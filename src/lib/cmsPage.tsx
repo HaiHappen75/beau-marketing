@@ -4,6 +4,7 @@ import { setRequestLocale } from 'next-intl/server'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
 import { JsonLd } from '@/components/seo/JsonLd'
+import type { Crumb } from '@/components/site/Breadcrumb'
 import { webPageNode, type JsonLdNode } from '@/lib/json-ld'
 import type { Locale } from '@/lib/locale'
 import { cmsMetadata } from '@/lib/pageMeta'
@@ -42,6 +43,8 @@ export async function CmsPage({
   service,
   topic,
   extraGraph = [],
+  breadcrumb,
+  about,
 }: {
   slug: string
   path: string
@@ -51,6 +54,10 @@ export async function CmsPage({
   /** ?anliegen=<key> (contact topic preselection). */
   topic?: string | null
   extraGraph?: JsonLdNode[]
+  /** Visible trail above the hero. The BreadcrumbList node belongs into `extraGraph`. */
+  breadcrumb?: Crumb[]
+  /** @id the WebPage node is about — the node itself belongs into `extraGraph`. */
+  about?: string
 }) {
   setRequestLocale(locale)
   const page = await getPageBySlug(slug, locale as Locale)
@@ -69,12 +76,13 @@ export async function CmsPage({
             name: page.meta?.title || page.title,
             description: page.meta?.description ?? undefined,
             lang: servedLang as Locale,
+            about,
           }),
           ...extraGraph,
         ]}
       />
       <div lang={servedLang !== locale ? servedLang : undefined}>
-        <RenderBlocks blocks={page.layout} ctx={ctx} />
+        <RenderBlocks blocks={page.layout} ctx={breadcrumb ? { ...ctx, breadcrumb } : ctx} />
       </div>
     </>
   )

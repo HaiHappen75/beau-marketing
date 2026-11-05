@@ -345,6 +345,7 @@ export interface Page {
             } | null;
             image?: (number | null) | Media;
             imagePosition?: ('right' | 'left') | null;
+            imageRatio?: ('landscape' | 'square' | 'portrait') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'textImage';
@@ -447,6 +448,175 @@ export interface Page {
             id?: string | null;
             blockName?: string | null;
             blockType: 'offer';
+          }
+        | {
+            style?: ('cards' | 'box') | null;
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            items?:
+              | {
+                  image?: (number | null) | Media;
+                  /**
+                   * Nur im Kasten: QR-Code, der auf das Linkziel der Kachel führt. Folgt dem Link automatisch.
+                   */
+                  qr?: boolean | null;
+                  title?: string | null;
+                  /**
+                   * Absätze durch eine Leerzeile trennen. Hat die Kachel kein Linkziel, sind Links im Text möglich: [Websites](/agentur/websites).
+                   */
+                  text?: string | null;
+                  link?: {
+                    label?: string | null;
+                    /**
+                     * z. B. /kontakt
+                     */
+                    href?: string | null;
+                  };
+                  id?: string | null;
+                }[]
+              | null;
+            link?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            tone?: ('white' | 'offwhite') | null;
+            /**
+             * Für Abschnitte, die auf Nur-Deutsch-Seiten verlinken oder nicht übersetzt sind.
+             */
+            deOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'tiles';
+          }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            /**
+             * Absätze durch eine Leerzeile trennen. Interne Links im Text: [Flensburg](/region/flensburg).
+             */
+            text?: string | null;
+            tone?: ('white' | 'offwhite') | null;
+            /**
+             * Für Abschnitte, die auf Nur-Deutsch-Seiten verlinken oder nicht übersetzt sind.
+             */
+            deOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'prose';
+          }
+        | {
+            style?: ('icons' | 'steps') | null;
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            items?:
+              | {
+                  /**
+                   * Nur bei „Punkte mit Icon“.
+                   */
+                  icon?:
+                    | (
+                        | 'website'
+                        | 'menu'
+                        | 'phone'
+                        | 'calendar'
+                        | 'legal'
+                        | 'languages'
+                        | 'table'
+                        | 'person'
+                        | 'document'
+                        | 'megaphone'
+                        | 'controls'
+                        | 'clock'
+                      )
+                    | null;
+                  title?: string | null;
+                  text?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            link?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            tone?: ('white' | 'offwhite') | null;
+            /**
+             * Für Abschnitte, die auf Nur-Deutsch-Seiten verlinken oder nicht übersetzt sind.
+             */
+            deOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'points';
+          }
+        | {
+            kicker?: string | null;
+            /**
+             * *Betonung* in Sternchen wird kursiv.
+             */
+            heading?: string | null;
+            intro?: string | null;
+            /**
+             * Jedes Angebot mit Name und Preis erscheint auch im JSON-LD der Seite.
+             */
+            offers?:
+              | {
+                  display?: ('card' | 'row') | null;
+                  name?: string | null;
+                  price: number;
+                  priceIsFrom?: boolean | null;
+                  unit?: ('once' | 'month' | 'hour') | null;
+                  /**
+                   * z. B. „Voll anrechenbar“.
+                   */
+                  note?: string | null;
+                  text?: string | null;
+                  items?:
+                    | {
+                        item?: string | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            footnote?: string | null;
+            primary?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            secondary?: {
+              label?: string | null;
+              /**
+               * z. B. /kontakt
+               */
+              href?: string | null;
+            };
+            /**
+             * Für Abschnitte, die auf Nur-Deutsch-Seiten verlinken oder nicht übersetzt sind.
+             */
+            deOnly?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pricing';
           }
       )[]
     | null;
@@ -1461,6 +1631,7 @@ export interface PagesSelect<T extends boolean = true> {
               body?: T;
               image?: T;
               imagePosition?: T;
+              imageRatio?: T;
               id?: T;
               blockName?: T;
             };
@@ -1538,6 +1709,117 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        tiles?:
+          | T
+          | {
+              style?: T;
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              items?:
+                | T
+                | {
+                    image?: T;
+                    qr?: T;
+                    title?: T;
+                    text?: T;
+                    link?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                        };
+                    id?: T;
+                  };
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              tone?: T;
+              deOnly?: T;
+              id?: T;
+              blockName?: T;
+            };
+        prose?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              text?: T;
+              tone?: T;
+              deOnly?: T;
+              id?: T;
+              blockName?: T;
+            };
+        points?:
+          | T
+          | {
+              style?: T;
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              items?:
+                | T
+                | {
+                    icon?: T;
+                    title?: T;
+                    text?: T;
+                    id?: T;
+                  };
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              tone?: T;
+              deOnly?: T;
+              id?: T;
+              blockName?: T;
+            };
+        pricing?:
+          | T
+          | {
+              kicker?: T;
+              heading?: T;
+              intro?: T;
+              offers?:
+                | T
+                | {
+                    display?: T;
+                    name?: T;
+                    price?: T;
+                    priceIsFrom?: T;
+                    unit?: T;
+                    note?: T;
+                    text?: T;
+                    items?:
+                      | T
+                      | {
+                          item?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              footnote?: T;
+              primary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              secondary?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              deOnly?: T;
               id?: T;
               blockName?: T;
             };

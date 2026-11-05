@@ -4,10 +4,11 @@ import type { Locale } from '@/lib/locale'
 import { telHref } from '@/lib/phone'
 import { PACKAGE_DEFS, packagePrice } from '@/lib/packages'
 import { serviceTeaserPrice } from '@/lib/price'
-import { hasPublishedPosts } from '@/lib/queries/content'
+import { offerPage } from '@/lib/offerPages'
+import { getOfferPageLinks, hasPublishedPosts } from '@/lib/queries/content'
 import { getNavigation, getPublishedServices, getSettings } from '@/lib/queries/getLayoutData'
 
-import { HeaderNav, type HeaderPackage, type HeaderService } from './HeaderNav'
+import { HeaderNav, type HeaderHosts, type HeaderPackage, type HeaderService } from './HeaderNav'
 
 export const GUIDE_PATH = '/ratgeber'
 
@@ -18,11 +19,12 @@ export const GUIDE_PATH = '/ratgeber'
  */
 export async function Header({ locale }: { locale: Locale }) {
   const t = await getTranslations({ locale, namespace: 'Layout' })
-  const [navigation, services, settings, guideLive] = await Promise.all([
+  const [navigation, services, settings, guideLive, offerLinks] = await Promise.all([
     getNavigation(locale),
     getPublishedServices(locale),
     getSettings(locale),
     hasPublishedPosts(),
+    getOfferPageLinks(locale),
   ])
 
   const headerServices: HeaderService[] = services
@@ -52,11 +54,27 @@ export async function Header({ locale }: { locale: Locale }) {
     .map((n) => ({ label: n.label, href: n.href }))
   const phone = settings.company?.phone ?? null
 
+  // Host menu ("Gastgeber"): the hub page and the offer pages below it. Like the
+  // "Agentur" menu it is built from what exists — getOfferPageLinks only returns
+  // pages that are published and available in this language, so the item is
+  // missing in da/en and before the seed has created the hub.
+  const hub = offerLinks.find((o) => offerPage(o.slug).schema === 'hub')
+  const hosts: HeaderHosts | null = hub
+    ? {
+        href: hub.href,
+        allLabel: offerPage(hub.slug).menu.label,
+        items: offerLinks
+          .filter((o) => offerPage(o.slug).parent === hub.slug)
+          .map((o) => ({ href: o.href, label: offerPage(o.slug).menu.label, note: offerPage(o.slug).menu.note ?? '' })),
+      }
+    : null
+
   return (
     <HeaderNav
       services={headerServices}
       packages={packages}
       links={links}
+      hosts={hosts}
       phone={phone ? { display: phone, href: telHref(phone) } : null}
     />
   )

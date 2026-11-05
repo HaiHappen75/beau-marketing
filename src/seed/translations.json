@@ -380,127 +380,127 @@
     "da": "Forside",
     "en": "Home"
    },
-   "layout.0.checks.2.text": {
+   "layout.@hero.checks.2.text": {
     "de": "Server in Deutschland",
     "da": "Servere i Tyskland",
     "en": "Servers in Germany"
    },
-   "layout.0.kicker": {
+   "layout.@hero.kicker": {
     "de": "Agentur aus Satrup · Mittelangeln · seit 2016",
     "da": "Bureau fra Satrup · Mittelangeln · siden 2016",
     "en": "Agency from Satrup · Mittelangeln · since 2016"
    },
-   "layout.0.heading": {
+   "layout.@hero.heading": {
     "de": "Websites, Shops und Sichtbarkeit für Betriebe *im Norden.*",
     "da": "Hjemmesider, shops og synlighed for virksomheder *i Nordtyskland.*",
     "en": "Websites, shops and visibility for businesses *in the north.*"
    },
-   "layout.0.text": {
+   "layout.@hero.text": {
     "de": "Wir bauen Websites und Shopify-Shops für Handwerk, Handel und Gastro in Schleswig-Holstein, Hamburg und Dänemark – und halten sie danach am Laufen.",
     "da": "Vi bygger hjemmesider og Shopify-shops til håndværk, handel og restauration i Slesvig-Holsten, Hamborg og Danmark – og holder dem kørende bagefter.",
     "en": "We build websites and Shopify shops for trades, retail and hospitality in Schleswig-Holstein, Hamburg and Denmark – and keep them running afterwards."
    },
-   "layout.0.captionText": {
+   "layout.@hero.captionText": {
     "de": "Inhaber. Du sprichst direkt mit ihm.",
     "da": "Indehaver. Du taler direkte med ham.",
     "en": "Owner. You talk to him directly."
    },
-   "layout.0.primary.label": {
+   "layout.@hero.primary.label": {
     "de": "Projekt anfragen",
     "da": "Forespørg projekt",
     "en": "Request a project"
    },
-   "layout.0.secondary.label": {
+   "layout.@hero.secondary.label": {
     "de": "Preise ansehen",
     "da": "Se priser",
     "en": "See prices"
    },
-   "layout.1.kicker": {
+   "layout.@packages.kicker": {
     "de": "Drei Pakete",
     "da": "Tre pakker",
     "en": "Three packages"
    },
-   "layout.1.heading": {
+   "layout.@packages.heading": {
     "de": "Erst der Auftritt. Dann läuft der *Betrieb.* Dann wirst du gefunden.",
     "da": "Først tilstedeværelsen. Så kører *driften.* Så bliver du fundet.",
     "en": "First your presence. Then *operations* run. Then you get found."
    },
-   "layout.2.kicker": {
+   "layout.@serviceTiles.kicker": {
     "de": "Sechs Leistungen",
     "da": "Seks ydelser",
     "en": "Six services"
    },
-   "layout.2.heading": {
+   "layout.@serviceTiles.heading": {
     "de": "Alles, was ein Betrieb online braucht. Und ein bisschen offline.",
     "da": "Alt, hvad en virksomhed har brug for online. Og lidt offline.",
     "en": "Everything a business needs online. And a little offline."
    },
-   "layout.3.kicker": {
+   "layout.@caseTeaser.kicker": {
     "de": "Referenzen",
     "da": "Referencer",
     "en": "References"
    },
-   "layout.3.heading": {
+   "layout.@caseTeaser.heading": {
     "de": "Echte Betriebe, echte Projekte.",
     "da": "Rigtige virksomheder, rigtige projekter.",
     "en": "Real businesses, real projects."
    },
-   "layout.4.kicker": {
+   "layout.@brandShowcase.kicker": {
     "de": "Markenhaus",
     "da": "Brandhus",
     "en": "Brand house"
    },
-   "layout.4.heading": {
+   "layout.@brandShowcase.heading": {
     "de": "Wir bauen das auch *für uns selbst.*",
     "da": "Vi bygger det også *til os selv.*",
     "en": "We build it *for ourselves,* too."
    },
-   "layout.4.intro": {
+   "layout.@brandShowcase.intro": {
     "de": "Beau Marketing ist auch ein Markenhaus. Websites, Shops und Apps bauen wir auch für unsere eigenen Marken.",
     "da": "Beau Marketing er også et brandhus. Hjemmesider, shops og apps bygger vi også til vores egne brands.",
     "en": "Beau Marketing is also a brand house. We build websites, shops and apps for our own brands, too."
    },
-   "layout.5.kicker": {
+   "layout.@engagementBand.kicker": {
     "de": "Für die Region",
     "da": "For regionen",
     "en": "For the region"
    },
-   "layout.5.heading": {
+   "layout.@engagementBand.heading": {
     "de": "Satrup ist nicht nur unsere Adresse.",
     "da": "Satrup er ikke kun vores adresse.",
     "en": "Satrup is more than our address."
    },
-   "layout.5.text": {
+   "layout.@engagementBand.text": {
     "de": "Wir sitzen in Satrup bei [Flensburg](/region/flensburg) und arbeiten für Betriebe in ganz Schleswig-Holstein. Wenn der Sportverein Trikots braucht oder die Erstklässler Warnwesten, machen wir das. Ohne großes Tamtam – hier nur, damit du weißt, wer wir sind.",
     "da": "Når sportsklubben har brug for trøjer eller 1.-klasserne for refleksveste, så klarer vi det. Uden stort postyr – det står her kun, så du ved, hvem vi er.",
     "en": "When the sports club needs shirts or the first-graders need hi-vis vests, we take care of it. No fuss – it's only here so you know who we are."
    },
-   "layout.5.link.label": {
+   "layout.@engagementBand.link.label": {
     "de": "Mehr über uns und die Region",
     "da": "Mere om os og regionen",
     "en": "More about us and the region"
    },
-   "layout.7.kicker": {
+   "layout.@postTeaser.kicker": {
     "de": "Ratgeber",
     "da": "Guide",
     "en": "Guide"
    },
-   "layout.7.heading": {
+   "layout.@postTeaser.heading": {
     "de": "Frag erst mal den Ratgeber.",
     "da": "Spørg først guiden.",
     "en": "Ask the guide first."
    },
-   "layout.8.heading": {
+   "layout.@cta.heading": {
     "de": "Erzähl uns von deinem *Betrieb.*",
     "da": "Fortæl os om din *virksomhed.*",
     "en": "Tell us about your *business.*"
    },
-   "layout.8.text": {
+   "layout.@cta.text": {
     "de": "Ein Anruf reicht. Du bekommst eine ehrliche Einschätzung und einen Preis – ohne Verkaufsgespräch.",
     "da": "Et opkald er nok. Du får en ærlig vurdering og en pris – uden salgssnak.",
     "en": "One call is enough. You get an honest assessment and a price – no sales pitch."
    },
-   "layout.8.button.label": {
+   "layout.@cta.button.label": {
     "de": "Projekt anfragen",
     "da": "Forespørg projekt",
     "en": "Request a project"

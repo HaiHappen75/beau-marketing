@@ -1,6 +1,7 @@
-// URLs of the old WordPress site (before the relaunch on 24.09.2026). A pure
-// decision without any next/server import, so it is unit-testable without a Next
-// runtime; src/proxy.ts only wires it up (same pattern as hostRedirect.ts).
+// URLs of the old WordPress site (before the relaunch on 24.09.2026) and of pages
+// that moved since. A pure decision without any next/server import, so it is
+// unit-testable without a Next runtime; src/proxy.ts only wires it up (same
+// pattern as hostRedirect.ts).
 //
 // A list in code, not the redirects collection (decision Stephan, 22.10.2026): the
 // collection is only consulted by the [slug] pages (308, query dropped), never for
@@ -28,6 +29,11 @@ export const LEGACY_REDIRECTS: Record<string, string> = {
   '/nice2know': '/de/ratgeber',
   '/datenschutzerklaerung': '/de/datenschutz',
   '/cookie-richtlinie-eu': '/de/datenschutz',
+  // Pages moved within the new site (not WordPress): the offer page for holiday
+  // lets joined the host area on 05.11.2026. Both spellings, so the locale-less one
+  // does not take the detour over next-intl's 308 to /de first.
+  '/de/website-ferienwohnung': '/de/gastgeber/ferienwohnung',
+  '/website-ferienwohnung': '/de/gastgeber/ferienwohnung',
 }
 
 /** Old pages without a matching new page: 410 — Google drops them faster than a 404. */

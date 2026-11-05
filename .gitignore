@@ -41,3 +41,6 @@ yarn-error.log*
 # Playwright
 /test-results
 /playwright-report
+
+# Wegwerf-Skripte (z. B. migrate:create-Umweg unter Windows)
+/.tmp-*

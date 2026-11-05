@@ -6,6 +6,7 @@ import * as migration_20260923_163024_referenzen_ueber_uns from './20260923_1630
 import * as migration_20260923_165405_ratgeber from './20260923_165405_ratgeber';
 import * as migration_20260923_174217_landingpages from './20260923_174217_landingpages';
 import * as migration_20261005_112729_gastgeber_angebot from './20261005_112729_gastgeber_angebot';
+import * as migration_20261105_074118_gastgeber_bereich from './20261105_074118_gastgeber_bereich';
 
 export const migrations = [
   {
@@ -46,6 +47,11 @@ export const migrations = [
   {
     up: migration_20261005_112729_gastgeber_angebot.up,
     down: migration_20261005_112729_gastgeber_angebot.down,
-    name: '20261005_112729_gastgeber_angebot'
+    name: '20261005_112729_gastgeber_angebot',
+  },
+  {
+    up: migration_20261105_074118_gastgeber_bereich.up,
+    down: migration_20261105_074118_gastgeber_bereich.down,
+    name: '20261105_074118_gastgeber_bereich'
   },
 ];
